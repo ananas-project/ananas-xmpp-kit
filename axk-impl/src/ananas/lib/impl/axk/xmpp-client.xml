@@ -1,0 +1,9 @@
+<shell xmlns="xmlns:ananas:axk:xmpp-client">
+
+	<monitor>
+
+		<connection id="conn"></connection>
+
+	</monitor>
+
+</shell>
