@@ -4,7 +4,7 @@ import ananas.lib.axk.DefaultXmppAccount;
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppEnvironment;
-import ananas.lib.axk.XmppPhase;
+import ananas.lib.axk.XmppStatus;
 import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.IExCore;
 import ananas.lib.axk.api.IExShell;
@@ -75,19 +75,19 @@ public class Tar_shell extends Tar_abstractClient implements IExShell {
 	}
 
 	@Override
-	public void setStatus(XmppPhase phase) {
+	public void setStatus(XmppStatus phase) {
 		IExConnection conn = this._getTargetConnection();
 		conn.setStatus(phase);
 	}
 
 	@Override
-	public XmppPhase getStatus() {
+	public XmppStatus getStatus() {
 		IExConnection conn = this._getTargetConnection();
 		return conn.getStatus();
 	}
 
 	@Override
-	public XmppPhase getPhase() {
+	public XmppStatus getPhase() {
 		IExConnection conn = this._getTargetConnection();
 		return conn.getPhase();
 	}
@@ -108,6 +108,12 @@ public class Tar_shell extends Tar_abstractClient implements IExShell {
 	public void disconnect() {
 		IExConnection conn = this._getTargetConnection();
 		conn.disconnect();
+	}
+
+	@Override
+	public void reset() {
+		IExConnection conn = this._getTargetConnection();
+		conn.reset();
 	}
 
 }

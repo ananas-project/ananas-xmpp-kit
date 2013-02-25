@@ -1,29 +1,34 @@
 package ananas.lib.axk.api;
 
 import ananas.lib.axk.XmppClientExAPI;
-import ananas.lib.axk.XmppPhase;
+import ananas.lib.axk.XmppStatus;
 
 public interface IExConnection extends XmppClientExAPI {
 
-	void setStatus(XmppPhase phase);
+	void setStatus(XmppStatus phase);
 
-	XmppPhase getStatus();
+	XmppStatus getStatus();
 
-	XmppPhase getPhase();
+	XmppStatus getPhase();
 
 	/**
-	 * set phase to closed
+	 * start new thread
+	 * */
+	void reset();
+
+	/**
+	 * exit all thread; set phase to closed
 	 * */
 
 	void close();
 
 	/**
-	 * set phase to online
+	 * create new connection; set phase to online
 	 * */
 	void connect();
 
 	/**
-	 * set phase to off-line
+	 * close all connection; set phase to off-line
 	 * */
 	void disconnect();
 

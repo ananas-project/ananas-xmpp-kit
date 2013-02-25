@@ -9,5 +9,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ananas-base"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-reflect"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/axk-element"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

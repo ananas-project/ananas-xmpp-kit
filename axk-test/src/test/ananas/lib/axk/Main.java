@@ -26,9 +26,10 @@ public class Main implements XmppEventListener {
 		System.out.println(this + ".begin");
 
 		DefaultXmppAccount account = new DefaultXmppAccount();
-		account.address = new DefaultXmppAddress("xk@fuyoo.net/hw001");
-		account.password = "1234";
+		account.address = new DefaultXmppAddress("axktest@jabber.org/hw001");
+		account.password = "12345678";
 		account.host = "jabber.org";
+		account.resource = this.getClass().getName();
 
 		XmppEnvironment envi = XmppUtil.getDefaultEnvironment();
 		XmppClientFactory factory = envi.getClientFactory();
