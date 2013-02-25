@@ -1,11 +1,9 @@
 package ananas.lib.impl.axk;
 
-import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppClientWrapper;
 import ananas.lib.axk.XmppCommand;
-import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.XmppEvent;
 import ananas.lib.axk.XmppEventListener;
 
@@ -16,28 +14,8 @@ public class AbstractXmppClientWrapper implements XmppClientWrapper,
 	private XmppClient mTarget;
 
 	@Override
-	public XmppEnvironment getEnvironment() {
-		XmppClient tar = this.mTarget;
-		if (tar != null) {
-			return tar.getEnvironment();
-		} else {
-			return null;
-		}
-	}
-
-	@Override
 	public void setXmppEventListener(XmppEventListener listener) {
 		this.mListener = listener;
-	}
-
-	@Override
-	public XmppAccount getAccount() {
-		XmppClient tar = this.mTarget;
-		if (tar != null) {
-			return tar.getAccount();
-		} else {
-			return null;
-		}
 	}
 
 	@Override

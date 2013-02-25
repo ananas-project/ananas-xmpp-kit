@@ -2,17 +2,17 @@ package ananas.lib.axk;
 
 public interface XmppAccount {
 
-	String host();
+	String getHost();
 
-	int port();
+	int getPort();
 
-	String password();
+	String getPassword();
 
-	XmppAddress address();
+	XmppAddress getAddress();
 
-	String resource();
+	String getResource();
 
-	boolean useSSL();
+	boolean isUseSSL();
 
-	boolean ignoreSSLError();
+	boolean isIgnoreSSLError();
 }

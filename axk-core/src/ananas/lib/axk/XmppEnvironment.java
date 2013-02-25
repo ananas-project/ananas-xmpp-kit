@@ -6,4 +6,10 @@ public interface XmppEnvironment {
 
 	BPEnvironment getBPEnvironment();
 
+	XmppClientFactory getClientFactory();
+
+	void shutdown();
+
+	boolean isAlive();
+
 }

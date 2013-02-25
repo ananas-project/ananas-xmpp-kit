@@ -2,6 +2,7 @@ package ananas.lib.impl.axk.client.ctrl;
 
 import ananas.lib.blueprint.core.dom.AbstractElement;
 import ananas.lib.blueprint.core.dom.BPAttribute;
+import ananas.lib.blueprint.core.dom.BPDocument;
 import ananas.lib.blueprint.core.dom.BPElementMap;
 import ananas.lib.impl.axk.client.target.Tar_abstractClient;
 
@@ -22,12 +23,11 @@ public class Ctl_abstractClient extends AbstractElement {
 	}
 
 	public void onTagBegin() {
-
 		super.onTagBegin();
-
 		String id = this.mId;
 		if (id != null) {
-			BPElementMap reg = this.getOwnerDocument().getElementRegistrar();
+			BPDocument doc = this.getOwnerDocument();
+			BPElementMap reg = doc.getElementRegistrar();
 			reg.put(id, this);
 		}
 	}

@@ -1,15 +1,15 @@
 package test.ananas.lib.axk;
 
 import ananas.lib.axk.DefaultXmppAccount;
+import ananas.lib.axk.DefaultXmppAddress;
 import ananas.lib.axk.XmppAccount;
-import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppClientFactory;
+import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.XmppEvent;
 import ananas.lib.axk.XmppEventListener;
-import ananas.lib.axk.XmppPhase;
 import ananas.lib.axk.XmppUtil;
-import ananas.lib.axk.api.IExConnection;
+import ananas.lib.axk.api.IExShell;
 import ananas.lib.axk.command.TraceCommand;
 
 public class Main implements XmppEventListener {
@@ -26,11 +26,12 @@ public class Main implements XmppEventListener {
 		System.out.println(this + ".begin");
 
 		DefaultXmppAccount account = new DefaultXmppAccount();
-		account.address = new XmppAddress("xk@fuyoo.net/hw001");
+		account.address = new DefaultXmppAddress("xk@fuyoo.net/hw001");
 		account.password = "1234";
 		account.host = "jabber.org";
 
-		XmppClientFactory factory = XmppUtil.getFactory();
+		XmppEnvironment envi = XmppUtil.getDefaultEnvironment();
+		XmppClientFactory factory = envi.getClientFactory();
 		XmppClient client = factory.newClient(account);
 		client.setXmppEventListener(this);
 
@@ -38,14 +39,14 @@ public class Main implements XmppEventListener {
 		TraceCommand cmd = new TraceCommand();
 		client.dispatch(cmd);
 
+		IExShell shell = (IExShell) client.getExAPI(IExShell.class);
+
 		// show account
-		XmppAccount acc = client.getAccount();
+		XmppAccount acc = shell.getAccount();
 		System.out.println("account = " + acc);
 
 		// connect
-		IExConnection conn = (IExConnection) client
-				.getExAPI(IExConnection.class);
-		conn.setStatus(XmppPhase.online);
+		shell.connect();
 
 		// end
 		System.out.println(this + ".end");

@@ -1,5 +1,6 @@
 package ananas.lib.impl.axk;
 
+import ananas.lib.axk.XmppClientFactory;
 import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.blueprint.core.Blueprint;
 import ananas.lib.blueprint.core.lang.BPEnvironment;
@@ -19,6 +20,8 @@ public class TheXmppEnvironment implements XmppEnvironment {
 	}
 
 	private BPEnvironment mBpEnvi;
+	private boolean mIsAlive = true;
+	private XmppClientFactory mClientFactory;
 
 	private TheXmppEnvironment() {
 		this.mBpEnvi = Blueprint.getInstance().defaultEnvironment();
@@ -35,6 +38,26 @@ public class TheXmppEnvironment implements XmppEnvironment {
 	@Override
 	public BPEnvironment getBPEnvironment() {
 		return this.mBpEnvi;
+	}
+
+	@Override
+	public XmppClientFactory getClientFactory() {
+		XmppClientFactory factory = this.mClientFactory;
+		if (factory == null) {
+			factory = new TheXmppClientFactory();
+			this.mClientFactory = factory;
+		}
+		return factory;
+	}
+
+	@Override
+	public void shutdown() {
+		this.mIsAlive = false;
+	}
+
+	@Override
+	public boolean isAlive() {
+		return this.mIsAlive;
 	}
 
 }

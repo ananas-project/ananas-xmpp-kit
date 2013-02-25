@@ -10,38 +10,51 @@ public class DefaultXmppAccount implements XmppAccount {
 	public boolean ignoreSSLError = false;
 	public String resource = "axk-client";
 
+	public DefaultXmppAccount() {
+	}
+
+	public DefaultXmppAccount(XmppAccount acc) {
+		this.address = acc.getAddress();
+		this.password = acc.getPassword();
+		this.host = acc.getHost();
+		this.port = acc.getPort();
+		this.resource = acc.getResource();
+		this.useSSL = acc.isUseSSL();
+		this.ignoreSSLError = acc.isIgnoreSSLError();
+	}
+
 	@Override
-	public String host() {
+	public String getHost() {
 		return this.host;
 	}
 
 	@Override
-	public int port() {
+	public int getPort() {
 		return this.port;
 	}
 
 	@Override
-	public String password() {
+	public String getPassword() {
 		return this.password;
 	}
 
 	@Override
-	public XmppAddress address() {
+	public XmppAddress getAddress() {
 		return this.address;
 	}
 
 	@Override
-	public String resource() {
+	public String getResource() {
 		return this.resource;
 	}
 
 	@Override
-	public boolean useSSL() {
+	public boolean isUseSSL() {
 		return this.useSSL;
 	}
 
 	@Override
-	public boolean ignoreSSLError() {
+	public boolean isIgnoreSSLError() {
 		return this.ignoreSSLError;
 	}
 

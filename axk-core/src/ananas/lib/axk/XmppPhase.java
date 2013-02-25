@@ -7,6 +7,8 @@ public interface XmppPhase {
 	XmppPhase offline = F._new("offline");
 	XmppPhase dropped = F._new("dropped");
 	XmppPhase logining = F._new("logining");
+	XmppPhase error = F._new("error");
+	XmppPhase closed = F._new("closed");
 
 	class F {
 

@@ -13,10 +13,7 @@ import ananas.lib.impl.axk.client.target.Tar_connection;
 
 public class TheXmppClientFactory implements XmppClientFactory {
 
-	private XmppEnvironment mEnvi;
-
 	public TheXmppClientFactory() {
-		this.mEnvi = this._getDefaultEnvi();
 	}
 
 	private XmppEnvironment _getDefaultEnvi() {
@@ -25,19 +22,24 @@ public class TheXmppClientFactory implements XmppClientFactory {
 
 	@Override
 	public XmppClient newClient(XmppAccount account) {
+		XmppEnvironment envi = this._getDefaultEnvi();
+		return this.newClient(account, envi);
+	}
 
+	@Override
+	public XmppClient newClient(XmppAccount account, XmppEnvironment envi) {
 		String path = "xmpp-client.xml";
 		InputStream in = this.getClass().getResourceAsStream(path);
 		if (in == null) {
 			throw new RuntimeException("cannot find file " + path);
 		}
 
-		TheXmppClientCore core = new TheXmppClientCore(this.mEnvi, account);
+		TheXmppClientCore core = new TheXmppClientCore(envi, account);
 		XmppClient client = null;
 
 		try {
 
-			BPEnvironment bp = this.mEnvi.getBPEnvironment();
+			BPEnvironment bp = envi.getBPEnvironment();
 			BPDocumentLoader docldr = bp.getDocumentLoaderFactory().newLoader();
 			BPDocument doc = docldr.loadDocument(bp, in, path);
 
@@ -55,19 +57,6 @@ public class TheXmppClientFactory implements XmppClientFactory {
 		}
 
 		return client;
-
-	}
-
-	@Override
-	public XmppEnvironment getEnvironment() {
-		return this.mEnvi;
-	}
-
-	@Override
-	public void setEnvironment(XmppEnvironment envi) {
-		if (envi != null) {
-			this.mEnvi = envi;
-		}
 	}
 
 }

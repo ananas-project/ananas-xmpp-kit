@@ -4,8 +4,6 @@ public interface XmppClientFactory {
 
 	XmppClient newClient(XmppAccount account);
 
-	XmppEnvironment getEnvironment();
-
-	void setEnvironment(XmppEnvironment envi);
+	XmppClient newClient(XmppAccount account, XmppEnvironment envi);
 
 }

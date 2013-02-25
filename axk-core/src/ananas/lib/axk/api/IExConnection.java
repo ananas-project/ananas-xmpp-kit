@@ -11,4 +11,20 @@ public interface IExConnection extends XmppClientExAPI {
 
 	XmppPhase getPhase();
 
+	/**
+	 * set phase to closed
+	 * */
+
+	void close();
+
+	/**
+	 * set phase to online
+	 * */
+	void connect();
+
+	/**
+	 * set phase to off-line
+	 * */
+	void disconnect();
+
 }
