@@ -20,6 +20,7 @@ import ananas.lib.impl.axk.client.parser.XmppParserFactory;
 
 public class XmppConnection implements Runnable {
 
+	private final XmppConnection mParent;
 	private final XmppAccount mAccount;
 	private final XmppEnvironment mEnvi;
 	private final XmppConnectionListener mListener;
@@ -31,25 +32,76 @@ public class XmppConnection implements Runnable {
 
 	public XmppConnection(XmppAccount account, XmppEnvironment envi,
 			XmppConnectionListener listener) {
+		this.mParent = null;
 		this.mAccount = account;
 		this.mEnvi = envi;
 		this.mListener = listener;
+
 		this.mCurCtrl = new TheInitConnCtrl(this);
+	}
+
+	public void printToken() {
+		System.out
+				.println("=========================================================================");
+		System.out.println("new " + this);
+		Thread thd = Thread.currentThread();
+		System.out.println("thread = " + thd + "@" + thd.hashCode());
 	}
 
 	public XmppConnection(XmppAccount account, XmppEnvironment envi,
 			XmppConnectionListener listener, Socket socket) {
-
+		this.mParent = null;
 		this.mAccount = account;
 		this.mEnvi = envi;
 		this.mListener = listener;
 		this.mSocket = socket;
+
+		this.mCurCtrl = new TheInitConnCtrl(this);
+	}
+
+	public XmppConnection(XmppConnection parent) {
+
+		this.mParent = parent;
+		this.mAccount = parent.mAccount;
+		this.mEnvi = parent.mEnvi;
+		this.mListener = parent.mListener;
+		this.mSocket = this.createSSLSocket(parent.mSocket);
+
+		this.mCurCtrl = new TheInitConnCtrl(this);
+		this.checkParents();
+	}
+
+	private void checkParents() {
+		XmppConnection p = this.mParent;
+		int i = 0;
+		for (; p != null; i++) {
+			p = p.mParent;
+		}
+		if (i > 4) {
+			throw new RuntimeException("too more TLS layers.");
+		}
+	}
+
+	private Socket createSSLSocket(Socket sock) {
+		try {
+			SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory
+					.getDefault();
+			String host = this.mAccount.getHost();
+			int port = this.mAccount.getPort();
+			sock = factory.createSocket(sock, host, port, true);
+			return sock;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public void run() {
 
 		try {
+
+			this.printToken();
+
 			Socket socket = this.getSocket();
 			InputStream is = socket.getInputStream();
 			OutputStream os = socket.getOutputStream();
@@ -169,5 +221,9 @@ public class XmppConnection implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public XmppAccount getAccount() {
+		return this.mAccount;
 	}
 }

@@ -21,14 +21,16 @@
 		<!-- components -->
 
 		<class name="starttls" isElement="true">
-
-			<attribute name="id" />
-
+			<!-- <attribute name="id" /> -->
 			<!-- <element name="test" type="java.lang.Object" /> -->
-
+			<element name="required" type="#required" />
 		</class>
 
+		<class name="proceed" isElement="true">
+		</class>
 
+		<class name="required" isElement="true">
+		</class>
 
 
 	</namespace>

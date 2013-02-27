@@ -1,5 +1,8 @@
 package test.ananas.lib.axk;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ananas.lib.axk.DefaultXmppAccount;
 import ananas.lib.axk.DefaultXmppAddress;
 import ananas.lib.axk.XmppAccount;
@@ -25,11 +28,24 @@ public class Main implements XmppEventListener {
 
 		System.out.println(this + ".begin");
 
-		DefaultXmppAccount account = new DefaultXmppAccount();
-		account.address = new DefaultXmppAddress("axktest@jabber.org/hw001");
-		account.password = "12345678";
-		account.host = "jabber.org";
-		account.resource = this.getClass().getName();
+		List<XmppAccount> accountList = new ArrayList<XmppAccount>();
+		{
+			DefaultXmppAccount account = new DefaultXmppAccount();
+			account.address = new DefaultXmppAddress("axktest@jabber.org/hw001");
+			account.password = "12345678";
+			account.host = "jabber.org";
+			account.resource = this.getClass().getName();
+			accountList.add(account);
+		}
+		{
+			DefaultXmppAccount account = new DefaultXmppAccount();
+			account.address = new DefaultXmppAddress("xk19850217@gmail.com");
+			account.password = "xk12345678";
+			account.host = "talk.google.com";
+			account.resource = this.getClass().getName();
+			accountList.add(account);
+		}
+		XmppAccount account = accountList.get(1);
 
 		XmppEnvironment envi = XmppUtil.getDefaultEnvironment();
 		XmppClientFactory factory = envi.getClientFactory();

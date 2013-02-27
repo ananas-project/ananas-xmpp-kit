@@ -13,6 +13,9 @@ public class Xmpp_stream {
 	}
 
 	public void dispatchRxObject(Object object) {
+
+		System.out.println(this + ".Rx  :  " + object);
+
 		this.mListener.onReceive(this, object);
 	}
 
