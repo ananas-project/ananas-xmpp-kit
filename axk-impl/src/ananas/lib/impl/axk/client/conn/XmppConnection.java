@@ -12,6 +12,7 @@ import javax.net.ssl.SSLSocketFactory;
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.XmppEnvironment;
+import ananas.lib.axk.element.stream.Xmpp_stream;
 import ananas.lib.impl.axk.client.parser.DefaultXmppParserFactory;
 import ananas.lib.impl.axk.client.parser.XmppParser;
 import ananas.lib.impl.axk.client.parser.XmppParserCallback;
@@ -21,21 +22,27 @@ public class XmppConnection implements Runnable {
 
 	private final XmppAccount mAccount;
 	private final XmppEnvironment mEnvi;
+	private final XmppConnectionListener mListener;
 	private Socket mSocket;
 	private InputStream mIS;
 	private OutputStream mOS;
-	private XmppConnectionListener mListener;
 	private String mLastError;
+	private IXmppConnectionController mCurCtrl;
 
-	public XmppConnection(XmppAccount account, XmppEnvironment envi) {
+	public XmppConnection(XmppAccount account, XmppEnvironment envi,
+			XmppConnectionListener listener) {
 		this.mAccount = account;
 		this.mEnvi = envi;
+		this.mListener = listener;
+		this.mCurCtrl = new TheInitConnCtrl(this);
 	}
 
 	public XmppConnection(XmppAccount account, XmppEnvironment envi,
-			Socket socket) {
+			XmppConnectionListener listener, Socket socket) {
+
 		this.mAccount = account;
 		this.mEnvi = envi;
+		this.mListener = listener;
 		this.mSocket = socket;
 	}
 
@@ -133,14 +140,34 @@ public class XmppConnection implements Runnable {
 		return socket;
 	}
 
-	public void setListener(XmppConnectionListener listener) {
-		this.mListener = listener;
+	public XmppConnectionListener getListener() {
+		return this.mListener;
 	}
 
 	class MyXmppParserCallback implements XmppParserCallback {
+
+		@Override
+		public void onReceive(Xmpp_stream stream, Object object) {
+			// XmppConnection.this.mListener.onReceive(object);
+			XmppConnection.this.mCurCtrl.onReceive(stream, object);
+		}
+	}
+
+	public void setController(IXmppConnectionController ctrl) {
+		if (ctrl == null)
+			return;
+		this.mCurCtrl = ctrl;
 	}
 
 	public String getLastError() {
 		return this.mLastError;
+	}
+
+	public void syncSendBytes(byte[] buffer, int offset, int length) {
+		try {
+			this.mOS.write(buffer, offset, length);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

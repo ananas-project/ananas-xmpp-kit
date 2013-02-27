@@ -133,8 +133,7 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 
 					IExCore api = Tar_connection.this.getCoreApi();
 					XmppConnection conn = new XmppConnection(api.getAccount(),
-							api.getEnvironment());
-					conn.setListener(this);
+							api.getEnvironment(), this);
 					conn.run();
 					String lastError = conn.getLastError();
 					if (lastError == null) {
@@ -183,7 +182,14 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 		}
 
 		public void open() {
-			(new Thread(this)).start();
+			Thread thd = new Thread(this);
+			thd.setName("axk-worker-thread");
+			thd.start();
+		}
+
+		@Override
+		public void onReceive(Object object) {
+			System.out.println(this + ".onResceive:" + object);
 		}
 	}
 

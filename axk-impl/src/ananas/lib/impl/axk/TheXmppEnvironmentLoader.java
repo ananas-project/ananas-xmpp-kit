@@ -17,9 +17,9 @@ public class TheXmppEnvironmentLoader implements XmppEnvironmentLoader {
 		if (ns == null) {
 			final Vector<String> v = new Vector<String>();
 
-			v.add("ananas.lib.axk.element.stream.TheNamespaceInfo");
-			v.add("ananas.lib.axk.element.xmpp_tls.TheNamespaceInfo");
-			v.add("ananas.lib.axk.element.xmpp_sasl.TheNamespaceInfo");
+			// v.add("ananas.lib.axk.element.stream.TheNamespaceInfo");
+			// v.add("ananas.lib.axk.element.xmpp_tls.TheNamespaceInfo");
+			v.add("ananas.lib.axk.element.TheNamespaceInfo");
 
 			for (String s : v) {
 				envi.getBPEnvironment().loadNamespace(s, true);

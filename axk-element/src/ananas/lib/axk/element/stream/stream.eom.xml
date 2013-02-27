@@ -6,6 +6,7 @@
 
 		<property key="myCtrlPackage" value="ananas.lib.axk.element.stream" />
 		<property key="myTargetPackage" value="ananas.lib.axk.element.stream" />
+		<property key="myBpCorePackage" value="ananas.lib.blueprint.core.dom" />
 
 
 		<property key="namespace:uri" value="http://etherx.jabber.org/streams" />
@@ -16,7 +17,9 @@
 		<property key="class:targetClass" value="$(myTargetPackage).Xmpp_$(class:javaName)" />
 
 
-
+		<class name="BPElement" controllerClass="$(myBpCorePackage).$(class:javaName)"
+			targetClass="java.lang.Object">
+		</class>
 
 		<!-- components -->
 
@@ -27,7 +30,7 @@
 			<attribute name="id" />
 			<attribute name="version" />
 
-			<!-- <element name="test" type="java.lang.Object" /> -->
+			<element type="#BPElement" />
 
 		</class>
 
@@ -36,7 +39,7 @@
 
 
 			<!-- <element name="test" type="java.lang.Object" /> -->
-			<element type="java.lang.Object" />
+			<element type="#BPElement" />
 
 		</class>
 

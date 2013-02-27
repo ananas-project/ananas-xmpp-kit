@@ -1,0 +1,7 @@
+
+ananas.lib.axk.element.compress.TheNamespaceInfo
+ananas.lib.axk.element.stream.TheNamespaceInfo
+ananas.lib.axk.element.xmpp_sasl.TheNamespaceInfo
+ananas.lib.axk.element.xmpp_tls.TheNamespaceInfo
+ananas.lib.axk.element.rosterver.TheNamespaceInfo
+

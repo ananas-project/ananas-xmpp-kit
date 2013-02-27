@@ -10,17 +10,12 @@ public class Ctrl_features extends AbstractElement {
 		return true;
 	}
 
-	public boolean append_child_(Object child) {
+	public boolean append_child_(BPElement child) {
 
-		if (child instanceof BPElement) {
+		BPElement element = (BPElement) child;
+		System.out.println(this + " <<[append]<< " + element);
 
-			BPElement element = (BPElement) child;
-			System.out.println(this + " <<[append]<< " + element);
-
-			return true;
-		} else {
-			return false;
-		}
+		return true;
 
 	}
 }
