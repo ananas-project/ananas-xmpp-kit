@@ -15,4 +15,13 @@ public class Xmpp_Stanza {
 		return this.mItems;
 	}
 
+	public Object findItemByClass(Class<?> cls) {
+		for (Object item : this.mItems) {
+			if (cls.isInstance(item)) {
+				return item;
+			}
+		}
+		return null;
+	}
+
 }

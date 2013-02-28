@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.net.ssl.SSLSocketFactory;
 
+import ananas.lib.axk.element.jabber_client.Xmpp_iq;
 import ananas.lib.axk.element.stream.Xmpp_features;
 import ananas.lib.axk.element.stream.Xmpp_stream;
 import ananas.lib.axk.element.xmpp_bind.Xmpp_bind;
@@ -63,6 +64,13 @@ public class TheMainConnCtrl extends XmppConnectionController {
 				super.onReceive(stream, object);
 			}
 
+		} else if (object instanceof Xmpp_iq) {
+			Xmpp_iq iq = (Xmpp_iq) object;
+			Xmpp_bind bind = (Xmpp_bind) iq.findItemByClass(Xmpp_bind.class);
+			if (bind != null) {
+				this.onBindOK(bind);
+			}
+
 		} else if (object instanceof Xmpp_proceed) {
 			this.doCreateTLSConnect();
 
@@ -71,7 +79,42 @@ public class TheMainConnCtrl extends XmppConnectionController {
 		}
 	}
 
+	private void onBindOK(Xmpp_bind bind) {
+		System.out.println(this + ".onBindOK : " + bind.getJID());
+
+		XmppConnection conn = this.getConnection();
+		TheOnlineConnCtrl ctrl = new TheOnlineConnCtrl(conn);
+		conn.setController(ctrl);
+
+		this.doPresence();
+	}
+
+	private void doPresence() {
+
+		// <presence >
+		// <show>dnd</show>
+		// <status>Wooing Juliet</status>
+		// </presence>
+
+		String show = "";
+		// String status = "my name is 007";
+
+		XmppStanzaBuilder xsb = XmppStanzaBuilder.Factory.newInstance();
+		xsb.append("<presence>");
+		xsb.append("<show>");
+		xsb.append(show);
+		xsb.append("</show>");
+		// xsb.append("<status>");
+		// xsb.append(status);
+		// xsb.append("</status>");
+		xsb.append("</presence>");
+
+		byte[] ba = xsb.toByteArray();
+		this.getConnection().syncSendBytes(ba, 0, ba.length);
+	}
+
 	private void doBind() {
+		String res = this.getConnection().getAccount().getResource();
 		XmppStanzaBuilder xsb = XmppStanzaBuilder.Factory.newInstance();
 		xsb.append("<iq");
 		xsb.appendAttribute("type", "set");
@@ -79,7 +122,11 @@ public class TheMainConnCtrl extends XmppConnectionController {
 		xsb.append(">");
 		xsb.append("<bind");
 		xsb.appendAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-bind");
-		xsb.append("/>");
+		xsb.append(">");
+		xsb.append("<resource>");
+		xsb.append(res + "");
+		xsb.append("</resource>");
+		xsb.append("</bind>");
 		xsb.append("</iq>");
 		byte[] ba = xsb.toByteArray();
 		this.getConnection().syncSendBytes(ba, 0, ba.length);

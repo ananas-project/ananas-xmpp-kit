@@ -26,7 +26,15 @@
 			<element type="java.lang.Object" />
 		</class>
 
-		<!-- components -->
+		<!-- util -->
+
+		<class name="status" isElement="true">
+			<!-- <attribute name="id" /> -->
+			<!-- <element name="test" type="java.lang.Object" /> -->
+		</class>
+
+
+		<!-- stanza -->
 
 		<class name="iq" isElement="true" extends="#Stanza">
 			<!-- <attribute name="id" /> -->

@@ -19,6 +19,7 @@ import ananas.lib.blueprint.core.lang.BPNamespaceRegistrar;
 import ananas.lib.blueprint.core.lang.BPType;
 import ananas.lib.blueprint.core.util.BPBuilder;
 import ananas.lib.blueprint.core.util.BPElementProvider;
+import ananas.lib.blueprint.core.util.BPErrorHandler;
 import ananas.lib.blueprint.core.util.BPXMLReaderFactory;
 
 public class DefaultXmppParserFactory implements XmppParserFactory {
@@ -47,6 +48,7 @@ public class DefaultXmppParserFactory implements XmppParserFactory {
 
 			BPBuilder builder = envi.getBuilderFactory().newBuilder(doc);
 			builder.setBPElementProvider(new MyElementProvider(envi, callback));
+			builder.setBPErrorHandler(new MyErrorHandler(envi, callback));
 
 			// BPXMLReaderFactory readerFactory = envi.getXMLReaderFactory();
 			BPXMLReaderFactory readerFactory = new TempReaderFactory();
@@ -58,6 +60,28 @@ public class DefaultXmppParserFactory implements XmppParserFactory {
 			InputSource is2 = new InputSource(new MyInputStreamProxy(is));
 			reader.parse(is2);
 
+		}
+	}
+
+	static class MyErrorHandler implements BPErrorHandler {
+
+		public MyErrorHandler(BPEnvironment envi, XmppParserCallback callback) {
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public void error(Exception e) throws Exception {
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public void fatalError(Exception e) throws Exception {
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public void warning(Exception e) throws Exception {
+			// TODO Auto-generated constructor stub
 		}
 	}
 

@@ -1,7 +1,9 @@
 package test.ananas.lib.axk;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import ananas.lib.axk.DefaultXmppAccount;
 import ananas.lib.axk.DefaultXmppAddress;
@@ -27,6 +29,13 @@ public class Main implements XmppEventListener {
 	private void run() {
 
 		System.out.println(this + ".begin");
+
+		Properties prop = new Properties();
+		try {
+			prop.load(this.getClass().getResourceAsStream("account.properties"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		List<XmppAccount> accountList = new ArrayList<XmppAccount>();
 		{
@@ -73,7 +82,20 @@ public class Main implements XmppEventListener {
 			account.port = account.useSSL ? 5223 : 5222;
 			accountList.add(account);
 		}
-		XmppAccount account = accountList.get(2);
+		{
+			// 4: other , normal
+
+			DefaultXmppAccount account = new DefaultXmppAccount();
+			account.address = new DefaultXmppAddress(prop.getProperty("jid"));
+			account.password = prop.getProperty("password");
+			account.host = prop.getProperty("host");
+			account.resource = prop.getProperty("resource");
+			account.port = Integer.parseInt(prop.getProperty("port"));
+			account.useSSL = (account.port == 5223);
+			accountList.add(account);
+		}
+		XmppAccount account = accountList.get(Integer.parseInt(prop
+				.getProperty("select")));
 
 		XmppEnvironment envi = XmppUtil.getDefaultEnvironment();
 		XmppClientFactory factory = envi.getClientFactory();
