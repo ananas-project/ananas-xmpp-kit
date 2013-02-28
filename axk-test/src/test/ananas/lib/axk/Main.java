@@ -30,22 +30,50 @@ public class Main implements XmppEventListener {
 
 		List<XmppAccount> accountList = new ArrayList<XmppAccount>();
 		{
+			// 0: axktest@jabber.org ,normal
 			DefaultXmppAccount account = new DefaultXmppAccount();
-			account.address = new DefaultXmppAddress("axktest@jabber.org/hw001");
+			account.address = new DefaultXmppAddress("axktest@jabber.org");
 			account.password = "12345678";
 			account.host = "jabber.org";
 			account.resource = this.getClass().getName();
+			account.useSSL = false;
+			account.port = account.useSSL ? 5223 : 5222;
 			accountList.add(account);
 		}
 		{
+			// 1: axktest@jabber.org ,useSSL
+			DefaultXmppAccount account = new DefaultXmppAccount();
+			account.address = new DefaultXmppAddress("axktest@jabber.org");
+			account.password = "12345678";
+			account.host = "jabber.org";
+			account.resource = this.getClass().getName();
+			account.useSSL = true;
+			account.port = account.useSSL ? 5223 : 5222;
+			accountList.add(account);
+		}
+		{
+			// 2: xk19850217@gmail.com ,normal
 			DefaultXmppAccount account = new DefaultXmppAccount();
 			account.address = new DefaultXmppAddress("xk19850217@gmail.com");
 			account.password = "xk12345678";
 			account.host = "talk.google.com";
 			account.resource = this.getClass().getName();
+			account.useSSL = false;
+			account.port = account.useSSL ? 5223 : 5222;
 			accountList.add(account);
 		}
-		XmppAccount account = accountList.get(1);
+		{
+			// 3: xk19850217@gmail.com ,useSSL
+			DefaultXmppAccount account = new DefaultXmppAccount();
+			account.address = new DefaultXmppAddress("xk19850217@gmail.com");
+			account.password = "xk12345678";
+			account.host = "talk.google.com";
+			account.resource = this.getClass().getName();
+			account.useSSL = true;
+			account.port = account.useSSL ? 5223 : 5222;
+			accountList.add(account);
+		}
+		XmppAccount account = accountList.get(2);
 
 		XmppEnvironment envi = XmppUtil.getDefaultEnvironment();
 		XmppClientFactory factory = envi.getClientFactory();

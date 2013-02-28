@@ -3,11 +3,7 @@ package ananas.lib.impl.axk.client.conn;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
 import java.net.Socket;
-
-import javax.net.SocketFactory;
-import javax.net.ssl.SSLSocketFactory;
 
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppAddress;
@@ -20,24 +16,75 @@ import ananas.lib.impl.axk.client.parser.XmppParserFactory;
 
 public class XmppConnection implements Runnable {
 
-	private final XmppConnection mParent;
-	private final XmppAccount mAccount;
-	private final XmppEnvironment mEnvi;
-	private final XmppConnectionListener mListener;
-	private Socket mSocket;
-	private InputStream mIS;
-	private OutputStream mOS;
-	private String mLastError;
+	private Exception mLastError;
 	private IXmppConnectionController mCurCtrl;
+	private boolean mIsFirstTime = true;
+	private SocketKit mSocketKit;
+	private final CreateContext mCreateContext;
 
-	public XmppConnection(XmppAccount account, XmppEnvironment envi,
-			XmppConnectionListener listener) {
-		this.mParent = null;
-		this.mAccount = account;
-		this.mEnvi = envi;
-		this.mListener = listener;
+	public static interface CreateContext {
 
-		this.mCurCtrl = new TheInitConnCtrl(this);
+		XmppAccount getAccount();
+
+		XmppEnvironment getEnvironment();
+
+		XmppConnectionListener getListener();
+
+		SocketKitFactory getSocketKitFactory();
+
+		XmppConnection getParent();
+	}
+
+	public static class DefaultCreateContext implements CreateContext {
+
+		public XmppConnection mParent;
+		public SocketKitFactory mSocketKitFactory;
+		public XmppConnectionListener mListener;
+		public XmppEnvironment mEnvironment;
+		public XmppAccount mAccount;
+
+		public DefaultCreateContext() {
+		}
+
+		public DefaultCreateContext(XmppConnection conn) {
+			this.mAccount = conn.mCreateContext.getAccount();
+			this.mEnvironment = conn.mCreateContext.getEnvironment();
+			this.mListener = conn.mCreateContext.getListener();
+			this.mParent = conn.mCreateContext.getParent();
+			this.mSocketKitFactory = conn.mCreateContext.getSocketKitFactory();
+		}
+
+		@Override
+		public XmppAccount getAccount() {
+			return this.mAccount;
+		}
+
+		@Override
+		public XmppEnvironment getEnvironment() {
+			return this.mEnvironment;
+		}
+
+		@Override
+		public XmppConnectionListener getListener() {
+			return this.mListener;
+		}
+
+		@Override
+		public SocketKitFactory getSocketKitFactory() {
+			return this.mSocketKitFactory;
+		}
+
+		@Override
+		public XmppConnection getParent() {
+			return this.mParent;
+		}
+
+	}
+
+	public XmppConnection(CreateContext cc) {
+		this.mCreateContext = cc;
+		// //
+		this.mCurCtrl = new TheMainConnCtrl(this);
 	}
 
 	public void printToken() {
@@ -48,80 +95,45 @@ public class XmppConnection implements Runnable {
 		System.out.println("thread = " + thd + "@" + thd.hashCode());
 	}
 
-	public XmppConnection(XmppAccount account, XmppEnvironment envi,
-			XmppConnectionListener listener, Socket socket) {
-		this.mParent = null;
-		this.mAccount = account;
-		this.mEnvi = envi;
-		this.mListener = listener;
-		this.mSocket = socket;
-
-		this.mCurCtrl = new TheInitConnCtrl(this);
-	}
-
-	public XmppConnection(XmppConnection parent) {
-
-		this.mParent = parent;
-		this.mAccount = parent.mAccount;
-		this.mEnvi = parent.mEnvi;
-		this.mListener = parent.mListener;
-		this.mSocket = this.createSSLSocket(parent.mSocket);
-
-		this.mCurCtrl = new TheInitConnCtrl(this);
-		this.checkParents();
-	}
-
-	private void checkParents() {
-		XmppConnection p = this.mParent;
-		int i = 0;
-		for (; p != null; i++) {
-			p = p.mParent;
-		}
-		if (i > 4) {
-			throw new RuntimeException("too more TLS layers.");
-		}
-	}
-
-	private Socket createSSLSocket(Socket sock) {
-		try {
-			SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory
-					.getDefault();
-			String host = this.mAccount.getHost();
-			int port = this.mAccount.getPort();
-			sock = factory.createSocket(sock, host, port, true);
-			return sock;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	@Override
 	public void run() {
 
 		try {
 
+			if (this.mIsFirstTime) {
+				this.mIsFirstTime = false;
+			} else {
+				throw new RuntimeException("one time only!");
+			}
 			this.printToken();
 
-			Socket socket = this.getSocket();
-			InputStream is = socket.getInputStream();
-			OutputStream os = socket.getOutputStream();
-			this.mIS = is;
-			this.mOS = os;
+			final SocketKit kit = this.createSocket();
+			this.mSocketKit = kit;
+			final InputStream is = kit.getInput();
+			final OutputStream os = kit.getOutput();
 
-			String stream_stream = this.getStreamOpenTag(this.mAccount);
+			String stream_stream = this.getStreamOpenTag(this.mCreateContext
+					.getAccount());
 			os.write(stream_stream.getBytes());
+			os.flush();
 
 			XmppParserFactory xpf = new DefaultXmppParserFactory();
-			XmppParser parse = xpf.newParser(this.mEnvi);
+			XmppParser parse = xpf.newParser(this.mCreateContext
+					.getEnvironment());
 			XmppParserCallback callback = new MyXmppParserCallback();
 			parse.parse(is, callback);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.mLastError = e.getMessage();
+			this.mLastError = e;
 		}
 
-		this.doClose();
+		try {
+			this.doClose();
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.mLastError = e;
+		}
 
 	}
 
@@ -141,59 +153,52 @@ public class XmppConnection implements Runnable {
 
 	private void doClose() {
 
-		InputStream is = this.mIS;
-		OutputStream os = this.mOS;
-		Socket sock = this.mSocket;
-
-		this.mIS = null;
-		this.mOS = null;
-		// this.mSocket = null;
+		SocketKit kit = this.mSocketKit;
+		this.mSocketKit = null;
 
 		try {
+			InputStream is = kit.getInput();
 			if (is != null)
 				is.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.mLastError = e.getMessage();
+			this.mLastError = e;
 		}
 		try {
+			OutputStream os = kit.getOutput();
 			if (os != null)
 				os.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.mLastError = e.getMessage();
+			this.mLastError = e;
 		}
 		try {
+			Socket sock = kit.getSocket();
 			if (sock != null)
 				sock.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.mLastError = e.getMessage();
+			this.mLastError = e;
 		}
 
 	}
 
-	private Socket getSocket() throws IOException {
-		Socket socket = this.mSocket;
-		if (socket != null) {
-			return socket;
+
+	private SocketKit createSocket() throws IOException {
+		try {
+
+			SocketKit kit = this.mCreateContext.getSocketKitFactory()
+					.createSocketKit();
+			kit.getOutput().write(" ".getBytes());
+			kit.getOutput().flush();
+			return kit;
+		} catch (IOException e) {
+			throw e;
 		}
-		SocketFactory sf;
-		if (this.mAccount.isUseSSL()) {
-			sf = SSLSocketFactory.getDefault();
-		} else {
-			sf = SocketFactory.getDefault();
-		}
-		String host = this.mAccount.getHost();
-		int port = this.mAccount.getPort();
-		socket = sf.createSocket();
-		socket.connect(new InetSocketAddress(host, port));
-		this.mSocket = socket;
-		return socket;
 	}
 
 	public XmppConnectionListener getListener() {
-		return this.mListener;
+		return this.mCreateContext.getListener();
 	}
 
 	class MyXmppParserCallback implements XmppParserCallback {
@@ -211,19 +216,25 @@ public class XmppConnection implements Runnable {
 		this.mCurCtrl = ctrl;
 	}
 
-	public String getLastError() {
+	public Exception getLastError() {
 		return this.mLastError;
 	}
 
 	public void syncSendBytes(byte[] buffer, int offset, int length) {
 		try {
-			this.mOS.write(buffer, offset, length);
+			OutputStream out = this.mSocketKit.getOutput();
+			out.write(buffer, offset, length);
+			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public XmppAccount getAccount() {
-		return this.mAccount;
+		return this.mCreateContext.getAccount();
+	}
+
+	public SocketKit getSocketKit() {
+		return this.mSocketKit;
 	}
 }

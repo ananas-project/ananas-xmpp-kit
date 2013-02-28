@@ -12,10 +12,10 @@ public class Xmpp_stream {
 		this.mListener = listener;
 	}
 
+	final Xmpp_stream_logger logger = new Xmpp_stream_logger();
+
 	public void dispatchRxObject(Object object) {
-
-		System.out.println(this + ".Rx  :  " + object);
-
+		this.logger.log(this, object);
 		this.mListener.onReceive(this, object);
 	}
 

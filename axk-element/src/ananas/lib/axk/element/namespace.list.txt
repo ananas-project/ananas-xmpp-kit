@@ -4,4 +4,6 @@ ananas.lib.axk.element.stream.TheNamespaceInfo
 ananas.lib.axk.element.xmpp_sasl.TheNamespaceInfo
 ananas.lib.axk.element.xmpp_tls.TheNamespaceInfo
 ananas.lib.axk.element.rosterver.TheNamespaceInfo
-
+ananas.lib.axk.element.xmpp_bind.TheNamespaceInfo
+ananas.lib.axk.element.xmpp_session.TheNamespaceInfo
+ananas.lib.axk.element.jabber_client.TheNamespaceInfo

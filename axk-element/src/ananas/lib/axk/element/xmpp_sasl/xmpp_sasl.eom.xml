@@ -30,11 +30,16 @@
 		<class name="mechanism" isElement="true">
 			<!-- <attribute name="id" /> -->
 			<!-- <element name="test" type="java.lang.Object" /> -->
+			<text />
 		</class>
 
 		<class name="failure" isElement="true">
 			<!-- <attribute name="id" /> -->
 			<element type="#sasl-error" />
+		</class>
+
+
+		<class name="success" isElement="true">
 		</class>
 
 

@@ -1,10 +1,23 @@
 package ananas.lib.impl.axk.client.target;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+
+import javax.net.SocketFactory;
+import javax.net.ssl.SSLSocketFactory;
+
+import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppStatus;
 import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.IExCore;
+import ananas.lib.impl.axk.client.conn.DefaultSocketKit;
+import ananas.lib.impl.axk.client.conn.SocketKit;
+import ananas.lib.impl.axk.client.conn.SocketKitFactory;
 import ananas.lib.impl.axk.client.conn.XmppConnection;
+import ananas.lib.impl.axk.client.conn.XmppConnection.DefaultCreateContext;
 import ananas.lib.impl.axk.client.conn.XmppConnectionListener;
 
 public class Tar_connection extends Tar_abstractClient implements IExConnection {
@@ -128,17 +141,21 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 					if (this.mIsClose) {
 						break;
 					}
-
 					this.setCurPhase(XmppStatus.logining);
-
 					IExCore api = Tar_connection.this.getCoreApi();
-					XmppConnection conn = new XmppConnection(api.getAccount(),
-							api.getEnvironment(), this);
+					DefaultCreateContext cc = new XmppConnection.DefaultCreateContext();
+					cc.mAccount = api.getAccount();
+					cc.mEnvironment = api.getEnvironment();
+					cc.mListener = this;
+					cc.mSocketKitFactory = new MySocketKitFactory(
+							api.getAccount());
+					XmppConnection conn = new XmppConnection(cc);
 					conn.run();
-					String lastError = conn.getLastError();
+					Exception lastError = conn.getLastError();
 					if (lastError == null) {
 						this.mRetryDelayMS = 0;
 					} else {
+						System.err.println("exit cause of : " + lastError);
 						int val = this.mRetryDelayMS * 2;
 						if (val < 1000)
 							val = 1000;
@@ -203,6 +220,31 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 
 	public IExCore getCoreApi() {
 		return (IExCore) this.getExAPI(IExCore.class);
+	}
+
+	static class MySocketKitFactory implements SocketKitFactory {
+
+		private final XmppAccount mAccount;
+
+		public MySocketKitFactory(XmppAccount account) {
+			this.mAccount = account;
+		}
+
+		@Override
+		public SocketKit createSocketKit() throws IOException {
+			final SocketFactory sf;
+			if (this.mAccount.isUseSSL()) {
+				sf = SSLSocketFactory.getDefault();
+			} else {
+				sf = SocketFactory.getDefault();
+			}
+			Socket sock = sf.createSocket();
+			String host = this.mAccount.getHost();
+			int port = this.mAccount.getPort();
+			SocketAddress addr = new InetSocketAddress(host, port);
+			sock.connect(addr, 30 * 1000);
+			return new DefaultSocketKit(sock);
+		}
 	}
 
 }

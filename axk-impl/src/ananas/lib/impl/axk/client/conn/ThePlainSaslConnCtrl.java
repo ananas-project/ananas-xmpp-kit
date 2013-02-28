@@ -4,13 +4,12 @@ import java.io.UnsupportedEncodingException;
 
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppAddress;
-import ananas.lib.axk.element.stream.Xmpp_features;
 import ananas.lib.axk.element.stream.Xmpp_stream;
-import ananas.lib.axk.element.xmpp_sasl.Xmpp_mechanisms;
+import ananas.lib.axk.element.xmpp_sasl.Xmpp_success;
 import ananas.lib.axk.util.Base64;
 import ananas.lib.axk.util.XmppStanzaBuilder;
 
-public class ThePlainSaslConnCtrl extends XmppConnectionController {
+public class ThePlainSaslConnCtrl extends AbstractSaslConnCtrl {
 
 	public static class Factory implements IXmppConnectionControllerFactory {
 
@@ -27,21 +26,14 @@ public class ThePlainSaslConnCtrl extends XmppConnectionController {
 
 	@Override
 	public void onReceive(Xmpp_stream stream, Object object) {
-
-		if (object instanceof Xmpp_features) {
-			Xmpp_features features = (Xmpp_features) object;
-
-			Xmpp_mechanisms mechanisms = (Xmpp_mechanisms) features
-					.findItemByClass(Xmpp_mechanisms.class);
-			if (mechanisms != null) {
-				this.doAuth();
-				return;
-			}
-
+		if (object.equals(this.getStartToken())) {
+			this.doAuth();
+		} else if (object instanceof Xmpp_success) {
+			// this.doBind(stream);
+			this.doStartNewStreamOnCurrentSocket();
+		} else {
+			super.onReceive(stream, object);
 		}
-
-		System.err.println(this + "::unprocessed rx object : " + object);
-
 	}
 
 	public void doAuth() {

@@ -1,8 +1,5 @@
 package ananas.lib.axk.util;
 
-import ananas.lib.axk.XmppAccount;
-import ananas.lib.axk.XmppClient;
-
 public interface XmppStanzaBuilder {
 
 	class Factory {
@@ -15,13 +12,6 @@ public interface XmppStanzaBuilder {
 			return getFactory().newInstance();
 		}
 
-		public static XmppStanzaBuilder newInstance(XmppClient client) {
-			return getFactory().newInstance(client);
-		}
-
-		public static XmppStanzaBuilder newInstance(XmppAccount account) {
-			return getFactory().newInstance(account);
-		}
 	}
 
 	void append(String string);

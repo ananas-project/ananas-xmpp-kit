@@ -2,20 +2,13 @@ package ananas.lib.axk.util;
 
 import java.io.UnsupportedEncodingException;
 
-import ananas.lib.axk.XmppAccount;
-import ananas.lib.axk.XmppClient;
-import ananas.lib.axk.api.IExCore;
-
 final class XmppStanzaBuilderImpl implements XmppStanzaBuilder {
 
 	private static XmppStanzaBuilderFactory s_factory;
-	private XmppAccount mAccount;
-	private XmppClient mClient;
+
 	private final StringBuilder mSB = new StringBuilder(32);
 
-	public XmppStanzaBuilderImpl(XmppAccount account, XmppClient client) {
-		this.mAccount = account;
-		this.mClient = client;
+	public XmppStanzaBuilderImpl() {
 	}
 
 	public static XmppStanzaBuilderFactory getFactory() {
@@ -30,23 +23,9 @@ final class XmppStanzaBuilderImpl implements XmppStanzaBuilder {
 
 		@Override
 		public XmppStanzaBuilder newInstance() {
-			XmppAccount account = null;
-			XmppClient client = null;
-			return new XmppStanzaBuilderImpl(account, client);
+			return new XmppStanzaBuilderImpl();
 		}
 
-		@Override
-		public XmppStanzaBuilder newInstance(XmppClient client) {
-			IExCore core = (IExCore) client.getExAPI(IExCore.class);
-			XmppAccount account = core.getAccount();
-			return new XmppStanzaBuilderImpl(account, client);
-		}
-
-		@Override
-		public XmppStanzaBuilder newInstance(XmppAccount account) {
-			XmppClient client = null;
-			return new XmppStanzaBuilderImpl(account, client);
-		}
 	}
 
 	@Override

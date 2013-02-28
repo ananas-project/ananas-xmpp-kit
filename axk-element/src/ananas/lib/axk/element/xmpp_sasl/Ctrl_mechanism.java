@@ -14,11 +14,9 @@ public class Ctrl_mechanism extends AbstractElement {
 		return (Xmpp_mechanism) this.getTarget(true);
 	}
 
-	@Override
-	public boolean onAppendText(BPText text) {
+	public boolean append_text(BPText text) {
 		String name = text.getData();
 		this.getTarget_mechanism().setName(name);
 		return true;
 	}
-
 }

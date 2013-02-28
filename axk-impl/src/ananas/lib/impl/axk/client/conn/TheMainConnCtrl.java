@@ -1,22 +1,28 @@
 package ananas.lib.impl.axk.client.conn;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.SSLSocketFactory;
+
 import ananas.lib.axk.element.stream.Xmpp_features;
 import ananas.lib.axk.element.stream.Xmpp_stream;
+import ananas.lib.axk.element.xmpp_bind.Xmpp_bind;
 import ananas.lib.axk.element.xmpp_sasl.Xmpp_mechanism;
 import ananas.lib.axk.element.xmpp_sasl.Xmpp_mechanisms;
 import ananas.lib.axk.element.xmpp_tls.Xmpp_proceed;
 import ananas.lib.axk.element.xmpp_tls.Xmpp_starttls;
 import ananas.lib.axk.util.XmppStanzaBuilder;
+import ananas.lib.impl.axk.client.conn.XmppConnection.DefaultCreateContext;
 
-public class TheInitConnCtrl extends XmppConnectionController {
+public class TheMainConnCtrl extends XmppConnectionController {
 
 	private Map<String, IXmppConnectionControllerFactory> mCtrlFactoryMap;
 
-	public TheInitConnCtrl(XmppConnection conn) {
+	public TheMainConnCtrl(XmppConnection conn) {
 		super(conn);
 	}
 
@@ -37,27 +43,46 @@ public class TheInitConnCtrl extends XmppConnectionController {
 	public void onReceive(Xmpp_stream stream, Object object) {
 
 		if (object instanceof Xmpp_features) {
+
 			Xmpp_features features = (Xmpp_features) object;
 
 			Xmpp_starttls startTLS = (Xmpp_starttls) features
 					.findItemByClass(Xmpp_starttls.class);
-			if (startTLS != null) {
-				this.doStartTLS();
-				return;
-			}
-
 			Xmpp_mechanisms mechanisms = (Xmpp_mechanisms) features
 					.findItemByClass(Xmpp_mechanisms.class);
-			if (mechanisms != null) {
+			Xmpp_bind bind = (Xmpp_bind) features
+					.findItemByClass(Xmpp_bind.class);
+
+			if (startTLS != null) {
+				this.doStartTLS();
+			} else if (bind != null) {
+				this.doBind();
+			} else if (mechanisms != null) {
 				this.doSelectMechanisms(mechanisms, stream, object);
-				return;
+			} else {
+				super.onReceive(stream, object);
 			}
 
 		} else if (object instanceof Xmpp_proceed) {
 			this.doCreateTLSConnect();
-			return;
+
+		} else {
+			super.onReceive(stream, object);
 		}
-		System.err.println(this + "::unprocessed rx object : " + object);
+	}
+
+	private void doBind() {
+		XmppStanzaBuilder xsb = XmppStanzaBuilder.Factory.newInstance();
+		xsb.append("<iq");
+		xsb.appendAttribute("type", "set");
+		xsb.appendAttribute("id", "bind_1");
+		xsb.append(">");
+		xsb.append("<bind");
+		xsb.appendAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-bind");
+		xsb.append("/>");
+		xsb.append("</iq>");
+		byte[] ba = xsb.toByteArray();
+		this.getConnection().syncSendBytes(ba, 0, ba.length);
 	}
 
 	private void doSelectMechanisms(Xmpp_mechanisms mechanisms,
@@ -79,12 +104,36 @@ public class TheInitConnCtrl extends XmppConnectionController {
 		XmppConnection conn = this.getConnection();
 		IXmppConnectionController ctrl = fact.newController(conn);
 		conn.setController(ctrl);
-		ctrl.onReceive(stream, object);
+		ctrl.onReceive(stream, this.getStartToken());
 	}
 
 	private void doCreateTLSConnect() {
-		XmppConnection conn = new XmppConnection(this.getConnection());
+		DefaultCreateContext cc = new XmppConnection.DefaultCreateContext(
+				this.getConnection());
+		SocketKit sk = this.getConnection().getSocketKit();
+		cc.mSocketKitFactory = new MyTLSSocketKitFactory(sk);
+		XmppConnection conn = new XmppConnection(cc);
 		conn.run();
+	}
+
+	static class MyTLSSocketKitFactory implements SocketKitFactory {
+
+		private final SocketKit mParentSK;
+
+		public MyTLSSocketKitFactory(SocketKit parent_sk) {
+			this.mParentSK = parent_sk;
+		}
+
+		@Override
+		public SocketKit createSocketKit() throws IOException {
+			Socket psock = this.mParentSK.getSocket();
+			String host = psock.getInetAddress().getHostAddress();
+			int port = psock.getPort();
+			SSLSocketFactory sf = (SSLSocketFactory) SSLSocketFactory
+					.getDefault();
+			Socket sock = sf.createSocket(psock, host, port, true);
+			return new DefaultSocketKit(sock);
+		}
 	}
 
 	private void doStartTLS() {
