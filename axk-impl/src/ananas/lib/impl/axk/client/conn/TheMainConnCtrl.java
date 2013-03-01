@@ -6,11 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import ananas.lib.axk.XmppAccount;
+import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.element.jabber_client.Xmpp_iq;
 import ananas.lib.axk.element.stream.Xmpp_features;
 import ananas.lib.axk.element.stream.Xmpp_stream;
@@ -162,10 +165,14 @@ public class TheMainConnCtrl extends XmppConnectionController {
 	}
 
 	private void doCreateTLSConnect() {
+
+		XmppEnvironment envi = this.getConnection().getEnvironment();
+		XmppAccount account = this.getConnection().getAccount();
+
 		DefaultCreateContext cc = new XmppConnection.DefaultCreateContext(
 				this.getConnection());
 		SocketKit sk = this.getConnection().getSocketKit();
-		cc.mSocketKitFactory = new MyTLSSocketKitFactory(sk);
+		cc.mSocketKitFactory = new MyTLSSocketKitFactory(envi, account, sk);
 		XmppConnection conn = new XmppConnection(cc);
 		conn.run();
 	}
@@ -173,8 +180,14 @@ public class TheMainConnCtrl extends XmppConnectionController {
 	static class MyTLSSocketKitFactory implements SocketKitFactory {
 
 		private final SocketKit mParentSK;
+		private final XmppAccount mAccount;
+		private final XmppEnvironment mEnvi;
 
-		public MyTLSSocketKitFactory(SocketKit parent_sk) {
+		public MyTLSSocketKitFactory(XmppEnvironment envi, XmppAccount account,
+				SocketKit parent_sk) {
+
+			this.mEnvi = envi;
+			this.mAccount = account;
 			this.mParentSK = parent_sk;
 		}
 
@@ -183,10 +196,19 @@ public class TheMainConnCtrl extends XmppConnectionController {
 			Socket psock = this.mParentSK.getSocket();
 			String host = psock.getInetAddress().getHostAddress();
 			int port = psock.getPort();
-			SSLSocketFactory sf = (SSLSocketFactory) SSLSocketFactory
-					.getDefault();
+
+			// SSLSocketFactory sf = SSLContext.getDefault().
+
+			SSLContext sslContext = this.getSSLContext();
+			SSLSocketFactory sf = sslContext.getSocketFactory();
+
 			Socket sock = sf.createSocket(psock, host, port, true);
 			return new DefaultSocketKit(sock);
+		}
+
+		private SSLContext getSSLContext() {
+			boolean ignoreError = this.mAccount.isIgnoreSSLError();
+			return this.mEnvi.getSecurityManager().getSSLContext(ignoreError);
 		}
 	}
 

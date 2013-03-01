@@ -6,13 +6,14 @@ import java.net.Socket;
 import java.net.SocketAddress;
 
 import javax.net.SocketFactory;
-import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.SSLContext;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClientExAPI;
+import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.XmppStatus;
 import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.IExCore;
@@ -157,7 +158,7 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 					cc.mEnvironment = api.getEnvironment();
 					cc.mListener = this;
 					cc.mSocketKitFactory = new MySocketKitFactory(
-							api.getAccount());
+							api.getEnvironment(), api.getAccount());
 					XmppConnection conn = new XmppConnection(cc);
 					conn.run();
 					Exception lastError = conn.getLastError();
@@ -238,16 +239,21 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 	static class MySocketKitFactory implements SocketKitFactory {
 
 		private final XmppAccount mAccount;
+		private final XmppEnvironment mEnvi;
 
-		public MySocketKitFactory(XmppAccount account) {
+		public MySocketKitFactory(XmppEnvironment envi, XmppAccount account) {
 			this.mAccount = account;
+			this.mEnvi = envi;
 		}
 
 		@Override
 		public SocketKit createSocketKit() throws IOException {
 			final SocketFactory sf;
 			if (this.mAccount.isUseSSL()) {
-				sf = SSLSocketFactory.getDefault();
+				boolean ignoreError = this.mAccount.isIgnoreSSLError();
+				SSLContext context = this.mEnvi.getSecurityManager()
+						.getSSLContext(ignoreError);
+				sf = context.getSocketFactory();
 			} else {
 				sf = SocketFactory.getDefault();
 			}

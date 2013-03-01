@@ -131,7 +131,8 @@ public class XmppConnection implements Runnable {
 			parse.parse(is2, callback);
 
 		} catch (Exception e) {
-			logger.error(e);
+			// logger.error(e);
+			logger.throwing(e);
 			this.mLastError = e;
 		}
 
@@ -267,10 +268,9 @@ public class XmppConnection implements Runnable {
 	}
 
 	private SocketKit createSocket() throws IOException {
+		SocketKit kit = null;
 		try {
-
-			SocketKit kit = this.mCreateContext.getSocketKitFactory()
-					.createSocketKit();
+			kit = this.mCreateContext.getSocketKitFactory().createSocketKit();
 			kit.getOutput().write(" ".getBytes());
 			kit.getOutput().flush();
 			return kit;
@@ -318,5 +318,9 @@ public class XmppConnection implements Runnable {
 
 	public SocketKit getSocketKit() {
 		return this.mSocketKit;
+	}
+
+	public XmppEnvironment getEnvironment() {
+		return this.mCreateContext.getEnvironment();
 	}
 }

@@ -2,9 +2,11 @@ package ananas.lib.impl.axk;
 
 import ananas.lib.axk.XmppClientFactory;
 import ananas.lib.axk.XmppEnvironment;
+import ananas.lib.axk.security.AXKSecurityManager;
 import ananas.lib.blueprint.core.Blueprint;
 import ananas.lib.blueprint.core.lang.BPEnvironment;
 import ananas.lib.impl.axk.client.TheXmppClientNsInfo;
+import ananas.lib.impl.axk.security.AXKSecurityManagerImpl;
 
 public class TheXmppEnvironment implements XmppEnvironment {
 
@@ -22,6 +24,7 @@ public class TheXmppEnvironment implements XmppEnvironment {
 	private BPEnvironment mBpEnvi;
 	private boolean mIsAlive = true;
 	private XmppClientFactory mClientFactory;
+	private AXKSecurityManager mSecurityMan;
 
 	private TheXmppEnvironment() {
 		this.mBpEnvi = Blueprint.getInstance().defaultEnvironment();
@@ -58,6 +61,15 @@ public class TheXmppEnvironment implements XmppEnvironment {
 	@Override
 	public boolean isAlive() {
 		return this.mIsAlive;
+	}
+
+	@Override
+	public AXKSecurityManager getSecurityManager() {
+		AXKSecurityManager man = this.mSecurityMan;
+		if (man == null) {
+			this.mSecurityMan = man = new AXKSecurityManagerImpl();
+		}
+		return man;
 	}
 
 }
