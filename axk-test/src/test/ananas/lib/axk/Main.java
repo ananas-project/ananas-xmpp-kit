@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ananas.lib.axk.DefaultXmppAccount;
 import ananas.lib.axk.DefaultXmppAddress;
 import ananas.lib.axk.XmppAccount;
@@ -19,6 +22,9 @@ import ananas.lib.axk.command.TraceCommand;
 
 public class Main implements XmppEventListener {
 
+	final static Logger logger = LogManager.getLogger(new Object() {
+	});
+
 	public static void main(String[] arg) {
 
 		Main main = new Main();
@@ -28,7 +34,7 @@ public class Main implements XmppEventListener {
 
 	private void run() {
 
-		System.out.println(this + ".begin");
+		logger.trace(this + ".begin");
 
 		Properties prop = new Properties();
 		try {
@@ -110,17 +116,17 @@ public class Main implements XmppEventListener {
 
 		// show account
 		XmppAccount acc = shell.getAccount();
-		System.out.println("account = " + acc);
+		logger.info("account = " + acc);
 
 		// connect
 		shell.connect();
 
 		// end
-		System.out.println(this + ".end");
+		logger.trace(this + ".end");
 	}
 
 	@Override
 	public void onEvent(XmppEvent event) {
-		System.out.println("onEvent:" + event);
+		logger.trace("onEvent:" + event);
 	}
 }

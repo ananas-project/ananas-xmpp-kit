@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.XmppEnvironment;
@@ -15,6 +18,9 @@ import ananas.lib.impl.axk.client.parser.XmppParserCallback;
 import ananas.lib.impl.axk.client.parser.XmppParserFactory;
 
 public class XmppConnection implements Runnable {
+
+	final static Logger logger = LogManager.getLogger(new Object() {
+	});
 
 	private Exception mLastError;
 	private IXmppConnectionController mCurCtrl;
@@ -88,11 +94,10 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void printToken() {
-		System.out
-				.println("=========================================================================");
-		System.out.println("new " + this);
+		logger.trace("=========================================================================");
+		logger.trace("new " + this);
 		Thread thd = Thread.currentThread();
-		System.out.println("thread = " + thd + "@" + thd.hashCode());
+		logger.trace("thread = " + thd + "@" + thd.hashCode());
 	}
 
 	@Override
@@ -124,14 +129,14 @@ public class XmppConnection implements Runnable {
 			parse.parse(is, callback);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 			this.mLastError = e;
 		}
 
 		try {
 			this.doClose();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 			this.mLastError = e;
 		}
 
@@ -161,7 +166,7 @@ public class XmppConnection implements Runnable {
 			if (is != null)
 				is.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 			this.mLastError = e;
 		}
 		try {
@@ -169,7 +174,7 @@ public class XmppConnection implements Runnable {
 			if (os != null)
 				os.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 			this.mLastError = e;
 		}
 		try {
@@ -177,12 +182,11 @@ public class XmppConnection implements Runnable {
 			if (sock != null)
 				sock.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 			this.mLastError = e;
 		}
 
 	}
-
 
 	private SocketKit createSocket() throws IOException {
 		try {
@@ -226,7 +230,7 @@ public class XmppConnection implements Runnable {
 			out.write(buffer, offset, length);
 			out.flush();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 

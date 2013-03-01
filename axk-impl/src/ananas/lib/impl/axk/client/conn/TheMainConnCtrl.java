@@ -8,6 +8,9 @@ import java.util.Map;
 
 import javax.net.ssl.SSLSocketFactory;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ananas.lib.axk.element.jabber_client.Xmpp_iq;
 import ananas.lib.axk.element.stream.Xmpp_features;
 import ananas.lib.axk.element.stream.Xmpp_stream;
@@ -20,6 +23,9 @@ import ananas.lib.axk.util.XmppStanzaBuilder;
 import ananas.lib.impl.axk.client.conn.XmppConnection.DefaultCreateContext;
 
 public class TheMainConnCtrl extends XmppConnectionController {
+
+	final static Logger logger = LogManager.getLogger(new Object() {
+	});
 
 	private Map<String, IXmppConnectionControllerFactory> mCtrlFactoryMap;
 
@@ -80,7 +86,8 @@ public class TheMainConnCtrl extends XmppConnectionController {
 	}
 
 	private void onBindOK(Xmpp_bind bind) {
-		System.out.println(this + ".onBindOK : " + bind.getJID());
+
+		logger.info(this + ".onBindOK : " + bind.getJID());
 
 		XmppConnection conn = this.getConnection();
 		TheOnlineConnCtrl ctrl = new TheOnlineConnCtrl(conn);
@@ -143,7 +150,7 @@ public class TheMainConnCtrl extends XmppConnectionController {
 
 			name = item.getName();
 			fact = this.getCtrlFactoryMap().get(name);
-			System.out.println("          find " + item + " result : " + fact);
+			logger.info("          find " + item + " result : " + fact);
 			if (fact != null) {
 				break;
 			}

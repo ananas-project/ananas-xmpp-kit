@@ -11,5 +11,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-reflect"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/axk-element"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-xml-parser"/>
+	<classpathentry kind="lib" path="/ananas-base/lib/log4j-1.2-api-2.0-beta4.jar"/>
+	<classpathentry kind="lib" path="/ananas-base/lib/log4j-core-2.0-beta4.jar"/>
+	<classpathentry kind="lib" path="/ananas-base/lib/log4j-api-2.0-beta4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

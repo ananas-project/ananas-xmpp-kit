@@ -8,6 +8,9 @@ import java.net.SocketAddress;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppStatus;
@@ -21,6 +24,9 @@ import ananas.lib.impl.axk.client.conn.XmppConnection.DefaultCreateContext;
 import ananas.lib.impl.axk.client.conn.XmppConnectionListener;
 
 public class Tar_connection extends Tar_abstractClient implements IExConnection {
+
+	final static Logger logger = LogManager.getLogger(new Object() {
+	});
 
 	private XmppStatus mStatus = XmppStatus.init;
 	private Worker mCurWorker;
@@ -106,11 +112,14 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 		this._setCurWorker(null);
 	}
 
+	static int s_CountWorker = 1;
+
 	class Worker implements Runnable, XmppConnectionListener {
 
 		private boolean mIsClose = false;
 		private XmppStatus mPhase;
 		private int mRetryDelayMS;
+		private Thread mThread;
 
 		public Worker() {
 		}
@@ -199,8 +208,12 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 		}
 
 		public void open() {
-			Thread thd = new Thread(this);
-			thd.setName("axk-worker-thread");
+			Thread thd = this.mThread;
+			if (thd == null) {
+				thd = new Thread(this);
+				thd.setName("axk-worker-" + (s_CountWorker++));
+				this.mThread = thd;
+			}
 			thd.start();
 		}
 
@@ -213,7 +226,7 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 	public void onPhaseChanged(Worker worker, XmppStatus oldStatus,
 			XmppStatus newStatus) {
 
-		System.out.println(worker + ".onPhaseChanged: " + oldStatus + " -> "
+		logger.info(worker + ".onPhaseChanged: " + oldStatus + " -> "
 				+ newStatus);
 
 	}
