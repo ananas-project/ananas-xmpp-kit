@@ -1,5 +1,6 @@
 package ananas.lib.impl.axk.client.conn;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -126,7 +127,8 @@ public class XmppConnection implements Runnable {
 			XmppParser parse = xpf.newParser(this.mCreateContext
 					.getEnvironment());
 			XmppParserCallback callback = new MyXmppParserCallback();
-			parse.parse(is, callback);
+			MyInputStreamProxy is2 = new MyInputStreamProxy(is);
+			parse.parse(is2, callback);
 
 		} catch (Exception e) {
 			logger.error(e);
@@ -140,6 +142,82 @@ public class XmppConnection implements Runnable {
 			this.mLastError = e;
 		}
 
+	}
+
+	static class MyXmppStreamLogger extends OutputStream {
+
+		private final ByteArrayOutputStream mBAOS = new ByteArrayOutputStream();
+
+		@Override
+		public void write(int b) throws IOException {
+			if (b == '<') {
+				this.newLine();
+			}
+			this.mBAOS.write(b);
+			if (b == '>') {
+				this.newLine();
+			}
+		}
+
+		private void newLine() throws IOException {
+
+			byte[] ba = this.mBAOS.toByteArray();
+			this.mBAOS.reset();
+			if (ba.length > 0) {
+				if (ba[0] != '<') {
+					System.out.print("    ");
+				}
+				System.out.write(ba);
+				System.out.println();
+			}
+		}
+	}
+
+	static class MyInputStreamProxy extends InputStream {
+
+		private final InputStream mIS;
+
+		private final OutputStream mOS = new MyXmppStreamLogger();
+
+		public MyInputStreamProxy(InputStream is) {
+			this.mIS = is;
+		}
+
+		@Override
+		public int read() throws IOException {
+
+			for (;;) {
+				long m1 = System.currentTimeMillis();
+				int av = this.mIS.available();
+				final int b;
+				av = 1;
+				if (av > 0)
+					b = this.mIS.read();
+				else
+					b = -1;
+				long m2 = System.currentTimeMillis();
+				if ((m2 - m1) > 1000) {
+					System.out.println("blocked!");
+				}
+				if (av > 0) {
+					this.mOS.write(b);
+					return b;
+				} else {
+					this.doSleep();
+				}
+			}
+		}
+
+		private void doSleep() {
+
+			System.out.println(this.mIS + "");
+			// System.out.println("sleep!");
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private String getStreamOpenTag(XmppAccount account) {

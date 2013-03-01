@@ -3,6 +3,8 @@ package ananas.lib.impl.axk.client.parser;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -23,6 +25,9 @@ import ananas.lib.blueprint.core.util.BPErrorHandler;
 import ananas.lib.blueprint.core.util.BPXMLReaderFactory;
 
 public class DefaultXmppParserFactory implements XmppParserFactory {
+
+	final static Logger logger = LogManager.getLogger(new Object() {
+	});
 
 	@Override
 	public XmppParser newParser(XmppEnvironment envi) {
@@ -117,8 +122,8 @@ public class DefaultXmppParserFactory implements XmppParserFactory {
 
 			BPElement element = this._createElement(doc, uri, localName);
 			if (element == null) {
-				System.err.println("Warning:no element with name of " + uri
-						+ "#" + localName);
+				logger.warn("Warning:no element with name of " + uri + "#"
+						+ localName);
 			} else if (element instanceof Ctrl_stream) {
 				Ctrl_stream ctrlStream = (Ctrl_stream) element;
 				Xmpp_stream xmppStream = ctrlStream.getTarget_stream();
@@ -150,18 +155,7 @@ public class DefaultXmppParserFactory implements XmppParserFactory {
 
 		@Override
 		public int read() throws IOException {
-
-			long m1 = System.currentTimeMillis();
 			int b = this.mIS.read();
-			long m2 = System.currentTimeMillis();
-
-			// System.out.write(b);
-			// System.out.flush();
-
-			if ((m2 - m1) > 1000) {
-				System.out.println("blocked!");
-			}
-
 			return b;
 		}
 
