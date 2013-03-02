@@ -3,8 +3,7 @@ package ananas.lib.impl.axk.client.parser;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -23,11 +22,12 @@ import ananas.lib.blueprint.core.util.BPBuilder;
 import ananas.lib.blueprint.core.util.BPElementProvider;
 import ananas.lib.blueprint.core.util.BPErrorHandler;
 import ananas.lib.blueprint.core.util.BPXMLReaderFactory;
+import ananas.lib.util.log4j.AbstractLoggerFactory;
 
 public class DefaultXmppParserFactory implements XmppParserFactory {
 
-	final static Logger logger = LogManager.getLogger(new Object() {
-	});
+	private final static Logger logger = (new AbstractLoggerFactory() {
+	}).getLogger();
 
 	@Override
 	public XmppParser newParser(XmppEnvironment envi) {

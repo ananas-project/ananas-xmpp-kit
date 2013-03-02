@@ -8,14 +8,14 @@ import java.net.SocketAddress;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLContext;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.XmppStatus;
 import ananas.lib.axk.api.IExConnection;
+import ananas.lib.axk.api.IExConnectionSync;
 import ananas.lib.axk.api.IExCore;
 import ananas.lib.impl.axk.client.conn.DefaultSocketKit;
 import ananas.lib.impl.axk.client.conn.SocketKit;
@@ -23,11 +23,13 @@ import ananas.lib.impl.axk.client.conn.SocketKitFactory;
 import ananas.lib.impl.axk.client.conn.XmppConnection;
 import ananas.lib.impl.axk.client.conn.XmppConnection.DefaultCreateContext;
 import ananas.lib.impl.axk.client.conn.XmppConnectionListener;
+import ananas.lib.util.log4j.AbstractLoggerFactory;
 
-public class Tar_connection extends Tar_abstractClient implements IExConnection {
+public class Tar_connection extends Tar_abstractClient implements
+		IExConnection, IExConnectionSync {
 
-	final static Logger logger = LogManager.getLogger(new Object() {
-	});
+	private final static Logger logger = (new AbstractLoggerFactory() {
+	}).getLogger();
 
 	private XmppStatus mStatus = XmppStatus.init;
 	private Worker mCurWorker;
@@ -37,8 +39,12 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 
 	@Override
 	public XmppClientExAPI getExAPI(Class<? extends XmppClientExAPI> apiClass) {
+
 		if (apiClass.equals(IExConnection.class)) {
 			IExConnection api = this;
+			return api;
+		} else if (apiClass.equals(IExConnectionSync.class)) {
+			IExConnectionSync api = this;
 			return api;
 		} else {
 			return super.getExAPI(apiClass);
@@ -121,6 +127,7 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 		private XmppStatus mPhase;
 		private int mRetryDelayMS;
 		private Thread mThread;
+		private XmppConnection mCurConn;
 
 		public Worker() {
 		}
@@ -160,8 +167,10 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 					cc.mSocketKitFactory = new MySocketKitFactory(
 							api.getEnvironment(), api.getAccount());
 					XmppConnection conn = new XmppConnection(cc);
+					this.mCurConn = conn;
 					conn.run();
 					Exception lastError = conn.getLastError();
+					this.mCurConn = null;
 					if (lastError == null) {
 						this.mRetryDelayMS = 0;
 					} else {
@@ -266,4 +275,30 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 		}
 	}
 
+	@Override
+	public boolean syncSendStanza(String stanza) {
+		try {
+			Worker wkr = this.mCurWorker;
+			// byte[] ba = stanza.getBytes("UTF-8");
+			byte[] ba = stanza.getBytes();
+			wkr.mCurConn.syncSendBytes(ba, 0, ba.length);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean syncClose() {
+		try {
+			Worker wkr = this.mCurWorker;
+			this._setCurWorker(null);
+			wkr.close();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

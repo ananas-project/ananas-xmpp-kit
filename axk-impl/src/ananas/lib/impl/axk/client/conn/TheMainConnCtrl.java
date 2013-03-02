@@ -9,8 +9,7 @@ import java.util.Map;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppEnvironment;
@@ -24,11 +23,12 @@ import ananas.lib.axk.element.xmpp_tls.Xmpp_proceed;
 import ananas.lib.axk.element.xmpp_tls.Xmpp_starttls;
 import ananas.lib.axk.util.XmppStanzaBuilder;
 import ananas.lib.impl.axk.client.conn.XmppConnection.DefaultCreateContext;
+import ananas.lib.util.log4j.AbstractLoggerFactory;
 
 public class TheMainConnCtrl extends XmppConnectionController {
 
-	final static Logger logger = LogManager.getLogger(new Object() {
-	});
+	private final static Logger logger = (new AbstractLoggerFactory() {
+	}).getLogger();
 
 	private Map<String, IXmppConnectionControllerFactory> mCtrlFactoryMap;
 
@@ -109,6 +109,8 @@ public class TheMainConnCtrl extends XmppConnectionController {
 		String show = "";
 		// String status = "my name is 007";
 
+		// ////////////////////////
+
 		XmppStanzaBuilder xsb = XmppStanzaBuilder.Factory.newInstance();
 		xsb.append("<presence>");
 		xsb.append("<show>");
@@ -121,6 +123,17 @@ public class TheMainConnCtrl extends XmppConnectionController {
 
 		byte[] ba = xsb.toByteArray();
 		this.getConnection().syncSendBytes(ba, 0, ba.length);
+
+		// /////////////////////////
+
+		xsb.reset();
+		xsb.append("<iq type='get' id='roster_1' >");
+		xsb.append("<query xmlns='jabber:iq:roster'/>");
+		xsb.append("</iq>");
+
+		ba = xsb.toByteArray();
+		this.getConnection().syncSendBytes(ba, 0, ba.length);
+
 	}
 
 	private void doBind() {

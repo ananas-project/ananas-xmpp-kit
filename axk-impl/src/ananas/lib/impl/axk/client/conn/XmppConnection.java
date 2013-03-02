@@ -6,8 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppAddress;
@@ -17,11 +16,12 @@ import ananas.lib.impl.axk.client.parser.DefaultXmppParserFactory;
 import ananas.lib.impl.axk.client.parser.XmppParser;
 import ananas.lib.impl.axk.client.parser.XmppParserCallback;
 import ananas.lib.impl.axk.client.parser.XmppParserFactory;
+import ananas.lib.util.log4j.AbstractLoggerFactory;
 
 public class XmppConnection implements Runnable {
 
-	final static Logger logger = LogManager.getLogger(new Object() {
-	});
+	private final static Logger logger = (new AbstractLoggerFactory() {
+	}).getLogger();
 
 	private Exception mLastError;
 	private IXmppConnectionController mCurCtrl;
@@ -131,8 +131,10 @@ public class XmppConnection implements Runnable {
 			parse.parse(is2, callback);
 
 		} catch (Exception e) {
-			// logger.error(e);
-			logger.throwing(e);
+
+			e.printStackTrace();
+
+			logger.error(e);
 			this.mLastError = e;
 		}
 
@@ -161,15 +163,16 @@ public class XmppConnection implements Runnable {
 		}
 
 		private void newLine() throws IOException {
-
 			byte[] ba = this.mBAOS.toByteArray();
 			this.mBAOS.reset();
 			if (ba.length > 0) {
-				if (ba[0] != '<') {
-					System.out.print("    ");
+				String prefix = "xmpp_rx : ";
+				String line = new String(ba, "UTF-8");
+				if (ba[0] == '<') {
+					logger.info(prefix + line);
+				} else {
+					logger.info(prefix + "    " + line);
 				}
-				System.out.write(ba);
-				System.out.println();
 			}
 		}
 	}

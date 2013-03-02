@@ -1,14 +1,14 @@
 package ananas.lib.axk.command;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import ananas.lib.axk.XmppClient;
+import ananas.lib.util.log4j.AbstractLoggerFactory;
 
 public class TraceCommand extends ControlCommand {
 
-	final static Logger logger = LogManager.getLogger(new Object() {
-	});
+	private final static Logger logger = (new AbstractLoggerFactory() {
+	}).getLogger();
 
 	@Override
 	public void onSendByClient(XmppClient client) {

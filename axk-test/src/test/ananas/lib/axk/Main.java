@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import ananas.lib.axk.DefaultXmppAccount;
 import ananas.lib.axk.DefaultXmppAddress;
@@ -19,20 +19,25 @@ import ananas.lib.axk.XmppEventListener;
 import ananas.lib.axk.XmppUtil;
 import ananas.lib.axk.api.IExShell;
 import ananas.lib.axk.command.TraceCommand;
+import ananas.lib.util.log4j.AbstractLoggerFactory;
 
-public class Main implements XmppEventListener {
+public class Main implements XmppEventListener, Runnable {
 
-	final static Logger logger = LogManager.getLogger(new Object() {
-	});
+	private final static Logger logger = (new AbstractLoggerFactory() {
+	}).getLogger();
+
+	// ..getLogger(new Object() { });
 
 	public static void main(String[] arg) {
 
-		Main main = new Main();
-		main.run();
+		logger.setLevel(Level.INFO);
 
+		Main main = new Main();
+		javax.swing.SwingUtilities.invokeLater(main);
 	}
 
-	private void run() {
+	@Override
+	public void run() {
 
 		logger.trace(this + ".begin");
 
@@ -120,6 +125,9 @@ public class Main implements XmppEventListener {
 
 		// connect
 		shell.connect();
+
+		MainFrame mf = new MainFrame(client);
+		mf.setVisible(true);
 
 		// end
 		logger.trace(this + ".end");

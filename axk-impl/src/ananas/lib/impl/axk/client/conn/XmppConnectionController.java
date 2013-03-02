@@ -1,9 +1,15 @@
 package ananas.lib.impl.axk.client.conn;
 
+import org.apache.log4j.Logger;
+
 import ananas.lib.axk.element.stream.Xmpp_stream;
+import ananas.lib.util.log4j.AbstractLoggerFactory;
 
 public abstract class XmppConnectionController implements
 		IXmppConnectionController {
+
+	private final static Logger logger = (new AbstractLoggerFactory() {
+	}).getLogger();
 
 	private final XmppConnection mConn;
 
@@ -22,7 +28,7 @@ public abstract class XmppConnectionController implements
 	}
 
 	public void onReceive(Xmpp_stream stream, Object object) {
-		System.err.println(this + "::unprocessed rx object : " + object);
+		logger.warn("unprocessed rx object : " + object);
 	}
 
 }
