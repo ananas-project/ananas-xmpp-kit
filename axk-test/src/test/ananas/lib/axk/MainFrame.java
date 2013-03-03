@@ -7,12 +7,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import ananas.lib.axk.XmppClient;
-import ananas.lib.axk.api.IExConnectionSync;
+import ananas.lib.axk.api.IExConnection;
 
 public class MainFrame extends JFrame {
 
@@ -53,26 +56,10 @@ public class MainFrame extends JFrame {
 			this.mTextSend.setText("");
 			this.mTextPrev.setText(text);
 
-			IExConnectionSync api = (IExConnectionSync) this.mClient
-					.getExAPI(IExConnectionSync.class);
-			(new Thread(new MySender(api, text))).start();
+			IExConnection api = (IExConnection) this.mClient
+					.getExAPI(IExConnection.class);
+			api.sendStanza(text);
 
-		}
-	}
-
-	class MySender implements Runnable {
-
-		private IExConnectionSync mAPI;
-		private String mText;
-
-		public MySender(IExConnectionSync api, String text) {
-			this.mAPI = api;
-			this.mText = text;
-		}
-
-		@Override
-		public void run() {
-			this.mAPI.syncSendStanza(this.mText);
 		}
 	}
 
@@ -83,8 +70,14 @@ public class MainFrame extends JFrame {
 
 	private void initLayout() {
 
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(100, 100, 640, 480);
 		this.setTitle(this.getClass().getName());
+
+		JMenu menu = this.createMenu();
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.add(menu);
+		this.setJMenuBar(menuBar);
 
 		JTextArea txtPrev = new JTextArea();
 		JTextArea txtSend = new JTextArea();
@@ -111,6 +104,54 @@ public class MainFrame extends JFrame {
 		plRight.add(btnSend);
 
 		txtPrev.setEditable(false);
+	}
+
+	private JMenu createMenu() {
+
+		JMenu menu = new JMenu("control");
+
+		menu.add(this.createMenuItem("reset", new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				MainFrame.this.getConnApi().reset();
+			}
+		}));
+		menu.add(this.createMenuItem("connect", new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				MainFrame.this.getConnApi().connect();
+			}
+
+		}));
+		menu.add(this.createMenuItem("disconnect", new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				MainFrame.this.getConnApi().disconnect();
+			}
+		}));
+		menu.add(this.createMenuItem("close", new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				MainFrame.this.getConnApi().close();
+			}
+		}));
+
+		return menu;
+	}
+
+	protected IExConnection getConnApi() {
+		return (IExConnection) this.mClient.getExAPI(IExConnection.class);
+	}
+
+	private JMenuItem createMenuItem(String string,
+			ActionListener actionListener) {
+		JMenuItem item = new JMenuItem(string);
+		item.addActionListener(actionListener);
+		return item;
 	}
 
 }

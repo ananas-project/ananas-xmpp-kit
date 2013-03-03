@@ -32,4 +32,8 @@ public interface IExConnection extends XmppClientExAPI {
 	 * */
 	void disconnect();
 
+	boolean sendStanza(byte[] buffer, int offset, int length);
+
+	boolean sendStanza(String string);
+
 }

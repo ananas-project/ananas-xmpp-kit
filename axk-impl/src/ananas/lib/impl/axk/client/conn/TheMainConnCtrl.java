@@ -122,7 +122,7 @@ public class TheMainConnCtrl extends XmppConnectionController {
 		xsb.append("</presence>");
 
 		byte[] ba = xsb.toByteArray();
-		this.getConnection().syncSendBytes(ba, 0, ba.length);
+		this.getConnection().asyncSendBytes(ba, 0, ba.length);
 
 		// /////////////////////////
 
@@ -132,7 +132,7 @@ public class TheMainConnCtrl extends XmppConnectionController {
 		xsb.append("</iq>");
 
 		ba = xsb.toByteArray();
-		this.getConnection().syncSendBytes(ba, 0, ba.length);
+		this.getConnection().asyncSendBytes(ba, 0, ba.length);
 
 	}
 
@@ -152,7 +152,7 @@ public class TheMainConnCtrl extends XmppConnectionController {
 		xsb.append("</bind>");
 		xsb.append("</iq>");
 		byte[] ba = xsb.toByteArray();
-		this.getConnection().syncSendBytes(ba, 0, ba.length);
+		this.getConnection().asyncSendBytes(ba, 0, ba.length);
 	}
 
 	private void doSelectMechanisms(Xmpp_mechanisms mechanisms,
@@ -231,7 +231,7 @@ public class TheMainConnCtrl extends XmppConnectionController {
 		xsb.appendAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-tls");
 		xsb.append("/>");
 		byte[] ba = xsb.toByteArray();
-		this.getConnection().syncSendBytes(ba, 0, ba.length);
+		this.getConnection().asyncSendBytes(ba, 0, ba.length);
 	}
 
 }

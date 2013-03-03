@@ -49,6 +49,7 @@ public class Tar_shell extends Tar_abstractClient implements IExShell {
 		if (api == null) {
 			api = (IExConnection) super.getExAPI(IExConnection.class);
 			this.mTargetConn = api;
+			logger.trace("find api : " + api);
 		}
 		return api;
 	}
@@ -120,6 +121,18 @@ public class Tar_shell extends Tar_abstractClient implements IExShell {
 	public void reset() {
 		IExConnection conn = this._getTargetConnection();
 		conn.reset();
+	}
+
+	@Override
+	public boolean sendStanza(byte[] buffer, int offset, int length) {
+		IExConnection conn = this._getTargetConnection();
+		return conn.sendStanza(buffer, offset, length);
+	}
+
+	@Override
+	public boolean sendStanza(String string) {
+		IExConnection conn = this._getTargetConnection();
+		return conn.sendStanza(string);
 	}
 
 }

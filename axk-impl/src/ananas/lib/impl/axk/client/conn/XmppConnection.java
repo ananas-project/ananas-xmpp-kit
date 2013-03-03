@@ -104,6 +104,7 @@ public class XmppConnection implements Runnable {
 	@Override
 	public void run() {
 
+		this.mCreateContext.getListener().onSetCurrentConnection(this);
 		try {
 
 			if (this.mIsFirstTime) {
@@ -137,6 +138,7 @@ public class XmppConnection implements Runnable {
 			logger.error(e);
 			this.mLastError = e;
 		}
+		this.mCreateContext.getListener().onSetCurrentConnection(null);
 
 		try {
 			this.doClose();
@@ -305,13 +307,49 @@ public class XmppConnection implements Runnable {
 		return this.mLastError;
 	}
 
-	public void syncSendBytes(byte[] buffer, int offset, int length) {
-		try {
+	public void syncSendBytes(byte[] buffer, int offset, int length)
+			throws IOException {
+
+		logger.info(this + ".send " + length + " bytes");
+
+		synchronized (this) {
 			OutputStream out = this.mSocketKit.getOutput();
 			out.write(buffer, offset, length);
 			out.flush();
-		} catch (IOException e) {
-			logger.error(e);
+		}
+	}
+
+	public void asyncSendBytes(byte[] buffer, int offset, int length) {
+
+		byte ba[] = new byte[length];
+		for (int i = length - 1; i >= 0; i--) {
+			ba[i] = buffer[offset + i];
+		}
+
+		MyTaskToSendStanza task = new MyTaskToSendStanza(this, ba);
+		XmppConnectionListener listener = this.mCreateContext.getListener();
+		listener.invokeWithTxThread(this, task,
+				XmppConnectionListener.priority_normal);
+
+	}
+
+	static class MyTaskToSendStanza implements Runnable {
+
+		private byte[] mData;
+		private XmppConnection mConn;
+
+		public MyTaskToSendStanza(XmppConnection conn, byte[] ba) {
+			this.mConn = conn;
+			this.mData = ba;
+		}
+
+		@Override
+		public void run() {
+			try {
+				this.mConn.syncSendBytes(mData, 0, mData.length);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -325,5 +363,9 @@ public class XmppConnection implements Runnable {
 
 	public XmppEnvironment getEnvironment() {
 		return this.mCreateContext.getEnvironment();
+	}
+
+	public void syncClose() throws IOException {
+		this.mSocketKit.getSocket().close();
 	}
 }

@@ -72,7 +72,7 @@ public class ThePlainSaslConnCtrl extends AbstractSaslConnCtrl {
 		xsb.append("</auth>");
 
 		byte[] ba = xsb.toByteArray();
-		this.getConnection().syncSendBytes(ba, 0, ba.length);
+		this.getConnection().asyncSendBytes(ba, 0, ba.length);
 
 	}
 
