@@ -1,6 +1,8 @@
 package test.ananas.lib.axk;
 
 import java.io.IOException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -19,6 +21,8 @@ import ananas.lib.axk.XmppEventListener;
 import ananas.lib.axk.XmppUtil;
 import ananas.lib.axk.api.IExShell;
 import ananas.lib.axk.command.TraceCommand;
+import ananas.lib.axk.security.AXKSecurityListener;
+import ananas.lib.axk.security.AXKSecurityManager;
 import ananas.lib.util.log4j.AbstractLoggerFactory;
 
 public class Main implements XmppEventListener, Runnable {
@@ -109,6 +113,7 @@ public class Main implements XmppEventListener, Runnable {
 				.getProperty("select")));
 
 		XmppEnvironment envi = XmppUtil.getDefaultEnvironment();
+		this.initSecurity(envi.getSecurityManager());
 		XmppClientFactory factory = envi.getClientFactory();
 		XmppClient client = factory.newClient(account);
 		client.setXmppEventListener(this);
@@ -131,6 +136,17 @@ public class Main implements XmppEventListener, Runnable {
 
 		// end
 		logger.trace(this + ".end");
+	}
+
+	private void initSecurity(AXKSecurityManager sm) {
+		sm.setSecurityListener(new AXKSecurityListener() {
+
+			@Override
+			public void onX509CertificateException(CertificateException e,
+					X509Certificate[] certificates, String authType)
+					throws CertificateException {
+			}
+		});
 	}
 
 	@Override
