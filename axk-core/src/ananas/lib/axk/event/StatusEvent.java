@@ -1,7 +1,11 @@
 package ananas.lib.axk.event;
 
-import ananas.lib.axk.AbstractXmppEvent;
+import ananas.lib.axk.XmppStatus;
 
-public class StatusEvent extends AbstractXmppEvent {
+public interface StatusEvent extends XmppClientEvent {
+
+	XmppStatus getOldStatus();
+
+	XmppStatus getNewStatus();
 
 }

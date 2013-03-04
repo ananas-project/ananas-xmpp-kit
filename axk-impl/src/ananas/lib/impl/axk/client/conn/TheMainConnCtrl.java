@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppEnvironment;
+import ananas.lib.axk.XmppStatus;
 import ananas.lib.axk.element.jabber_client.Xmpp_iq;
 import ananas.lib.axk.element.stream.Xmpp_features;
 import ananas.lib.axk.element.stream.Xmpp_stream;
@@ -92,6 +93,8 @@ public class TheMainConnCtrl extends XmppConnectionController {
 
 		logger.info(this + ".onBindOK : " + bind.getJID());
 
+		this.getConnection().setCurrentPhase(XmppStatus.online);
+
 		XmppConnection conn = this.getConnection();
 		TheOnlineConnCtrl ctrl = new TheOnlineConnCtrl(conn);
 		conn.setController(ctrl);
@@ -137,6 +140,9 @@ public class TheMainConnCtrl extends XmppConnectionController {
 	}
 
 	private void doBind() {
+
+		this.getConnection().setCurrentPhase(XmppStatus.bind);
+
 		String res = this.getConnection().getAccount().getResource();
 		XmppStanzaBuilder xsb = XmppStanzaBuilder.Factory.newInstance();
 		xsb.append("<iq");
@@ -158,6 +164,8 @@ public class TheMainConnCtrl extends XmppConnectionController {
 	private void doSelectMechanisms(Xmpp_mechanisms mechanisms,
 			Xmpp_stream stream, Object object) {
 
+		this.getConnection().setCurrentPhase(XmppStatus.startsasl);
+
 		List<Xmpp_mechanism> list = mechanisms.listItems();
 		String name = null;
 		IXmppConnectionControllerFactory fact = null;
@@ -178,6 +186,8 @@ public class TheMainConnCtrl extends XmppConnectionController {
 	}
 
 	private void doCreateTLSConnect() {
+
+		this.getConnection().setCurrentPhase(XmppStatus.starttls);
 
 		XmppEnvironment envi = this.getConnection().getEnvironment();
 		XmppAccount account = this.getConnection().getAccount();
@@ -226,6 +236,9 @@ public class TheMainConnCtrl extends XmppConnectionController {
 	}
 
 	private void doStartTLS() {
+
+		this.getConnection().setCurrentPhase(XmppStatus.starttls);
+
 		XmppStanzaBuilder xsb = XmppStanzaBuilder.Factory.newInstance();
 		xsb.append("<starttls");
 		xsb.appendAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-tls");

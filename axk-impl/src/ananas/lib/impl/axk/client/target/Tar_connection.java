@@ -12,11 +12,13 @@ import javax.net.ssl.SSLContext;
 import org.apache.log4j.Logger;
 
 import ananas.lib.axk.XmppAccount;
+import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.XmppStatus;
 import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.IExCore;
+import ananas.lib.axk.event.DefaultPhaseEvent;
 import ananas.lib.impl.axk.client.conn.DefaultSocketKit;
 import ananas.lib.impl.axk.client.conn.ITxThreadPriority;
 import ananas.lib.impl.axk.client.conn.SocketKit;
@@ -319,7 +321,7 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 	class Worker implements Runnable, XmppConnectionListener {
 
 		private boolean mIsClose = false;
-		private XmppStatus mPhase;
+		private XmppStatus mPhase = XmppStatus.init;
 		private int mRetryDelayMS;
 		private Thread mThread;
 		private XmppConnection mCurConn0;// the root
@@ -377,9 +379,10 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 				}
 
 				if (this.mIsClose) {
+					this._setCurrentPhase(XmppStatus.closed);
 					break;
 				}
-				this.setCurPhase(XmppStatus.logining);
+				// this.setCurPhase(XmppStatus.logining);
 				IExCore api = Tar_connection.this.getCoreApi();
 				DefaultCreateContext cc = new XmppConnection.DefaultCreateContext();
 				cc.mAccount = api.getAccount();
@@ -387,10 +390,19 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 				cc.mListener = this;
 				cc.mSocketKitFactory = new MySocketKitFactory(
 						api.getEnvironment(), api.getAccount());
-				XmppConnection conn = new XmppConnection(cc);
+				final XmppConnection conn = new XmppConnection(cc);
 				this.mCurConn0 = conn;
 				this.mTxRunLoop.removeAllTask();
-				conn.run();
+				this.onSetCurrentPhase(XmppStatus.connect);
+				{
+					conn.run();
+				}
+				if (this.mIsClose) {
+					this._setCurrentPhase(XmppStatus.closed);
+					break;
+				} else {
+					this._setCurrentPhase(XmppStatus.dropped);
+				}
 				Exception lastError = conn.getLastError();
 				this.mCurConn0 = null;
 				if (lastError == null) {
@@ -416,17 +428,12 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 			}
 		}
 
-		private void setCurPhase(XmppStatus status) {
-			XmppStatus old;
-			synchronized (this) {
-				old = this.mPhase;
-				this.mPhase = status;
-			}
-			if (old != status) {
-				Tar_connection.this.onPhaseChanged(this, old, status);
-			}
-		}
-
+		/*
+		 * private void setCurPhase(XmppStatus status) { XmppStatus old;
+		 * synchronized (this) { old = this.mPhase; this.mPhase = status; } if
+		 * (old != status) { Tar_connection.this.onPhaseChanged(this, old,
+		 * status); } }
+		 */
 		public XmppStatus getPhase() {
 			return this.mPhase;
 		}
@@ -438,7 +445,9 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 				@Override
 				public void run() {
 					try {
-						Worker.this.mCurConn0.syncClose();
+						XmppConnection conn = Worker.this.mCurConn0;
+						if (conn != null)
+							conn.syncClose();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -473,14 +482,43 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 				Worker.this.mTxRunLoop.addTask(runn, priority);
 			}
 		}
+
+		@Override
+		public void onSetCurrentPhase(XmppStatus phase) {
+			this._setCurrentPhase(phase);
+		}
+
+		private void _setCurrentPhase(XmppStatus phase) {
+			if (phase == null) {
+				return;
+			}
+			XmppStatus old;
+			synchronized (this) {
+				old = this.mPhase;
+				this.mPhase = phase;
+			}
+			if (!old.equals(phase)) {
+				Tar_connection.this.onPhaseChanged(this, old, phase);
+			}
+		}
 	}
 
-	public void onPhaseChanged(Worker worker, XmppStatus oldStatus,
-			XmppStatus newStatus) {
+	public void onPhaseChanged(Worker worker, XmppStatus oldPhase,
+			XmppStatus newPhase) {
 
-		logger.info(worker + ".onPhaseChanged: " + oldStatus + " -> "
-				+ newStatus);
+		logger.info(worker + ".onPhaseChanged: " + oldPhase + " -> " + newPhase);
 
+		final Worker curWkr = this.mCurWorker;
+		if (curWkr != null) {
+			if (!curWkr.equals(worker)) {
+				return;
+			}
+		}
+
+		XmppClient client = this;
+		DefaultPhaseEvent event = new DefaultPhaseEvent(client, oldPhase,
+				newPhase);
+		this.onEvent(event);
 	}
 
 	public IExCore getCoreApi() {

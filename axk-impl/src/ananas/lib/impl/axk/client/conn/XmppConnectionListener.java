@@ -1,5 +1,7 @@
 package ananas.lib.impl.axk.client.conn;
 
+import ananas.lib.axk.XmppStatus;
+
 public interface XmppConnectionListener extends ITxThreadPriority {
 
 	/**
@@ -11,5 +13,7 @@ public interface XmppConnectionListener extends ITxThreadPriority {
 	void invokeWithTxThread(XmppConnection conn, Runnable runn, int priority);
 
 	void onSetCurrentConnection(XmppConnection conn);
+
+	void onSetCurrentPhase(XmppStatus phase);
 
 }

@@ -6,9 +6,13 @@ public interface XmppStatus {
 	XmppStatus online = F._new("online");
 	XmppStatus offline = F._new("offline");
 	XmppStatus dropped = F._new("dropped");
-	XmppStatus logining = F._new("logining");
+	// XmppStatus logining = F._new("logining");
+	XmppStatus connect = F._new("connect");
 	XmppStatus error = F._new("error");
 	XmppStatus closed = F._new("closed");
+	XmppStatus starttls = F._new("tls");
+	XmppStatus startsasl = F._new("sasl");
+	XmppStatus bind = F._new("bind");
 
 	class F {
 

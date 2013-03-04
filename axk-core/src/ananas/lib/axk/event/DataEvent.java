@@ -1,7 +1,7 @@
 package ananas.lib.axk.event;
 
-import ananas.lib.axk.AbstractXmppEvent;
+public interface DataEvent extends XmppClientEvent {
 
-public class DataEvent extends AbstractXmppEvent {
+	Object getData();
 
 }

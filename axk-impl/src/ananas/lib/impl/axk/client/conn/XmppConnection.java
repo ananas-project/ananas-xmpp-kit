@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.XmppEnvironment;
+import ananas.lib.axk.XmppStatus;
 import ananas.lib.axk.element.stream.Xmpp_stream;
 import ananas.lib.impl.axk.client.parser.DefaultXmppParserFactory;
 import ananas.lib.impl.axk.client.parser.XmppParser;
@@ -133,7 +134,7 @@ public class XmppConnection implements Runnable {
 
 		} catch (Exception e) {
 
-			e.printStackTrace();
+			// e.printStackTrace();
 
 			logger.error(e);
 			this.mLastError = e;
@@ -367,5 +368,9 @@ public class XmppConnection implements Runnable {
 
 	public void syncClose() throws IOException {
 		this.mSocketKit.getSocket().close();
+	}
+
+	public void setCurrentPhase(XmppStatus phase) {
+		this.mCreateContext.getListener().onSetCurrentPhase(phase);
 	}
 }
