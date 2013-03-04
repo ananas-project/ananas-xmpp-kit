@@ -35,6 +35,8 @@
 		<class name="connection" isElement="true" extends="#abstractClient">
 		</class>
 
+		<class name="core" isElement="true" extends="#abstractClient">
+		</class>
 
 	</namespace>
 

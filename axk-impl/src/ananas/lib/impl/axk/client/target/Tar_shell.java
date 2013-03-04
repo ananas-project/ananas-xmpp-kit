@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import ananas.lib.axk.DefaultXmppAccount;
 import ananas.lib.axk.XmppAccount;
+import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.XmppStatus;
@@ -133,6 +134,12 @@ public class Tar_shell extends Tar_abstractClient implements IExShell {
 	public boolean sendStanza(String string) {
 		IExConnection conn = this._getTargetConnection();
 		return conn.sendStanza(string);
+	}
+
+	@Override
+	public XmppClient getOuter() {
+		IExCore core = this._getTargetCore();
+		return core.getOuter();
 	}
 
 }
