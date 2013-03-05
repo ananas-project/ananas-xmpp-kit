@@ -38,6 +38,15 @@
 		<class name="core" isElement="true" extends="#abstractClient">
 		</class>
 
+
+		<class name="message-manager" isElement="true" extends="#abstractClient">
+		</class>
+		<class name="roster-manager" isElement="true" extends="#abstractClient">
+		</class>
+		<class name="presence-manager" isElement="true" extends="#abstractClient">
+		</class>
+
+
 	</namespace>
 
 </eom>

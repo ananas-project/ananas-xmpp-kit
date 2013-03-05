@@ -77,16 +77,19 @@ public class DefaultXmppParserFactory implements XmppParserFactory {
 		@Override
 		public void error(Exception e) throws Exception {
 			// TODO Auto-generated constructor stub
+			logger.error(e);
 		}
 
 		@Override
 		public void fatalError(Exception e) throws Exception {
 			// TODO Auto-generated constructor stub
+			logger.error(e);
 		}
 
 		@Override
 		public void warning(Exception e) throws Exception {
 			// TODO Auto-generated constructor stub
+			logger.error(e);
 		}
 	}
 

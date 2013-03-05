@@ -4,4 +4,12 @@ import ananas.lib.blueprint.core.dom.AbstractElement;
 
 public class Ctrl_query extends AbstractElement {
 
+	public boolean append_child_item(Ctrl_item item) {
+		this.target_query().addItem(item.target_item());
+		return true;
+	}
+
+	public Xmpp_query target_query() {
+		return (Xmpp_query) this.getTarget(true);
+	}
 }

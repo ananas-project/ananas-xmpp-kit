@@ -17,6 +17,9 @@ public class TheOnlineConnCtrl extends XmppConnectionController {
 	@Override
 	public void onReceive(Xmpp_stream stream, Object object) {
 		logger.info("onReceive:" + object);
+		XmppConnection conn = this.getConnection();
+		XmppConnectionListener list = conn.getListener();
+		list.onReceive(conn, object);
 	}
 
 }

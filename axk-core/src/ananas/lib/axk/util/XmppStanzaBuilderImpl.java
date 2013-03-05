@@ -34,6 +34,11 @@ final class XmppStanzaBuilderImpl implements XmppStanzaBuilder {
 	}
 
 	@Override
+	public String toString() {
+		return this.mSB.toString();
+	}
+
+	@Override
 	public byte[] toByteArray() {
 		try {
 			return this.mSB.toString().getBytes("UTF-8");

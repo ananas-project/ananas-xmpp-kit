@@ -18,6 +18,7 @@ import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.XmppStatus;
 import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.IExCore;
+import ananas.lib.axk.event.DefaultDataEvent;
 import ananas.lib.axk.event.DefaultPhaseEvent;
 import ananas.lib.impl.axk.client.conn.DefaultSocketKit;
 import ananas.lib.impl.axk.client.conn.ITxThreadPriority;
@@ -467,7 +468,8 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 
 		@Override
 		public void onReceive(XmppConnection conn, Object object) {
-			System.out.println(this + ".onResceive:" + object);
+			// System.out.println(this + ".onResceive:" + object);
+			Tar_connection.this._onReceiveObject(this, conn, object);
 		}
 
 		@Override
@@ -515,10 +517,24 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 			}
 		}
 
-		XmppClient client = this;
+		XmppClient client = this._getEventClient();
 		DefaultPhaseEvent event = new DefaultPhaseEvent(client, oldPhase,
 				newPhase);
 		this.onEvent(event);
+	}
+
+	private XmppClient _getEventClient() {
+		return this;
+	}
+
+	public void _onReceiveObject(Worker worker, XmppConnection conn,
+			Object object) {
+
+		if (worker.equals(this.mCurWorker)) {
+			XmppClient client = this._getEventClient();
+			DefaultDataEvent event = new DefaultDataEvent(client, object);
+			this.onEvent(event);
+		}
 	}
 
 	public IExCore getCoreApi() {

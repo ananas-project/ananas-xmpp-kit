@@ -1,7 +1,13 @@
 <shell xmlns="xmlns:ananas:axk:xmpp-client">
 	<monitor>
-		<connection id="conn">
-			<core />
-		</connection>
+		<message-manager>
+			<roster-manager>
+				<presence-manager>
+					<connection id="conn">
+						<core />
+					</connection>
+				</presence-manager>
+			</roster-manager>
+		</message-manager>
 	</monitor>
 </shell>

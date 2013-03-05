@@ -19,13 +19,15 @@
 		<!-- components -->
 
 		<class name="item" isElement="true">
-			<!-- <attribute name="id" /> -->
+			<attribute name="jid" />
+			<attribute name="subscription" />
+			<attribute name="name" />
 			<!-- <element name="test" type="java.lang.Object" /> -->
 		</class>
 
 		<class name="query" isElement="true">
 			<!-- <attribute name="id" /> -->
-			<!-- <element name="test" type="java.lang.Object" /> -->
+			<element name="item" type="#item" />
 		</class>
 
 	</namespace>

@@ -127,15 +127,6 @@ public class TheMainConnCtrl extends XmppConnectionController {
 		byte[] ba = xsb.toByteArray();
 		this.getConnection().asyncSendBytes(ba, 0, ba.length);
 
-		// /////////////////////////
-
-		xsb.reset();
-		xsb.append("<iq type='get' id='roster_1' >");
-		xsb.append("<query xmlns='jabber:iq:roster'/>");
-		xsb.append("</iq>");
-
-		ba = xsb.toByteArray();
-		this.getConnection().asyncSendBytes(ba, 0, ba.length);
 
 	}
 

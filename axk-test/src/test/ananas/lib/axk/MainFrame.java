@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,6 +17,9 @@ import javax.swing.JTextArea;
 
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.api.IExConnection;
+import ananas.lib.axk.api.IExRosterManager;
+import ananas.lib.axk.element.iq_roster.Xmpp_item;
+import ananas.lib.axk.element.iq_roster.Xmpp_query;
 
 public class MainFrame extends JFrame {
 
@@ -74,9 +78,7 @@ public class MainFrame extends JFrame {
 		this.setBounds(100, 100, 640, 480);
 		this.setTitle(this.getClass().getName());
 
-		JMenu menu = this.createMenu();
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.add(menu);
+		JMenuBar menuBar = this.createMenuBar();
 		this.setJMenuBar(menuBar);
 
 		JTextArea txtPrev = new JTextArea();
@@ -106,10 +108,15 @@ public class MainFrame extends JFrame {
 		txtPrev.setEditable(false);
 	}
 
-	private JMenu createMenu() {
+	private JMenuBar createMenuBar() {
 
-		JMenu menu = new JMenu("control");
-
+		JMenuBar mb = new JMenuBar();
+		JMenu menu;
+		/**
+		 * menu("control")
+		 * */
+		menu = new JMenu("control");
+		mb.add(menu);
 		menu.add(this.createMenuItem("reset", new ActionListener() {
 
 			@Override
@@ -139,8 +146,37 @@ public class MainFrame extends JFrame {
 				MainFrame.this.getConnApi().close();
 			}
 		}));
+		/**
+		 * menu("roster")
+		 * */
+		menu = new JMenu("roster");
+		mb.add(menu);
+		menu.add(this.createMenuItem("pull roster", new ActionListener() {
 
-		return menu;
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				IExRosterManager api = MainFrame.this.getRosterManager();
+				api.pullRoster(false);
+			}
+		}));
+		menu.add(this.createMenuItem("print roster", new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				IExRosterManager api = MainFrame.this.getRosterManager();
+				Xmpp_query query = api.getRoster();
+				List<Xmpp_item> list = query.listItems();
+				for (Xmpp_item item : list) {
+					System.out.println(item + "");
+				}
+			}
+		}));
+
+		return mb;
+	}
+
+	protected IExRosterManager getRosterManager() {
+		return (IExRosterManager) this.mClient.getExAPI(IExRosterManager.class);
 	}
 
 	protected IExConnection getConnApi() {
