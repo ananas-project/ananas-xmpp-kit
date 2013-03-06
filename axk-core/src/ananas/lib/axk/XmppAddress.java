@@ -12,4 +12,7 @@ public interface XmppAddress {
 
 	String toStringPure();
 
+	boolean isFull();
+
+	boolean isPure();
 }

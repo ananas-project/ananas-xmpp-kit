@@ -19,6 +19,7 @@ import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.XmppEvent;
 import ananas.lib.axk.XmppEventListener;
 import ananas.lib.axk.XmppUtil;
+import ananas.lib.axk.api.IExRosterManager;
 import ananas.lib.axk.api.IExShell;
 import ananas.lib.axk.command.TraceCommand;
 import ananas.lib.axk.security.AXKSecurityListener;
@@ -123,6 +124,10 @@ public class Main implements XmppEventListener, Runnable {
 		client.dispatch(cmd);
 
 		IExShell shell = (IExShell) client.getExAPI(IExShell.class);
+		IExRosterManager rosterMan = (IExRosterManager) client
+				.getExAPI(IExRosterManager.class);
+
+		rosterMan.setAutoPullAfterBinding(true);
 
 		// show account
 		XmppAccount acc = shell.getAccount();

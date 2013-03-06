@@ -4,12 +4,12 @@
 	<namespace enableExport="true">
 
 
-		<property key="myCtrlPackage" value="ananas.lib.axk.element.xmpp_ping" />
-		<property key="myTargetPackage" value="ananas.lib.axk.element.xmpp_ping" />
+		<property key="myCtrlPackage" value="ananas.lib.axk.element.xmpp_delay" />
+		<property key="myTargetPackage" value="ananas.lib.axk.element.xmpp_delay" />
 
 
-		<property key="namespace:uri" value="urn:xmpp:ping" />
-		<property key="namespace:defaultPrefix" value="xmpp-ping" />
+		<property key="namespace:uri" value="urn:xmpp:delay" />
+		<property key="namespace:defaultPrefix" value="xmpp-delay" />
 		<property key="class:javaName" value="xxx" />
 
 		<property key="class:controllerClass" value="$(myCtrlPackage).Ctrl_$(class:javaName)" />
@@ -18,7 +18,7 @@
 
 		<!-- components -->
 
-		<class name="ping" isElement="true">
+		<class name="delay" isElement="true">
 			<attribute name="stamp" />
 			<!-- <element name="test" type="java.lang.Object" /> -->
 		</class>

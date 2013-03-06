@@ -1,12 +1,15 @@
 package ananas.lib.axk.element.iq_roster;
 
+import ananas.lib.axk.XmppAddress;
+import ananas.lib.axk.XmppSubscription;
+
 public class Xmpp_item {
 
-	private String mSubscription;
+	private XmppSubscription mSubscription;
 	private String mName;
-	private String mJID;
+	private XmppAddress mJID;
 
-	public void setJID(String value) {
+	public void setJID(XmppAddress value) {
 		this.mJID = value;
 	}
 
@@ -14,11 +17,11 @@ public class Xmpp_item {
 		this.mName = value;
 	}
 
-	public void setSubscription(String value) {
+	public void setSubscription(XmppSubscription value) {
 		this.mSubscription = value;
 	}
 
-	public String getSubscription() {
+	public XmppSubscription getSubscription() {
 		return mSubscription;
 	}
 
@@ -26,7 +29,7 @@ public class Xmpp_item {
 		return mName;
 	}
 
-	public String getJID() {
+	public XmppAddress getJID() {
 		return mJID;
 	}
 

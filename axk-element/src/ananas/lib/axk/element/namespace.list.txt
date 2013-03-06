@@ -10,3 +10,5 @@ ananas.lib.axk.element.xmpp_ping.TheNamespaceInfo
 ananas.lib.axk.element.xmpp_sasl.TheNamespaceInfo
 ananas.lib.axk.element.xmpp_session.TheNamespaceInfo
 ananas.lib.axk.element.xmpp_tls.TheNamespaceInfo
+ananas.lib.axk.element.xmpp_delay.TheNamespaceInfo
+ananas.lib.axk.element.vcard.temp.x.update.TheNamespaceInfo

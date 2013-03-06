@@ -6,15 +6,20 @@ import ananas.lib.axk.XmppStatus;
 
 public class DefaultPhaseEvent implements PhaseEvent {
 
+	private final XmppStatus mNewPhase;
+	private final XmppStatus mOldPhase;
+	private final XmppClient mClient;
+
 	public DefaultPhaseEvent(XmppClient client, XmppStatus oldPhase,
 			XmppStatus newPhase) {
-		// TODO Auto-generated constructor stub
+		this.mClient = client;
+		this.mNewPhase = newPhase;
+		this.mOldPhase = oldPhase;
 	}
 
 	@Override
 	public XmppClient getClient() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.mClient;
 	}
 
 	@Override
@@ -25,14 +30,12 @@ public class DefaultPhaseEvent implements PhaseEvent {
 
 	@Override
 	public XmppStatus getOldPhase() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.mOldPhase;
 	}
 
 	@Override
 	public XmppStatus getNewPhase() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.mNewPhase;
 	}
 
 }

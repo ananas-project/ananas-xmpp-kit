@@ -4,11 +4,13 @@ import java.util.List;
 
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppEvent;
+import ananas.lib.axk.XmppStatus;
 import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.IExRosterManager;
 import ananas.lib.axk.element.iq_roster.Xmpp_query;
 import ananas.lib.axk.element.jabber_client.Xmpp_iq;
 import ananas.lib.axk.event.DataEvent;
+import ananas.lib.axk.event.PhaseEvent;
 import ananas.lib.axk.util.XmppStanzaBuilder;
 
 public class Tar_roster_manager extends Tar_abstractClient implements
@@ -78,8 +80,24 @@ public class Tar_roster_manager extends Tar_abstractClient implements
 				Xmpp_iq iq = (Xmpp_iq) data;
 				this.onReceiveStanzaIq(data, iq);
 			}
+		} else if (event instanceof PhaseEvent) {
+			PhaseEvent se = (PhaseEvent) event;
+			this.onPhaseEvent(se);
 		}
 		super.onEvent(event);
+	}
+
+	private void onPhaseEvent(PhaseEvent se) {
+		if (this.mIsAutoPullAfterBinding) {
+			if (this.mRosterQuery == null) {
+				XmppStatus pold = se.getOldPhase();
+				XmppStatus pnew = se.getNewPhase();
+				if (pold.equals(XmppStatus.bind)
+						&& pnew.equals(XmppStatus.online)) {
+					this._doPull();
+				}
+			}
+		}
 	}
 
 	private void onReceiveStanzaIq(Object data, Xmpp_iq iq) {

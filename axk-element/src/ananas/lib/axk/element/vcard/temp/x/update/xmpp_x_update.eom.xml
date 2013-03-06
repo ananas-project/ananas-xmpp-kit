@@ -4,12 +4,12 @@
 	<namespace enableExport="true">
 
 
-		<property key="myCtrlPackage" value="ananas.lib.axk.element.xmpp_ping" />
-		<property key="myTargetPackage" value="ananas.lib.axk.element.xmpp_ping" />
+		<property key="myCtrlPackage" value="ananas.lib.axk.element.vcard.temp.x.update" />
+		<property key="myTargetPackage" value="ananas.lib.axk.element.vcard.temp.x.update" />
 
 
-		<property key="namespace:uri" value="urn:xmpp:ping" />
-		<property key="namespace:defaultPrefix" value="xmpp-ping" />
+		<property key="namespace:uri" value="vcard-temp:x:update" />
+		<property key="namespace:defaultPrefix" value="vcard-temp-x-update" />
 		<property key="class:javaName" value="xxx" />
 
 		<property key="class:controllerClass" value="$(myCtrlPackage).Ctrl_$(class:javaName)" />
@@ -18,8 +18,8 @@
 
 		<!-- components -->
 
-		<class name="ping" isElement="true">
-			<attribute name="stamp" />
+		<class name="x" isElement="true">
+			<!-- <attribute name="stamp" /> -->
 			<!-- <element name="test" type="java.lang.Object" /> -->
 		</class>
 

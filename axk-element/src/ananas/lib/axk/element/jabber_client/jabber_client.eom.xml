@@ -33,6 +33,11 @@
 			<!-- <element name="test" type="java.lang.Object" /> -->
 		</class>
 
+		<class name="show" isElement="true">
+			<!-- <attribute name="id" /> -->
+			<!-- <element name="test" type="java.lang.Object" /> -->
+		</class>
+
 		<class name="priority" isElement="true">
 			<!-- <attribute name="id" /> -->
 			<!-- <element name="test" type="java.lang.Object" /> -->
