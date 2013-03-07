@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Blueprint xmlns:bp="xmlns:ananas:blueprint:base"
+    xmlns:awt="xmlns:ananas:blueprint:awt"
+    xmlns:swing="xmlns:ananas:blueprint:swing"
+    xmlns="xmlns:ananas:blueprint:base" >
+
+    <Head>
+
+        <Import
+            type="class:NamespaceLoader"
+            value="ananas.lib.blueprint2.swing.NamespaceLoader" />
+
+        <Import
+            type="class:NamespaceLoader"
+            value="ananas.lib.blueprint2.awt.NamespaceLoader" />
+    </Head>
+
+    <Body>
+
+        <awt:responseChain id="resp_chain" >
+
+            <awt:responseChainNode />
+
+            <awt:responseChainNode />
+
+            <awt:responseChainNode id="resp_chain_node_3" />
+        </awt:responseChain>
+
+        <JFrame
+            id="root"
+            height="480"
+            title="Test AXK with BP2UI"
+            width="640"
+            x="100"
+            xmlns="xmlns:ananas:blueprint:swing"
+            y="100" >
+
+            <JMenuBar actionListener="#resp_chain" >
+
+                <JMenu label="Connection" >
+
+                    <JMenuItem label="Reset" />
+
+                    <JMenuItem label="Connect" />
+
+                    <JMenuItem label="Disconnect" />
+
+                    <JMenuItem label="Close" />
+                </JMenu>
+
+                <JMenu label="View" >
+
+                    <JMenuItem label="roster" />
+
+                    <JMenuItem label="presence-table" />
+                </JMenu>
+
+                <JMenu label="Template" >
+
+                    <JMenuItem label="send message" />
+
+                    <JMenuItem label="send presence" />
+                </JMenu>
+            </JMenuBar>
+
+            <JPanel>
+
+                <awt:BorderLayout />
+
+                <position value="center" />
+
+                <JSplitPane
+                    orientation="vert"
+                    resizeWeight="0.5" >
+
+                    <position value="top" />
+
+                    <JPanel>
+
+                        <awt:BorderLayout />
+
+                        <position value="center" />
+
+                        <JScrollPane>
+
+                            <JTextArea editable="false" />
+                        </JScrollPane>
+
+                        <position value="east" />
+
+                        <JButton
+                            preferredSizeX="200"
+                            text="copy to send-box" />
+                    </JPanel>
+
+                    <position value="bottom" />
+
+                    <JPanel>
+
+                        <awt:BorderLayout />
+
+                        <position value="center" />
+
+                        <JScrollPane>
+
+                            <JTextArea />
+                        </JScrollPane>
+
+                        <position value="east" />
+
+                        <JButton
+                            preferredSizeX="200"
+                            text="send" />
+                    </JPanel>
+                </JSplitPane>
+
+                <position value="south" />
+
+                <JPanel preferredSizeY="30" >
+                </JPanel>
+            </JPanel>
+        </JFrame>
+    </Body>
+
+</Blueprint>
