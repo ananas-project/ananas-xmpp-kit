@@ -20,6 +20,7 @@
 
 		<class name="delay" isElement="true">
 			<attribute name="stamp" />
+			<attribute name="from" />
 			<!-- <element name="test" type="java.lang.Object" /> -->
 		</class>
 

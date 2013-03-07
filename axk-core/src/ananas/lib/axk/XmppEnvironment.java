@@ -5,13 +5,13 @@ import ananas.lib.blueprint.core.lang.BPEnvironment;
 
 public interface XmppEnvironment {
 
-	BPEnvironment getBPEnvironment();
-
-	XmppClientFactory getClientFactory();
-
 	void shutdown();
 
 	boolean isAlive();
+
+	BPEnvironment getBPEnvironment();
+
+	XmppClientFactory getClientFactory();
 
 	AXKSecurityManager getSecurityManager();
 

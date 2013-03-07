@@ -8,4 +8,8 @@ public class Ctrl_delay extends AbstractXmppObject {
 	public boolean set_attribute_stamp(BPAttribute attr) {
 		return true;
 	}
+
+	public boolean set_attribute_from(BPAttribute attr) {
+		return true;
+	}
 }

@@ -99,37 +99,30 @@ public class TheMainConnCtrl extends XmppConnectionController {
 		TheOnlineConnCtrl ctrl = new TheOnlineConnCtrl(conn);
 		conn.setController(ctrl);
 
-		this.doPresence();
+		// this.doPresence();
 	}
 
-	private void doPresence() {
-
-		// <presence >
-		// <show>dnd</show>
-		// <status>Wooing Juliet</status>
-		// </presence>
-
-		String show = "";
-		// String status = "my name is 007";
-
-		// ////////////////////////
-
-		XmppStanzaBuilder xsb = XmppStanzaBuilder.Factory.newInstance();
-		xsb.append("<presence>");
-		xsb.append("<show>");
-		xsb.append(show);
-		xsb.append("</show>");
-		// xsb.append("<status>");
-		// xsb.append(status);
-		// xsb.append("</status>");
-		xsb.append("</presence>");
-
-		byte[] ba = xsb.toByteArray();
-		this.getConnection().asyncSendBytes(ba, 0, ba.length);
-
-
-	}
-
+	/*
+	 * private void doPresence() {
+	 * 
+	 * // <presence > // <show>dnd</show> // <status>Wooing Juliet</status> //
+	 * </presence>
+	 * 
+	 * String show = ""; // String status = "my name is 007";
+	 * 
+	 * // ////////////////////////
+	 * 
+	 * XmppStanzaBuilder xsb = XmppStanzaBuilder.Factory.newInstance();
+	 * xsb.append("<presence>"); xsb.append("<show>"); xsb.append(show);
+	 * xsb.append("</show>"); // xsb.append("<status>"); // xsb.append(status);
+	 * // xsb.append("</status>"); xsb.append("</presence>");
+	 * 
+	 * byte[] ba = xsb.toByteArray(); this.getConnection().asyncSendBytes(ba, 0,
+	 * ba.length);
+	 * 
+	 * 
+	 * }
+	 */
 	private void doBind() {
 
 		this.getConnection().setCurrentPhase(XmppStatus.bind);

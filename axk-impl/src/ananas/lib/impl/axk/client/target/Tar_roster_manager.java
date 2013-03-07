@@ -88,12 +88,11 @@ public class Tar_roster_manager extends Tar_abstractClient implements
 	}
 
 	private void onPhaseEvent(PhaseEvent se) {
-		if (this.mIsAutoPullAfterBinding) {
-			if (this.mRosterQuery == null) {
-				XmppStatus pold = se.getOldPhase();
-				XmppStatus pnew = se.getNewPhase();
-				if (pold.equals(XmppStatus.bind)
-						&& pnew.equals(XmppStatus.online)) {
+		XmppStatus pold = se.getOldPhase();
+		XmppStatus pnew = se.getNewPhase();
+		if (pold.equals(XmppStatus.bind) && pnew.equals(XmppStatus.online)) {
+			if (this.mIsAutoPullAfterBinding) {
+				if (this.mRosterQuery == null) {
 					this._doPull();
 				}
 			}

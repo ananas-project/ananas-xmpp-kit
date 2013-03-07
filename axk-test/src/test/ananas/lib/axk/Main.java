@@ -1,6 +1,9 @@
 package test.ananas.lib.axk;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.XmppEvent;
 import ananas.lib.axk.XmppEventListener;
 import ananas.lib.axk.XmppUtil;
+import ananas.lib.axk.api.IExPresenceManager;
 import ananas.lib.axk.api.IExRosterManager;
 import ananas.lib.axk.api.IExShell;
 import ananas.lib.axk.command.TraceCommand;
@@ -48,7 +52,14 @@ public class Main implements XmppEventListener, Runnable {
 
 		Properties prop = new Properties();
 		try {
-			prop.load(this.getClass().getResourceAsStream("account.properties"));
+			URL url = this.getClass().getProtectionDomain().getCodeSource()
+					.getLocation();
+			String path = url.getPath();
+			File file = new File(path);
+			file = file.getParentFile();
+			file = new File(file, "account.properties");
+			FileInputStream in = new FileInputStream(file);
+			prop.load(in);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -123,11 +134,16 @@ public class Main implements XmppEventListener, Runnable {
 		TraceCommand cmd = new TraceCommand();
 		client.dispatch(cmd);
 
+		// get api(s)
 		IExShell shell = (IExShell) client.getExAPI(IExShell.class);
 		IExRosterManager rosterMan = (IExRosterManager) client
 				.getExAPI(IExRosterManager.class);
+		IExPresenceManager presenceMan = (IExPresenceManager) client
+				.getExAPI(IExPresenceManager.class);
 
-		rosterMan.setAutoPullAfterBinding(true);
+		// operate on api(s)
+		presenceMan.setAutoPresenceAfterBinding(true);
+		rosterMan.setAutoPullAfterBinding(false);
 
 		// show account
 		XmppAccount acc = shell.getAccount();

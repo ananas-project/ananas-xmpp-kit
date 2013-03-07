@@ -6,7 +6,21 @@ import ananas.lib.axk.element.jabber_client.Xmpp_presence;
 
 public interface IExPresenceManager extends XmppClientExAPI {
 
-	void setMyPresence(Xmpp_presence presence);
+	/**
+	 * @param presence
+	 *            a presence stanza
+	 * */
+	void setMyPresence(String presence);
+
+	/**
+	 * @return a presence stanza
+	 * */
+
+	String getMyPresence();
+
+	void sendMyPresence();
+
+	void sendMyPresence(String presence);
 
 	Xmpp_presence getPresence(XmppAddress jid);
 
