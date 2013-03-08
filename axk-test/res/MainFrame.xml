@@ -39,33 +39,72 @@
 
                 <JMenu label="Connection" >
 
-                    <JMenuItem label="Reset" />
+                    <JMenuItem
+                        command="conn_reset"
+                        label="Reset" />
 
-                    <JMenuItem label="Connect" />
+                    <JMenuItem
+                        command="conn_connect"
+                        label="Connect" />
 
-                    <JMenuItem label="Disconnect" />
+                    <JMenuItem
+                        command="conn_disconnect"
+                        label="Disconnect" />
 
-                    <JMenuItem label="Close" />
+                    <JMenuItem
+                        command="conn_close"
+                        label="Close" />
                 </JMenu>
 
                 <JMenu label="View" >
 
-                    <JMenuItem label="roster" />
+                    <JMenuItem
+                        command="view_clear_console"
+                        label="clear console" />
 
-                    <JMenuItem label="presence-table" />
+                    <JMenuItem
+                        command="view_print_roster"
+                        label="print roster" />
+
+                    <JMenuItem
+                        command="view_print_presence_table"
+                        label="print presence-table" />
                 </JMenu>
 
                 <JMenu label="Template" >
 
-                    <JMenuItem label="send message" />
+                    <JMenuItem
+                        command="temp_message"
+                        label="send message" />
 
-                    <JMenuItem label="send presence" />
+                    <JMenuItem
+                        command="temp_presence"
+                        label="send presence" />
+
+                    <JMenuItem
+                        command="temp_iq"
+                        label="send iq" />
                 </JMenu>
             </JMenuBar>
 
             <JPanel>
 
                 <awt:BorderLayout />
+
+                <position value="north" />
+
+                <JPanel preferredSizeY="30" >
+
+                    <awt:BorderLayout />
+
+                    <position value="west" />
+
+                    <JLabel text=" to jid: " />
+
+                    <position value="center" />
+
+                    <JTextField id="text_to" />
+                </JPanel>
 
                 <position value="center" />
 
@@ -83,12 +122,15 @@
 
                         <JScrollPane>
 
-                            <JTextArea editable="false" />
+                            <JTextArea
+                                id="text_prev_send"
+                                editable="false" />
                         </JScrollPane>
 
                         <position value="east" />
 
                         <JButton
+                            id="btn_copy_to_send"
                             preferredSizeX="200"
                             text="copy to send-box" />
                     </JPanel>
@@ -103,12 +145,13 @@
 
                         <JScrollPane>
 
-                            <JTextArea />
+                            <JTextArea id="text_send" />
                         </JScrollPane>
 
                         <position value="east" />
 
                         <JButton
+                            id="btn_send"
                             preferredSizeX="200"
                             text="send" />
                     </JPanel>

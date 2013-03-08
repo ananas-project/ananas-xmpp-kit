@@ -1,0 +1,3 @@
+<iq to="${stanza_attr_to}" >
+
+</iq>

@@ -21,6 +21,7 @@ public class Tar_roster_manager extends Tar_abstractClient implements
 	private int mIdCount = 1;
 
 	public Tar_roster_manager() {
+		mIsAutoPullAfterBinding = false;
 	}
 
 	@Override

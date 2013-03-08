@@ -16,13 +16,13 @@ import ananas.lib.axk.event.PhaseEvent;
 public class Tar_presence_manager extends Tar_abstractClient implements
 		IExPresenceManager {
 
-	private boolean mIsAutoPresenceAfterBinding;
 	private final Map<XmppAddress, Xmpp_presence> mPresenceMap;
+	private boolean mIsAutoPresenceAfterBinding;
 	private String mMyPresence;
 
 	public Tar_presence_manager() {
 		this.mPresenceMap = new Hashtable<XmppAddress, Xmpp_presence>();
-		this.mIsAutoPresenceAfterBinding = true;
+		this.mIsAutoPresenceAfterBinding = false;
 		this.mMyPresence = "<presence><show></show></presence>";
 	}
 
