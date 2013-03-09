@@ -1,8 +1,6 @@
-package ananas.lib.axk.api;
+package ananas.lib.axk.api.presence;
 
-import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.XmppClientExAPI;
-import ananas.lib.axk.element.jabber_client.Xmpp_presence;
 
 public interface IExPresenceManager extends XmppClientExAPI {
 
@@ -22,7 +20,7 @@ public interface IExPresenceManager extends XmppClientExAPI {
 
 	void sendMyPresence(String presence);
 
-	Xmpp_presence getPresence(XmppAddress jid);
+	// Xmpp_presence getPresence(XmppAddress jid);
 
 	boolean isAutoPresenceAfterBinding();
 

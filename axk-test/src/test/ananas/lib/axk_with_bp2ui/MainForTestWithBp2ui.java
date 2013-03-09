@@ -19,6 +19,7 @@ import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.XmppEvent;
 import ananas.lib.axk.XmppEventListener;
 import ananas.lib.axk.XmppUtil;
+import ananas.lib.axk.api.IExCore;
 import ananas.lib.axk.security.AXKSecurityManager;
 import ananas.lib.util.log4j.AbstractLoggerFactory;
 
@@ -85,6 +86,13 @@ public class MainForTestWithBp2ui implements Runnable, XmppEventListener {
 		XmppClient client = factory.newClient(account);
 		client.setXmppEventListener(this);
 
+		// api
+		IExCore apiCore = (IExCore) client.getExAPI(IExCore.class);
+
+		XmppAccount account2 = apiCore.getAccount();
+		logger.info("account = " + account2);
+
+		// show ui
 		MainFrame mf = new MainFrame(client);
 		mf.show();
 

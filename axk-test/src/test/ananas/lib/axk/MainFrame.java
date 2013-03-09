@@ -17,7 +17,7 @@ import javax.swing.JTextArea;
 
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.api.IExConnection;
-import ananas.lib.axk.api.IExRosterManager;
+import ananas.lib.axk.api.roster.IExRosterManager;
 import ananas.lib.axk.element.iq_roster.Xmpp_item;
 import ananas.lib.axk.element.iq_roster.Xmpp_query;
 
@@ -156,7 +156,7 @@ public class MainFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				IExRosterManager api = MainFrame.this.getRosterManager();
-				api.pullRoster(false);
+				api.pull();
 			}
 		}));
 		menu.add(this.createMenuItem("print roster", new ActionListener() {
@@ -164,7 +164,7 @@ public class MainFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				IExRosterManager api = MainFrame.this.getRosterManager();
-				Xmpp_query query = api.getRoster();
+				Xmpp_query query = null; // api.getRoster();
 				List<Xmpp_item> list = query.listItems();
 				for (Xmpp_item item : list) {
 					System.out.println(item + "");

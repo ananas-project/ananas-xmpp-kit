@@ -2,7 +2,7 @@ package ananas.lib.axk.event;
 
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppEventListener;
-import ananas.lib.axk.XmppStatus;
+import ananas.lib.axk.constant.XmppStatus;
 
 public class DefaultPhaseEvent implements PhaseEvent {
 

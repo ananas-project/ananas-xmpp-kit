@@ -7,10 +7,10 @@ import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppEnvironment;
-import ananas.lib.axk.XmppStatus;
 import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.IExCore;
 import ananas.lib.axk.api.IExShell;
+import ananas.lib.axk.constant.XmppStatus;
 import ananas.lib.util.log4j.AbstractLoggerFactory;
 
 public class Tar_shell extends Tar_abstractClient implements IExShell {

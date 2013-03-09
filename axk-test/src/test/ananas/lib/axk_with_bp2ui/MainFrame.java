@@ -288,6 +288,18 @@ public class MainFrame {
 				return e.getLocalizedMessage();
 			}
 		}
+
+		public String _processAutoCRLF(String raw) {
+			StringBuilder sb = new StringBuilder();
+			char[] chs = raw.toCharArray();
+			for (char ch : chs) {
+				sb.append(ch);
+				if (ch == '>') {
+					sb.append("\r\n");
+				}
+			}
+			return sb.toString();
+		}
 	}
 
 	private class MyCommandReg implements IResponseChainNode, ICommandRegistrar {
@@ -342,6 +354,7 @@ public class MainFrame {
 			}
 			MainFrame.this._updateTempLoaderProperties();
 			raw = MainFrame.this.mTempLoader._processMacro(raw);
+			raw = MainFrame.this.mTempLoader._processAutoCRLF(raw);
 			MainFrame.this.mTextSend.setText(raw);
 			return true;
 		}

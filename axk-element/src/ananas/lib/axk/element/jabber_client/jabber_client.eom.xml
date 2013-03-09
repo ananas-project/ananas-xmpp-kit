@@ -43,6 +43,13 @@
 			<!-- <element name="test" type="java.lang.Object" /> -->
 		</class>
 
+		<class name="body" isElement="true">
+			<!-- <attribute name="id" /> -->
+			<!-- <element name="test" type="java.lang.Object" /> -->
+			<text />
+		</class>
+
+
 		<!-- stanza -->
 
 		<class name="iq" isElement="true" extends="#Stanza">

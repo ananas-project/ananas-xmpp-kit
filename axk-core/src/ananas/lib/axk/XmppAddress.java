@@ -8,9 +8,13 @@ public interface XmppAddress {
 
 	String getResource();
 
-	String toStringFull();
+	XmppAddress toFull();
 
-	String toStringPure();
+	XmppAddress toPure();
+
+	String toFullString();
+
+	String toPureString();
 
 	boolean isFull();
 

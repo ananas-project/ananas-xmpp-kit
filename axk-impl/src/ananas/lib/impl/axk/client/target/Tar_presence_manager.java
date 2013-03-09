@@ -6,9 +6,9 @@ import java.util.Map;
 import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppEvent;
-import ananas.lib.axk.XmppStatus;
 import ananas.lib.axk.api.IExConnection;
-import ananas.lib.axk.api.IExPresenceManager;
+import ananas.lib.axk.api.presence.IExPresenceManager;
+import ananas.lib.axk.constant.XmppStatus;
 import ananas.lib.axk.element.jabber_client.Xmpp_presence;
 import ananas.lib.axk.event.DataEvent;
 import ananas.lib.axk.event.PhaseEvent;
@@ -34,11 +34,6 @@ public class Tar_presence_manager extends Tar_abstractClient implements
 		} else {
 			return super.getExAPI(apiClass);
 		}
-	}
-
-	@Override
-	public Xmpp_presence getPresence(XmppAddress jid) {
-		return this.mPresenceMap.get(jid);
 	}
 
 	@Override

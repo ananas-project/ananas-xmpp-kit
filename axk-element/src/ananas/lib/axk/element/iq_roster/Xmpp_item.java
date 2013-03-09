@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ananas.lib.axk.XmppAddress;
-import ananas.lib.axk.XmppSubscription;
+import ananas.lib.axk.constant.XmppSubscription;
 
 public class Xmpp_item {
 

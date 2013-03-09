@@ -1,0 +1,8 @@
+// this is select=0
+select=0
+
+jid=axktest@jabber.org
+password=12345678
+host=jabber.org
+port=5222
+resource=axk_client

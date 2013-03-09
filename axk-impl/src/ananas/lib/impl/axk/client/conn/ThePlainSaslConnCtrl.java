@@ -50,7 +50,7 @@ public class ThePlainSaslConnCtrl extends AbstractSaslConnCtrl {
 			XmppAddress addr = account.getAddress();
 
 			StringBuilder sb = new StringBuilder();
-			sb.append(addr.toStringPure());
+			sb.append(addr.toPureString());
 			sb.append("\0");
 			sb.append(addr.getUser());
 			sb.append("\0");

@@ -1,6 +1,6 @@
 package ananas.lib.impl.axk.client.conn;
 
-import ananas.lib.axk.XmppStatus;
+import ananas.lib.axk.constant.XmppStatus;
 
 public interface XmppConnectionListener extends ITxThreadPriority {
 

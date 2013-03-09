@@ -1,7 +1,7 @@
 package ananas.lib.axk.api;
 
 import ananas.lib.axk.XmppClientExAPI;
-import ananas.lib.axk.XmppStatus;
+import ananas.lib.axk.constant.XmppStatus;
 
 public interface IExConnection extends XmppClientExAPI {
 

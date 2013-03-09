@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppEnvironment;
-import ananas.lib.axk.XmppStatus;
+import ananas.lib.axk.constant.XmppStatus;
 import ananas.lib.axk.element.jabber_client.Xmpp_iq;
 import ananas.lib.axk.element.stream.Xmpp_features;
 import ananas.lib.axk.element.stream.Xmpp_stream;

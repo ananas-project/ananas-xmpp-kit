@@ -6,17 +6,26 @@ public class DefaultXmppAddress implements XmppAddress {
 
 	private final String mUser;
 	private final String mHost;
-	private final String mResource;
+	private final String mResource;// MUST start with '/'
+	private String mFullString;
+	private String mPureString;
 
 	public DefaultXmppAddress(String str) {
-		URI uri = URI.create("xmpp://" + str);
+
+		final URI uri = URI.create("xmpp://" + str);
 		this.mUser = uri.getUserInfo();
 		this.mHost = uri.getHost();
-		String res = uri.getPath();
-		if (res.length() > 0)
-			this.mResource = res.substring(1);
-		else
+
+		final String res = uri.getPath();
+
+		if (res == null) {
 			this.mResource = null;
+		} else {
+			if (res.length() > 0)
+				this.mResource = res;
+			else
+				this.mResource = null;
+		}
 	}
 
 	public String getUser() {
@@ -31,16 +40,21 @@ public class DefaultXmppAddress implements XmppAddress {
 		return this.mResource;
 	}
 
-	public String toStringFull() {
-		return (this.mUser + "@" + this.mHost + "/" + this.mResource);
+	private String _toFullString() {
+		String res = this.mResource;
+		if (res == null) {
+			res = "";
+		}
+		return (this.mUser + "@" + this.mHost + res);
 	}
 
-	public String toStringPure() {
+	private String _toPureString() {
 		return (this.mUser + "@" + this.mHost);
 	}
 
+	@Override
 	public String toString() {
-		return this.toStringFull();
+		return this.toFullString();
 	}
 
 	@Override
@@ -55,40 +69,56 @@ public class DefaultXmppAddress implements XmppAddress {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((mHost == null) ? 0 : mHost.hashCode());
-		result = prime * result
-				+ ((mResource == null) ? 0 : mResource.hashCode());
-		result = prime * result + ((mUser == null) ? 0 : mUser.hashCode());
-		return result;
+		String str = this.toFullString();
+		return str.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
+		if (obj instanceof XmppAddress) {
+			XmppAddress obj2 = (XmppAddress) obj;
+			String str1 = this.toFullString();
+			String str2 = obj2.toFullString();
+			return str1.equals(str2);
+		} else {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DefaultXmppAddress other = (DefaultXmppAddress) obj;
-		if (mHost == null) {
-			if (other.mHost != null)
-				return false;
-		} else if (!mHost.equals(other.mHost))
-			return false;
-		if (mResource == null) {
-			if (other.mResource != null)
-				return false;
-		} else if (!mResource.equals(other.mResource))
-			return false;
-		if (mUser == null) {
-			if (other.mUser != null)
-				return false;
-		} else if (!mUser.equals(other.mUser))
-			return false;
-		return true;
+		}
+	}
+
+	@Override
+	public XmppAddress toFull() {
+		if (this.isFull()) {
+			return this;
+		}
+		return new DefaultXmppAddress(this.toFullString());
+	}
+
+	@Override
+	public XmppAddress toPure() {
+		if (this.isPure()) {
+			return this;
+		}
+		return new DefaultXmppAddress(this.toPureString());
+	}
+
+	@Override
+	public String toFullString() {
+		String str = this.mFullString;
+		if (str == null) {
+			str = this._toFullString();
+			this.mFullString = str;
+		}
+		return str;
+	}
+
+	@Override
+	public String toPureString() {
+		String str = this.mPureString;
+		if (str == null) {
+			str = this._toPureString();
+			this.mPureString = str;
+		}
+		return str;
 	}
 
 }

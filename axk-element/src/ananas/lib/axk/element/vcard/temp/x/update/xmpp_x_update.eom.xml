@@ -23,6 +23,11 @@
 			<!-- <element name="test" type="java.lang.Object" /> -->
 		</class>
 
+		<class name="photo" isElement="true">
+			<!-- <attribute name="stamp" /> -->
+			<!-- <element name="test" type="java.lang.Object" /> -->
+		</class>
+
 	</namespace>
 
 </eom>

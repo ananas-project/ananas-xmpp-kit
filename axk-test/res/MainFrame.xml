@@ -92,6 +92,10 @@
                             label="add contact" />
 
                         <JMenuItem
+                            command="temp_roster_modify"
+                            label="modify contact" />
+
+                        <JMenuItem
                             command="temp_roster_remove"
                             label="remove contact" />
 
@@ -101,6 +105,26 @@
                     </JMenu>
 
                     <JMenu label="subscription management" >
+
+                        <JMenuItem
+                            command="temp_subscription_subscribe"
+                            label="do subscribe" />
+
+                        <JMenuItem
+                            command="temp_subscription_subscribed"
+                            label="do subscribed" />
+
+                        <JMenuItem
+                            command="temp_subscription_unsubscribe"
+                            label="do unsubscribe" />
+
+                        <JMenuItem
+                            command="temp_subscription_unsubscribed"
+                            label="do unsubscribed" />
+
+                        <JMenuItem
+                            command="temp_subscription_unavailable"
+                            label="do unavailable" />
                     </JMenu>
                 </JMenu>
             </JMenuBar>

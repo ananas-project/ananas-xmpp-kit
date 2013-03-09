@@ -1,7 +1,7 @@
 package ananas.lib.axk.element.iq_roster;
 
 import ananas.lib.axk.XmppAddress;
-import ananas.lib.axk.XmppSubscription;
+import ananas.lib.axk.constant.XmppSubscription;
 import ananas.lib.axk.element.AbstractXmppObject;
 import ananas.lib.blueprint.core.dom.BPAttribute;
 
@@ -14,7 +14,8 @@ public class Ctrl_item extends AbstractXmppObject {
 	}
 
 	public boolean set_attribute_subscription(BPAttribute attr) {
-		XmppSubscription subs = XmppSubscription.getInstance(attr.getValue());
+		XmppSubscription subs = XmppSubscription.Factory.getInstance(attr
+				.getValue());
 		this.target_item().setSubscription(subs);
 		return true;
 	}

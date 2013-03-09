@@ -4,21 +4,29 @@ import java.util.List;
 
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppEvent;
-import ananas.lib.axk.XmppStatus;
 import ananas.lib.axk.api.IExConnection;
-import ananas.lib.axk.api.IExRosterManager;
+import ananas.lib.axk.api.roster.IExRosterManager;
+import ananas.lib.axk.constant.XmppStatus;
 import ananas.lib.axk.element.iq_roster.Xmpp_query;
 import ananas.lib.axk.element.jabber_client.Xmpp_iq;
 import ananas.lib.axk.event.DataEvent;
 import ananas.lib.axk.event.PhaseEvent;
 import ananas.lib.axk.util.XmppStanzaBuilder;
+import ananas.lib.impl.axk.client.target.roster.RosterManagerImpl;
+import ananas.lib.impl.axk.client.target.roster.IRosterManagerInner;
+import ananas.lib.impl.axk.client.target.roster.IRosterManagerInnerCallback;
 
-public class Tar_roster_manager extends Tar_abstractClient implements
-		IExRosterManager {
+public class Tar_roster_manager extends Tar_abstractClient {
 
 	private Xmpp_query mRosterQuery;
 	private boolean mIsAutoPullAfterBinding;
 	private int mIdCount = 1;
+
+	private final IRosterManagerInner mRosterManagerInner = new RosterManagerImpl(
+			new MyCallbackFromInner());
+
+	class MyCallbackFromInner implements IRosterManagerInnerCallback {
+	}
 
 	public Tar_roster_manager() {
 		mIsAutoPullAfterBinding = false;
@@ -27,21 +35,11 @@ public class Tar_roster_manager extends Tar_abstractClient implements
 	@Override
 	public XmppClientExAPI getExAPI(Class<? extends XmppClientExAPI> apiClass) {
 		if (IExRosterManager.class.equals(apiClass)) {
-			IExRosterManager api = this;
+			IExRosterManager api = this.mRosterManagerInner
+					.toIExRosterManager();
 			return api;
 		} else {
 			return super.getExAPI(apiClass);
-		}
-	}
-
-	@Override
-	public void pullRoster(boolean isLazy) {
-		if (isLazy) {
-			if (this.mRosterQuery == null) {
-				this._doPull();
-			}
-		} else {
-			this._doPull();
 		}
 	}
 
@@ -55,21 +53,6 @@ public class Tar_roster_manager extends Tar_abstractClient implements
 
 		IExConnection conn = (IExConnection) this.getExAPI(IExConnection.class);
 		conn.sendStanza(str);
-	}
-
-	@Override
-	public Xmpp_query getRoster() {
-		return this.mRosterQuery;
-	}
-
-	@Override
-	public boolean isAutoPullAfterBinding() {
-		return this.mIsAutoPullAfterBinding;
-	}
-
-	@Override
-	public void setAutoPullAfterBinding(boolean value) {
-		this.mIsAutoPullAfterBinding = value;
 	}
 
 	@Override

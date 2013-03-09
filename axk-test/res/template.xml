@@ -37,7 +37,9 @@ hi!
 
             <text id="temp_presence" >
 <![CDATA[ 
-<presence>.......</presence>
+<presence>
+<show></show>
+</presence>
  ]]>
             </text>
 
@@ -51,8 +53,65 @@ hi!
  ]]>
             </text>
 
+            <text id="temp_roster_add" >
+<![CDATA[ 
+<iq  type='set' id='roster_2'>
+    <query xmlns='jabber:iq:roster'>
+        <item jid='${stanza_attr_to}'  name='Ellen'>
+            <group>%(my friend)</group>
+        </item>
+    </query>
+</iq>
+]]>
+            </text>
+
+            <text id="temp_roster_modify" >
+<![CDATA[ 
+<iq  type='set' id='roster_3'>
+    <query xmlns='jabber:iq:roster'>
+        <item jid='${stanza_attr_to}'  name='Ellen'>
+            <group>%(my friend)</group>
+        </item>
+    </query>
+</iq>
+]]>
+            </text>
+
+            <text id="temp_roster_remove" >
+<![CDATA[ 
+<iq  type='set' id='roster_2'>
+    <query xmlns='jabber:iq:roster'>
+        <item jid='${stanza_attr_to}' subscription='remove' />
+    </query>
+</iq>
+ ]]>
+            </text>
+
             <!-- subscription management -->
 
+            <text id="temp_subscription_subscribe" >
+<![CDATA[
+<presence id="subscription-1" to="${stanza_attr_to}" type="subscribe"  />
+]]>
+            </text>
+
+            <text id="temp_subscription_subscribed" >
+<![CDATA[
+<presence id="subscription-2" to="${stanza_attr_to}" type="subscribed"  />
+]]>
+            </text>
+
+            <text id="temp_subscription_unsubscribe" >
+<![CDATA[
+<presence id="subscription-3" to="${stanza_attr_to}" type="unsubscribe"  />
+]]>
+            </text>
+
+            <text id="temp_subscription_unsubscribed" >
+<![CDATA[
+<presence id="subscription-4" to="${stanza_attr_to}" type="unsubscribed"  />
+]]>
+            </text>
         </text-group>
     </Body>
 

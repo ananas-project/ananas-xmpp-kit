@@ -1,4 +1,4 @@
-package ananas.lib.axk;
+package ananas.lib.axk.constant;
 
 public interface XmppStatus {
 

@@ -1,4 +1,4 @@
-package ananas.lib.axk.api;
+package ananas.lib.axk.api.message;
 
 import ananas.lib.axk.XmppClientExAPI;
 

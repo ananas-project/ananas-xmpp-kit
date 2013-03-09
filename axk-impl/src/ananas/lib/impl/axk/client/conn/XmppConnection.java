@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.XmppEnvironment;
-import ananas.lib.axk.XmppStatus;
+import ananas.lib.axk.constant.XmppStatus;
 import ananas.lib.axk.element.stream.Xmpp_stream;
 import ananas.lib.impl.axk.client.parser.DefaultXmppParserFactory;
 import ananas.lib.impl.axk.client.parser.XmppParser;
@@ -232,7 +232,7 @@ public class XmppConnection implements Runnable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<?xml version='1.0'?>");
 		sb.append("<stream:stream");
-		sb.append(" from='" + jid.toStringPure() + "'");
+		sb.append(" from='" + jid.toPureString() + "'");
 		sb.append(" to='" + jid.getHost() + "'");
 		sb.append(" version='1.0'");
 		sb.append(" xml:lang='en'");
