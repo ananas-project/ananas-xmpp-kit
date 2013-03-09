@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Blueprint xmlns:bp="xmlns:ananas:blueprint:base"
+    xmlns:awt="xmlns:ananas:blueprint:awt"
+    xmlns:swing="xmlns:ananas:blueprint:swing"
+    xmlns="xmlns:ananas:blueprint:base" >
+
+    <Head>
+
+        <Import
+            type="class:NamespaceLoader"
+            value="test.ananas.lib.axk.helper.dom.NamespaceLoader" />
+    </Head>
+
+    <Body>
+
+        <text-group
+            id="root"
+            xmlns="uri:xmlns:test:axk:helper" >
+
+            <!-- basic stanza -->
+
+            <text id="temp_message" >
+<![CDATA[ 
+<message to="${stanza_attr_to}" >
+<body>
+hi!
+</body>
+</message>
+ ]]>
+            </text>
+
+            <text id="temp_iq" >
+<![CDATA[ 
+<iq>.......</iq>
+ ]]>
+            </text>
+
+            <text id="temp_presence" >
+<![CDATA[ 
+<presence>.......</presence>
+ ]]>
+            </text>
+
+            <!-- roster management -->
+
+            <text id="temp_roster_pull" >
+<![CDATA[ 
+<iq type='get' id='roster_1'>
+    <query xmlns='jabber:iq:roster'/>
+</iq>
+ ]]>
+            </text>
+
+            <!-- subscription management -->
+
+        </text-group>
+    </Body>
+
+</Blueprint>

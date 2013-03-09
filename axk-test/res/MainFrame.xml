@@ -84,6 +84,24 @@
                     <JMenuItem
                         command="temp_iq"
                         label="send iq" />
+
+                    <JMenu label="roster management" >
+
+                        <JMenuItem
+                            command="temp_roster_add"
+                            label="add contact" />
+
+                        <JMenuItem
+                            command="temp_roster_remove"
+                            label="remove contact" />
+
+                        <JMenuItem
+                            command="temp_roster_pull"
+                            label="pull all" />
+                    </JMenu>
+
+                    <JMenu label="subscription management" >
+                    </JMenu>
                 </JMenu>
             </JMenuBar>
 

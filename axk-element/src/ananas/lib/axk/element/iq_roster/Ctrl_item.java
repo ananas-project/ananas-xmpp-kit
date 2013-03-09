@@ -28,4 +28,8 @@ public class Ctrl_item extends AbstractXmppObject {
 		return (Xmpp_item) this.getTarget(true);
 	}
 
+	public boolean append_child_group(Ctrl_group group) {
+		this.target_item().appendGroup(group.target_group());
+		return true;
+	}
 }

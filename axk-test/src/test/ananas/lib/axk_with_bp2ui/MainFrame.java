@@ -33,6 +33,8 @@ public class MainFrame {
 	private final XmppClient mClient;
 	private JTextField mTextTo;
 
+	private StanzaTemplateSet mTempSet;
+
 	public MainFrame(XmppClient client) {
 
 		this.mClient = client;
@@ -88,6 +90,16 @@ public class MainFrame {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public StanzaTemplateSet getTemplateSet() {
+		StanzaTemplateSet ts = this.mTempSet;
+		if (ts == null) {
+			ts = new StanzaTemplateSet();
+			ts.load();
+			this.mTempSet = ts;
+		}
+		return ts;
 	}
 
 	private void installCommands(ICommandRegistrar cr) {
@@ -151,28 +163,7 @@ public class MainFrame {
 				System.out.println("...");
 			}
 		});
-		// template ////////////////////////////////////////////////////
-		cr.reg(R.command.temp_message, new Runnable() {
-
-			@Override
-			public void run() {
-				MainFrame.this._loadXmlToSendBox(R.file.temp_message_xml);
-			}
-		});
-		cr.reg(R.command.temp_presence, new Runnable() {
-
-			@Override
-			public void run() {
-				MainFrame.this._loadXmlToSendBox(R.file.temp_presence_xml);
-			}
-		});
-		cr.reg(R.command.temp_iq, new Runnable() {
-
-			@Override
-			public void run() {
-				MainFrame.this._loadXmlToSendBox(R.file.temp_iq_xml);
-			}
-		});
+		// end ////////////////////////////////////////////////////
 
 	}
 
@@ -327,6 +318,11 @@ public class MainFrame {
 
 		@Override
 		public boolean processEvent(ActionEvent e) {
+
+			if (this._tryAsTemplate(e)) {
+				return true;
+			}
+
 			String cmd = e.getActionCommand();
 			Runnable runn = this.mTable.get(cmd);
 			if (runn == null) {
@@ -335,6 +331,19 @@ public class MainFrame {
 				runn.run();
 				return true;
 			}
+		}
+
+		private boolean _tryAsTemplate(ActionEvent e) {
+			String cmd = e.getActionCommand();
+			StanzaTemplateSet ts = MainFrame.this.getTemplateSet();
+			String raw = ts.findRawString(cmd);
+			if (raw == null) {
+				return false;
+			}
+			MainFrame.this._updateTempLoaderProperties();
+			raw = MainFrame.this.mTempLoader._processMacro(raw);
+			MainFrame.this.mTextSend.setText(raw);
+			return true;
 		}
 
 		@Override
@@ -348,5 +357,10 @@ public class MainFrame {
 
 	public void show() {
 		this.mFrame.setVisible(true);
+	}
+
+	public void _updateTempLoaderProperties() {
+		Properties prop = this.mTempLoader.getProperties();
+		prop.setProperty("${stanza_attr_to}", this.mTextTo.getText());
 	}
 }

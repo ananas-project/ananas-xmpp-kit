@@ -22,12 +22,18 @@
 			<attribute name="jid" />
 			<attribute name="subscription" />
 			<attribute name="name" />
-			<!-- <element name="test" type="java.lang.Object" /> -->
+			<element name="group" type="#group" />
 		</class>
 
 		<class name="query" isElement="true">
 			<!-- <attribute name="id" /> -->
 			<element name="item" type="#item" />
+		</class>
+
+		<class name="group" isElement="true">
+			<!-- <attribute name="id" /> -->
+			<!-- <element name="item" type="#item" /> -->
+			<text />
 		</class>
 
 	</namespace>
