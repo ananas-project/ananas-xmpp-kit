@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -14,16 +15,25 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.IExCore;
+import ananas.lib.axk.api.roster.IExRosterManager;
+import ananas.lib.axk.api.roster.IRosterContact;
+import ananas.lib.axk.api.roster.IRosterGroup;
 import ananas.lib.blueprint2.Blueprint2;
 import ananas.lib.blueprint2.awt.util.IResponseChainNode;
 import ananas.lib.blueprint2.dom.IDocument;
 import ananas.lib.io.IConnector;
 import ananas.lib.io.IStreamConnection;
+import ananas.lib.util.log4j.AbstractLoggerFactory;
 
 public class MainFrame {
+
+	private final static Logger logger = (new AbstractLoggerFactory() {
+	}).getLogger();
 
 	private JFrame mFrame;
 	private JTextArea mTextSend;
@@ -153,7 +163,31 @@ public class MainFrame {
 
 			@Override
 			public void run() {
-				System.out.println("...");
+
+				XmppClient client = MainFrame.this.mClient;
+				IExRosterManager api = (IExRosterManager) client
+						.getExAPI(IExRosterManager.class);
+				Collection<IRosterContact> conts = api.getContacts();
+				Collection<IRosterGroup> groups = api.getGroups();
+				StringBuilder sb = new StringBuilder();
+				logger.info("<roster>");
+				for (IRosterGroup item : groups) {
+					logger.info("group : " + item.getName());
+				}
+				for (IRosterContact item : conts) {
+					sb.setLength(0);
+					sb.append("contact : ");
+					sb.append(" addr=" + item.getAddress());
+					sb.append(" nickname=" + item.getName());
+					sb.append(" revision=" + item.getRevision());
+					sb.append(" subscription=" + item.getSubscription());
+					sb.append(" groups=|");
+					for (IRosterGroup g : item.getOwnerGroups()) {
+						sb.append(g.getName() + "|");
+					}
+					logger.info(sb.toString());
+				}
+				logger.info("</roster>");
 			}
 		});
 		cr.reg(R.command.view_print_presence_table, new Runnable() {

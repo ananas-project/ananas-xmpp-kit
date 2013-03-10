@@ -15,6 +15,8 @@ public interface IExRosterManager extends XmppClientExAPI {
 
 	// local methods
 
+	int getRevision();
+
 	void reset();
 
 	boolean isAutoPullAfterBinding();

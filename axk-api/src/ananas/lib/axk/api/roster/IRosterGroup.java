@@ -1,17 +1,19 @@
 package ananas.lib.axk.api.roster;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface IRosterGroup {
 
+	int getRevision();
+
 	IExRosterManager getRoster();
 
-	List<IRosterContact> listContacts();
+	Collection<IRosterContact> getContacts();
 
 	// binding
-	boolean bind(IRosterContact group);
+	boolean bind(IRosterContact contact);
 
-	boolean unbind(IRosterContact group);
+	boolean unbind(IRosterContact contact);
 
 	// attribute
 	String getName();

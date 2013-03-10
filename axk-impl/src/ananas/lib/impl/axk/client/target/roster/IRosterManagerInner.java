@@ -4,7 +4,7 @@ import ananas.lib.axk.api.roster.IExRosterManager;
 
 public interface IRosterManagerInner {
 
-	IExRosterManager toIExRosterManager();
+	IExRosterManager toOuter();
 
 	IRosterManagerInnerCallback getCallback();
 }
