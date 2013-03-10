@@ -2,34 +2,41 @@ package ananas.lib.axk.constant;
 
 public interface XmppStatus {
 
-	XmppStatus init = F._new("init");
-	XmppStatus online = F._new("online");
-	XmppStatus offline = F._new("offline");
-	XmppStatus dropped = F._new("dropped");
-	// XmppStatus logining = F._new("logining");
-	XmppStatus connect = F._new("connect");
-	XmppStatus error = F._new("error");
-	XmppStatus closed = F._new("closed");
-	XmppStatus starttls = F._new("tls");
-	XmppStatus startsasl = F._new("sasl");
-	XmppStatus bind = F._new("bind");
+	XmppStatus init = Factory.newInstance("init");
+	XmppStatus online = Factory.newInstance("online");
+	XmppStatus offline = Factory.newInstance("offline");
+	XmppStatus dropped = Factory.newInstance("dropped");
 
-	class F {
+	XmppStatus connect = Factory.newInstance("connect");
+	XmppStatus error = Factory.newInstance("error");
+	XmppStatus closed = Factory.newInstance("closed");
+	XmppStatus starttls = Factory.newInstance("tls");
+	XmppStatus startsasl = Factory.newInstance("sasl");
+	XmppStatus bind = Factory.newInstance("bind");
 
-		private static XmppStatus _new(String string) {
+	class Factory {
+
+		public static XmppStatus getInstance(String string) {
+			return s_set.get(string);
+		}
+
+		private final static AbstractXmppConstSet<XmppStatus> s_set;
+
+		private static XmppStatus newInstance(String string) {
 			return new MyImpl(string);
 		}
 
-		private static class MyImpl implements XmppStatus {
+		static {
+			XmppStatus[] array = { init, online, offline, dropped, connect,
+					error, closed, starttls, startsasl, bind };
+			s_set = new AbstractXmppConstSet<XmppStatus>(array, init);
+		}
 
-			private final String mText;
+		private static class MyImpl extends AbstractXmppConst implements
+				XmppStatus {
 
-			public MyImpl(String string) {
-				this.mText = string;
-			}
-
-			public String toString() {
-				return this.mText;
+			public MyImpl(String text) {
+				super(text);
 			}
 		}
 	}

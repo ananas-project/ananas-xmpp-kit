@@ -1,17 +1,14 @@
 package ananas.lib.axk.constant;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public interface XmppPresenceType {
 
-	XmppPresenceType subscribe = Factory._new("subscribe");
-	XmppPresenceType subscribed = Factory._new("subscribed");
-	XmppPresenceType unsubscribed = Factory._new("unsubscribed");
-	XmppPresenceType unsubscribe = Factory._new("unsubscribe");
-	XmppPresenceType unavailable = Factory._new("unavailable");
-	XmppPresenceType error = Factory._new("error");
-	XmppPresenceType probe = Factory._new("probe");
+	XmppPresenceType subscribe = Factory.newInstance("subscribe");
+	XmppPresenceType subscribed = Factory.newInstance("subscribed");
+	XmppPresenceType unsubscribed = Factory.newInstance("unsubscribed");
+	XmppPresenceType unsubscribe = Factory.newInstance("unsubscribe");
+	XmppPresenceType unavailable = Factory.newInstance("unavailable");
+	XmppPresenceType error = Factory.newInstance("error");
+	XmppPresenceType probe = Factory.newInstance("probe");
 
 	/**
 	 * implements
@@ -19,40 +16,30 @@ public interface XmppPresenceType {
 
 	class Factory {
 
-		private static Map<String, XmppPresenceType> s_map;
-
-		public static XmppPresenceType getInstance(String s) {
-			Map<String, XmppPresenceType> map = s_map;
-			if (map == null) {
-				XmppPresenceType[] array = { subscribe, subscribed,
-						unsubscribed, unsubscribe, unavailable, error, probe };
-				map = new HashMap<String, XmppPresenceType>();
-				for (XmppPresenceType item : array) {
-					map.put(item.toString(), item);
-				}
-			}
-			XmppPresenceType rlt = map.get(s);
-			if (rlt == null) {
-				rlt = unavailable;
-			}
-			return rlt;
+		public static XmppPresenceType getInstance(String string) {
+			return s_set.get(string);
 		}
 
-		private static XmppPresenceType _new(String string) {
+		private final static AbstractXmppConstSet<XmppPresenceType> s_set;
+
+		private static XmppPresenceType newInstance(String string) {
 			return new MyImpl(string);
 		}
 
-		private static class MyImpl implements XmppPresenceType {
+		static {
+			XmppPresenceType[] array = { subscribe, subscribed, unsubscribed,
+					unsubscribe, unavailable, error, probe };
+			s_set = new AbstractXmppConstSet<XmppPresenceType>(array,
+					unavailable);
+		}
 
-			private final String mText;
+		private static class MyImpl extends AbstractXmppConst implements
+				XmppPresenceType {
 
-			public MyImpl(String string) {
-				this.mText = string;
-			}
-
-			public String toString() {
-				return this.mText;
+			public MyImpl(String text) {
+				super(text);
 			}
 		}
 	}
+
 }

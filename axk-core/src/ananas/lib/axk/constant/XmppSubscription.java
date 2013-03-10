@@ -2,10 +2,10 @@ package ananas.lib.axk.constant;
 
 public interface XmppSubscription {
 
-	XmppSubscription none = Factory._new("none");
-	XmppSubscription to = Factory._new("to");
-	XmppSubscription from = Factory._new("from");
-	XmppSubscription both = Factory._new("both");
+	XmppSubscription none = Factory.newInstance("none");
+	XmppSubscription to = Factory.newInstance("to");
+	XmppSubscription from = Factory.newInstance("from");
+	XmppSubscription both = Factory.newInstance("both");
 
 	/**
 	 * implements
@@ -13,33 +13,28 @@ public interface XmppSubscription {
 
 	class Factory {
 
-		public static XmppSubscription getInstance(String s) {
-			if (both.toString().equalsIgnoreCase(s)) {
-				return both;
-			} else if (to.toString().equalsIgnoreCase(s)) {
-				return to;
-			} else if (from.toString().equalsIgnoreCase(s)) {
-				return from;
-			} else {
-				return none;
-			}
+		public static XmppSubscription getInstance(String string) {
+			return s_set.get(string);
 		}
 
-		private static XmppSubscription _new(String string) {
+		private final static AbstractXmppConstSet<XmppSubscription> s_set;
+
+		private static XmppSubscription newInstance(String string) {
 			return new MyImpl(string);
 		}
 
-		private static class MyImpl implements XmppSubscription {
+		static {
+			XmppSubscription[] array = { none, to, from, both };
+			s_set = new AbstractXmppConstSet<XmppSubscription>(array, none);
+		}
 
-			private final String mText;
+		private static class MyImpl extends AbstractXmppConst implements
+				XmppSubscription {
 
-			public MyImpl(String string) {
-				this.mText = string;
-			}
-
-			public String toString() {
-				return this.mText;
+			public MyImpl(String text) {
+				super(text);
 			}
 		}
 	}
+
 }

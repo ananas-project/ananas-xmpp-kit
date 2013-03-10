@@ -8,6 +8,8 @@ import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppEvent;
 import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.presence.IExPresenceManager;
+import ananas.lib.axk.api.presence.IPresenceRes;
+import ananas.lib.axk.api.presence.IPresenceSet;
 import ananas.lib.axk.constant.XmppStatus;
 import ananas.lib.axk.element.jabber_client.Xmpp_presence;
 import ananas.lib.axk.event.DataEvent;
@@ -107,9 +109,31 @@ public class Tar_presence_manager extends Tar_abstractClient implements
 		}
 	}
 
+//	  final Map < XmppAddress,  >  mTableForPrescen ;
+	  
 	private void onReceiveStanzaPresence(Object data, Xmpp_presence pres) {
-		// TODO Auto-generated method stub
 
+		XmppAddress addrFrom = pres.getFrom();
+		 ;
+
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IPresenceSet getPresenceSet(XmppAddress jid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IPresenceRes getPresenceRes(XmppAddress jid) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
