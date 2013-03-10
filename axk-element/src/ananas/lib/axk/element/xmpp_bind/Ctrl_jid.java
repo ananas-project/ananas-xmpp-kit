@@ -1,7 +1,7 @@
 package ananas.lib.axk.element.xmpp_bind;
 
-import ananas.lib.blueprint.core.dom.AbstractElement;
-import ananas.lib.blueprint.core.dom.BPText;
+import ananas.lib.blueprint3.core.dom.AbstractElement;
+import ananas.lib.blueprint3.core.dom.BPText;
 
 public class Ctrl_jid extends AbstractElement {
 

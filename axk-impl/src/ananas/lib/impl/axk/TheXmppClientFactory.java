@@ -6,9 +6,9 @@ import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppClientFactory;
 import ananas.lib.axk.XmppEnvironment;
-import ananas.lib.blueprint.core.dom.BPDocument;
-import ananas.lib.blueprint.core.lang.BPDocumentLoader;
-import ananas.lib.blueprint.core.lang.BPEnvironment;
+import ananas.lib.blueprint3.core.dom.BPDocument;
+import ananas.lib.blueprint3.core.lang.BPDocumentLoader;
+import ananas.lib.blueprint3.core.lang.BPEnvironment;
 import ananas.lib.impl.axk.client.target.Tar_connection;
 
 public class TheXmppClientFactory implements XmppClientFactory {

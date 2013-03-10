@@ -3,7 +3,7 @@ package ananas.lib.axk.element.iq_roster;
 import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.constant.XmppSubscription;
 import ananas.lib.axk.element.AbstractXmppObject;
-import ananas.lib.blueprint.core.dom.BPAttribute;
+import ananas.lib.blueprint3.core.dom.BPAttribute;
 
 public class Ctrl_item extends AbstractXmppObject {
 

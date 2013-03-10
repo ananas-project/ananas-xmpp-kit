@@ -17,19 +17,16 @@ public interface XmppStatus {
 	class Factory {
 
 		public static XmppStatus getInstance(String string) {
-			return s_set.get(string);
+			if (s_set == null) {
+				s_set = new AbstractXmppConstSet(init);
+			}
+			return (XmppStatus) s_set.get(string);
 		}
 
-		private final static AbstractXmppConstSet<XmppStatus> s_set;
+		private static AbstractXmppConstSet s_set;
 
 		private static XmppStatus newInstance(String string) {
 			return new MyImpl(string);
-		}
-
-		static {
-			XmppStatus[] array = { init, online, offline, dropped, connect,
-					error, closed, starttls, startsasl, bind };
-			s_set = new AbstractXmppConstSet<XmppStatus>(array, init);
 		}
 
 		private static class MyImpl extends AbstractXmppConst implements
@@ -40,4 +37,5 @@ public interface XmppStatus {
 			}
 		}
 	}
+
 }

@@ -1,8 +1,8 @@
 package ananas.lib.axk.element.stream;
 
-import ananas.lib.blueprint.core.dom.AbstractElement;
-import ananas.lib.blueprint.core.dom.BPAttribute;
-import ananas.lib.blueprint.core.dom.BPElement;
+import ananas.lib.blueprint3.core.dom.AbstractElement;
+import ananas.lib.blueprint3.core.dom.BPAttribute;
+import ananas.lib.blueprint3.core.dom.BPElement;
 
 public class Ctrl_stream extends AbstractElement {
 

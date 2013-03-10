@@ -2,8 +2,8 @@ package ananas.lib.axk.element.jabber_client;
 
 import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.element.AbstractXmppObject;
-import ananas.lib.blueprint.core.dom.BPAttribute;
-import ananas.lib.blueprint.core.dom.BPElement;
+import ananas.lib.blueprint3.core.dom.BPAttribute;
+import ananas.lib.blueprint3.core.dom.BPElement;
 
 public class Ctrl_Stanza extends AbstractXmppObject {
 

@@ -11,18 +11,16 @@ public interface XmppShow {
 	class Factory {
 
 		public static XmppShow getInstance(String string) {
-			return s_set.get(string);
+			if (s_set == null) {
+				s_set = new AbstractXmppConstSet(empty);
+			}
+			return (XmppShow) s_set.get(string);
 		}
 
-		private final static AbstractXmppConstSet<XmppShow> s_set;
+		private static AbstractXmppConstSet s_set;
 
 		private static XmppShow newInstance(String string) {
 			return new MyImpl(string);
-		}
-
-		static {
-			XmppShow[] array = { away, chat, dnd, xa, empty };
-			s_set = new AbstractXmppConstSet<XmppShow>(array, empty);
 		}
 
 		private static class MyImpl extends AbstractXmppConst implements

@@ -14,18 +14,16 @@ public interface XmppSubscription {
 	class Factory {
 
 		public static XmppSubscription getInstance(String string) {
-			return s_set.get(string);
+			if (s_set == null) {
+				s_set = new AbstractXmppConstSet(none);
+			}
+			return (XmppSubscription) s_set.get(string);
 		}
 
-		private final static AbstractXmppConstSet<XmppSubscription> s_set;
+		private static AbstractXmppConstSet s_set;
 
 		private static XmppSubscription newInstance(String string) {
 			return new MyImpl(string);
-		}
-
-		static {
-			XmppSubscription[] array = { none, to, from, both };
-			s_set = new AbstractXmppConstSet<XmppSubscription>(array, none);
 		}
 
 		private static class MyImpl extends AbstractXmppConst implements

@@ -4,7 +4,7 @@ import java.util.Vector;
 
 import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.XmppEnvironmentLoader;
-import ananas.lib.blueprint.core.lang.BPNamespace;
+import ananas.lib.blueprint3.core.lang.BPNamespace;
 
 public class TheXmppEnvironmentLoader implements XmppEnvironmentLoader {
 

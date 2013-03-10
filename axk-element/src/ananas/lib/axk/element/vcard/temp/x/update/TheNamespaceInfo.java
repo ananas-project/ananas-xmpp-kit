@@ -1,6 +1,6 @@
 package ananas.lib.axk.element.vcard.temp.x.update;
 
-import ananas.lib.blueprint.core.util.nsloader.AbstractBPNamespaceInfo;
+import ananas.lib.blueprint3.core.util.nsloader.AbstractBPNamespaceInfo;
 
 public class TheNamespaceInfo extends AbstractBPNamespaceInfo {
 

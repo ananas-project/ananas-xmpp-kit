@@ -2,7 +2,7 @@ package ananas.lib.axk.element;
 
 import ananas.lib.axk.DefaultXmppAddress;
 import ananas.lib.axk.XmppAddress;
-import ananas.lib.blueprint.core.dom.AbstractElement;
+import ananas.lib.blueprint3.core.dom.AbstractElement;
 
 public abstract class AbstractXmppObject extends AbstractElement {
 

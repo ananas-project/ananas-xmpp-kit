@@ -1,4 +1,4 @@
-package test.ananas.lib.axk_with_bp2ui;
+package test.ananas.lib.axk;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import test.ananas.lib.axk_with_bp2ui.MainFrame;
 import ananas.lib.axk.DefaultXmppAccount;
 import ananas.lib.axk.DefaultXmppAddress;
 import ananas.lib.axk.XmppAccount;
@@ -23,13 +24,13 @@ import ananas.lib.axk.api.IExCore;
 import ananas.lib.axk.security.AXKSecurityManager;
 import ananas.lib.util.log4j.AbstractLoggerFactory;
 
-public class MainForTestWithBp2ui implements Runnable, XmppEventListener {
+public class Main implements Runnable, XmppEventListener {
 
 	private final static Logger logger = (new AbstractLoggerFactory() {
 	}).getLogger();
 
 	public static void main(String[] arg) {
-		javax.swing.SwingUtilities.invokeLater(new MainForTestWithBp2ui());
+		javax.swing.SwingUtilities.invokeLater(new Main());
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class MainForTestWithBp2ui implements Runnable, XmppEventListener {
 			File file = new File(path);
 			file = file.getParentFile();
 			file = new File(file, "account.properties");
-			System.out.println("load " + file);
+			logger.trace("load " + file);
 			FileInputStream in = new FileInputStream(file);
 			prop.load(in);
 		} catch (IOException e) {

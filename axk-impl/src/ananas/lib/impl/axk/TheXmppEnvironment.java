@@ -3,8 +3,8 @@ package ananas.lib.impl.axk;
 import ananas.lib.axk.XmppClientFactory;
 import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.security.AXKSecurityManager;
-import ananas.lib.blueprint.core.Blueprint;
-import ananas.lib.blueprint.core.lang.BPEnvironment;
+import ananas.lib.blueprint3.core.Blueprint;
+import ananas.lib.blueprint3.core.lang.BPEnvironment;
 import ananas.lib.impl.axk.client.TheXmppClientNsInfo;
 import ananas.lib.impl.axk.security.AXKSecurityManagerImpl;
 
@@ -34,7 +34,7 @@ public class TheXmppEnvironment implements XmppEnvironment {
 
 	private void init() {
 		this.mBpEnvi.loadNamespace(
-				"ananas.lib.blueprint.loader.eom.EomReflectInfo", true);
+				"ananas.lib.blueprint3.loader.eom.EomReflectInfo", true);
 		this.mBpEnvi.loadNamespace(TheXmppClientNsInfo.class, true);
 	}
 

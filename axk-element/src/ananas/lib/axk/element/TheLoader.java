@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-import ananas.lib.blueprint.core.lang.BPEnvironment;
-import ananas.lib.blueprint.core.lang.BlueprintException;
-import ananas.lib.blueprint.core.util.nsloader.BPNamespaceInfo;
-import ananas.lib.blueprint.core.util.nsloader.BPNamespaceLoader;
+import ananas.lib.blueprint3.core.lang.BPEnvironment;
+import ananas.lib.blueprint3.core.lang.BlueprintException;
+import ananas.lib.blueprint3.core.util.nsloader.BPNamespaceInfo;
+import ananas.lib.blueprint3.core.util.nsloader.BPNamespaceLoader;
 
 public class TheLoader implements BPNamespaceLoader {
 

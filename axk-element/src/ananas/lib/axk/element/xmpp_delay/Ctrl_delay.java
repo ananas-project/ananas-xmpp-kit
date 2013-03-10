@@ -1,7 +1,7 @@
 package ananas.lib.axk.element.xmpp_delay;
 
 import ananas.lib.axk.element.AbstractXmppObject;
-import ananas.lib.blueprint.core.dom.BPAttribute;
+import ananas.lib.blueprint3.core.dom.BPAttribute;
 
 public class Ctrl_delay extends AbstractXmppObject {
 

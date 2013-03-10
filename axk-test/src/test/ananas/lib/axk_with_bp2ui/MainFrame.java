@@ -3,7 +3,6 @@ package test.ananas.lib.axk_with_bp2ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,9 +22,9 @@ import ananas.lib.axk.api.IExCore;
 import ananas.lib.axk.api.roster.IExRosterManager;
 import ananas.lib.axk.api.roster.IRosterContact;
 import ananas.lib.axk.api.roster.IRosterGroup;
-import ananas.lib.blueprint2.Blueprint2;
-import ananas.lib.blueprint2.awt.util.IResponseChainNode;
-import ananas.lib.blueprint2.dom.IDocument;
+import ananas.lib.blueprint3.core.Blueprint;
+import ananas.lib.blueprint3.core.dom.BPDocument;
+import ananas.lib.blueprint3.swing.helper.IResponseChainNode;
 import ananas.lib.io.IConnector;
 import ananas.lib.io.IStreamConnection;
 import ananas.lib.util.log4j.AbstractLoggerFactory;
@@ -48,7 +47,7 @@ public class MainFrame {
 	public MainFrame(XmppClient client) {
 
 		this.mClient = client;
-		final IDocument doc = this.loadDocument(R.file.mainframe_xml);
+		BPDocument doc = this.loadDocument(R.file.MainFrame_xml);
 		this.mFrame = (JFrame) doc.findTargetById(R.id.root);
 		this.mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -93,10 +92,10 @@ public class MainFrame {
 		});
 	}
 
-	public IDocument loadDocument(String uri) {
+	public BPDocument loadDocument(String uri) {
 		try {
-			return Blueprint2.getInstance().loadDocument(uri);
-		} catch (IOException e) {
+			return Blueprint.loadDocument(uri);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}

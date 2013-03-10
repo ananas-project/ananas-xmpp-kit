@@ -1,7 +1,7 @@
 package ananas.lib.axk.element.xmpp_tls;
 
-import ananas.lib.blueprint.core.dom.AbstractElement;
-import ananas.lib.blueprint.core.dom.BPAttribute;
+import ananas.lib.blueprint3.core.dom.AbstractElement;
+import ananas.lib.blueprint3.core.dom.BPAttribute;
 
 public class Ctrl_required extends AbstractElement {
 

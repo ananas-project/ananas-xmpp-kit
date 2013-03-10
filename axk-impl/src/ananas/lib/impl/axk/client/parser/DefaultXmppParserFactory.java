@@ -12,16 +12,16 @@ import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.element.stream.Ctrl_stream;
 import ananas.lib.axk.element.stream.XmppStreamListener;
 import ananas.lib.axk.element.stream.Xmpp_stream;
-import ananas.lib.blueprint.core.dom.BPDocument;
-import ananas.lib.blueprint.core.dom.BPElement;
-import ananas.lib.blueprint.core.lang.BPEnvironment;
-import ananas.lib.blueprint.core.lang.BPNamespace;
-import ananas.lib.blueprint.core.lang.BPNamespaceRegistrar;
-import ananas.lib.blueprint.core.lang.BPType;
-import ananas.lib.blueprint.core.util.BPBuilder;
-import ananas.lib.blueprint.core.util.BPElementProvider;
-import ananas.lib.blueprint.core.util.BPErrorHandler;
-import ananas.lib.blueprint.core.util.BPXMLReaderFactory;
+import ananas.lib.blueprint3.core.dom.BPDocument;
+import ananas.lib.blueprint3.core.dom.BPElement;
+import ananas.lib.blueprint3.core.lang.BPEnvironment;
+import ananas.lib.blueprint3.core.lang.BPNamespace;
+import ananas.lib.blueprint3.core.lang.BPNamespaceRegistrar;
+import ananas.lib.blueprint3.core.lang.BPType;
+import ananas.lib.blueprint3.core.util.BPBuilder;
+import ananas.lib.blueprint3.core.util.BPElementProvider;
+import ananas.lib.blueprint3.core.util.BPErrorHandler;
+import ananas.lib.blueprint3.core.util.BPXMLReaderFactory;
 import ananas.lib.util.log4j.AbstractLoggerFactory;
 
 public class DefaultXmppParserFactory implements XmppParserFactory {

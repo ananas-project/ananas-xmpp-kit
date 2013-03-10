@@ -17,20 +17,16 @@ public interface XmppPresenceType {
 	class Factory {
 
 		public static XmppPresenceType getInstance(String string) {
-			return s_set.get(string);
+			if (s_set == null) {
+				s_set = new AbstractXmppConstSet(unavailable);
+			}
+			return (XmppPresenceType) s_set.get(string);
 		}
 
-		private final static AbstractXmppConstSet<XmppPresenceType> s_set;
+		private static AbstractXmppConstSet s_set;
 
 		private static XmppPresenceType newInstance(String string) {
 			return new MyImpl(string);
-		}
-
-		static {
-			XmppPresenceType[] array = { subscribe, subscribed, unsubscribed,
-					unsubscribe, unavailable, error, probe };
-			s_set = new AbstractXmppConstSet<XmppPresenceType>(array,
-					unavailable);
 		}
 
 		private static class MyImpl extends AbstractXmppConst implements

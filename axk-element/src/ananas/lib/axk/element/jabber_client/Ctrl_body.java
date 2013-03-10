@@ -1,7 +1,7 @@
 package ananas.lib.axk.element.jabber_client;
 
 import ananas.lib.axk.element.AbstractXmppObject;
-import ananas.lib.blueprint.core.dom.BPText;
+import ananas.lib.blueprint3.core.dom.BPText;
 
 public class Ctrl_body extends AbstractXmppObject {
 
