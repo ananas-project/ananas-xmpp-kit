@@ -5,7 +5,7 @@
 	<Head>
 		<Import type="class:NamespaceInfo" value="ananas.lib.blueprint3.awt.AwtNamespaceInfo" />
 
-		<Import type="class:NamespaceInfo" value="ananas.lib.blueprint3.swing.SwingNamespaceInfo" />
+		<Import type="class:NamespaceInfo" value="ananas.lib.blueprint3.awt.swing.SwingNamespaceInfo" />
 
 	</Head>
 
