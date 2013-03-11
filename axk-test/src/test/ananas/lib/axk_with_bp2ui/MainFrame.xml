@@ -1,210 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Blueprint xmlns:bp="xmlns:ananas:blueprint:base"
-    xmlns:awt="xmlns:ananas:blueprint:awt"
-    xmlns:swing="xmlns:ananas:blueprint:swing"
-    xmlns="xmlns:ananas:blueprint:base" >
+<Blueprint xmlns:bp="xmlns:ananas:blueprint:base" xmlns:awt="xmlns:ananas:blueprint:awt"
+	xmlns:swing="xmlns:ananas:blueprint:swing" xmlns="xmlns:ananas:blueprint:base">
 
-    <Head>
+	<Head>
+		<Import type="class:NamespaceInfo" value="ananas.lib.blueprint3.awt.AwtNamespaceInfo" />
 
-        <Import
-            type="class:NamespaceLoader"
-            value="ananas.lib.blueprint2.swing.NamespaceLoader" />
+		<Import type="class:NamespaceInfo" value="ananas.lib.blueprint3.swing.SwingNamespaceInfo" />
 
-        <Import
-            type="class:NamespaceLoader"
-            value="ananas.lib.blueprint2.awt.NamespaceLoader" />
-    </Head>
+	</Head>
 
-    <Body>
+	<Body>
 
-        <awt:responseChain id="resp_chain" >
+		<awt:responseChain id="resp_chain">
 
-            <awt:responseChainNode />
+			<awt:responseChainNode />
 
-            <awt:responseChainNode />
+			<awt:responseChainNode />
 
-            <awt:responseChainNode id="resp_chain_node_3" />
-        </awt:responseChain>
+			<awt:responseChainNode id="resp_chain_node_3" />
+		</awt:responseChain>
 
-        <JFrame
-            id="root"
-            height="480"
-            title="Test AXK with BP2UI"
-            width="640"
-            x="100"
-            xmlns="xmlns:ananas:blueprint:swing"
-            y="100" >
+		<JFrame id="root" height="480" title="Test AXK with BP2UI"
+			width="640" x="100" xmlns="xmlns:ananas:blueprint:swing" y="100">
 
-            <JMenuBar actionListener="#resp_chain" >
+			<JMenuBar actionListener="#resp_chain">
 
-                <JMenu label="Connection" >
+				<JMenu label="Connection">
 
-                    <JMenuItem
-                        command="conn_reset"
-                        label="Reset" />
+					<JMenuItem command="conn_reset" label="Reset" />
 
-                    <JMenuItem
-                        command="conn_connect"
-                        label="Connect" />
+					<JMenuItem command="conn_connect" label="Connect" />
 
-                    <JMenuItem
-                        command="conn_disconnect"
-                        label="Disconnect" />
+					<JMenuItem command="conn_disconnect" label="Disconnect" />
 
-                    <JMenuItem
-                        command="conn_close"
-                        label="Close" />
-                </JMenu>
+					<JMenuItem command="conn_close" label="Close" />
+				</JMenu>
 
-                <JMenu label="View" >
+				<JMenu label="View">
 
-                    <JMenuItem
-                        command="view_clear_console"
-                        label="clear console" />
+					<JMenuItem command="view_clear_console" label="clear console" />
 
-                    <JMenuItem
-                        command="view_print_roster"
-                        label="print roster" />
+					<JMenuItem command="view_print_roster" label="print roster" />
 
-                    <JMenuItem
-                        command="view_print_presence_table"
-                        label="print presence-table" />
-                </JMenu>
+					<JMenuItem command="view_print_presence_table" label="print presence-table" />
+				</JMenu>
 
-                <JMenu label="Template" >
+				<JMenu label="Template">
 
-                    <JMenuItem
-                        command="temp_message"
-                        label="send message" />
+					<JMenuItem command="temp_message" label="send message" />
 
-                    <JMenuItem
-                        command="temp_presence"
-                        label="send presence" />
+					<JMenuItem command="temp_presence" label="send presence" />
 
-                    <JMenuItem
-                        command="temp_iq"
-                        label="send iq" />
+					<JMenuItem command="temp_iq" label="send iq" />
 
-                    <JMenu label="roster management" >
+					<JMenu label="roster management">
 
-                        <JMenuItem
-                            command="temp_roster_add"
-                            label="add contact" />
+						<JMenuItem command="temp_roster_add" label="add contact" />
 
-                        <JMenuItem
-                            command="temp_roster_modify"
-                            label="modify contact" />
+						<JMenuItem command="temp_roster_modify" label="modify contact" />
 
-                        <JMenuItem
-                            command="temp_roster_remove"
-                            label="remove contact" />
+						<JMenuItem command="temp_roster_remove" label="remove contact" />
 
-                        <JMenuItem
-                            command="temp_roster_pull"
-                            label="pull all" />
-                    </JMenu>
+						<JMenuItem command="temp_roster_pull" label="pull all" />
+					</JMenu>
 
-                    <JMenu label="subscription management" >
+					<JMenu label="subscription management">
 
-                        <JMenuItem
-                            command="temp_subscription_subscribe"
-                            label="do subscribe" />
+						<JMenuItem command="temp_subscription_subscribe" label="do subscribe" />
 
-                        <JMenuItem
-                            command="temp_subscription_subscribed"
-                            label="do subscribed" />
+						<JMenuItem command="temp_subscription_subscribed" label="do subscribed" />
 
-                        <JMenuItem
-                            command="temp_subscription_unsubscribe"
-                            label="do unsubscribe" />
+						<JMenuItem command="temp_subscription_unsubscribe"
+							label="do unsubscribe" />
 
-                        <JMenuItem
-                            command="temp_subscription_unsubscribed"
-                            label="do unsubscribed" />
+						<JMenuItem command="temp_subscription_unsubscribed"
+							label="do unsubscribed" />
 
-                        <JMenuItem
-                            command="temp_subscription_unavailable"
-                            label="do unavailable" />
-                    </JMenu>
-                </JMenu>
-            </JMenuBar>
+						<JMenuItem command="temp_subscription_unavailable"
+							label="do unavailable" />
+					</JMenu>
+				</JMenu>
+			</JMenuBar>
 
-            <JPanel>
+			<JPanel>
 
-                <awt:BorderLayout />
+				<awt:BorderLayout />
 
-                <position value="north" />
+				<position value="north" />
 
-                <JPanel preferredSizeY="30" >
+				<JPanel preferredSizeY="30">
 
-                    <awt:BorderLayout />
+					<awt:BorderLayout />
 
-                    <position value="west" />
+					<position value="west" />
 
-                    <JLabel text=" to jid: " />
+					<JLabel text=" to jid: " />
 
-                    <position value="center" />
+					<position value="center" />
 
-                    <JTextField id="text_to" />
-                </JPanel>
+					<JTextField id="text_to" />
+				</JPanel>
 
-                <position value="center" />
+				<position value="center" />
 
-                <JSplitPane
-                    orientation="vert"
-                    resizeWeight="0.5" >
+				<JSplitPane orientation="vert" resizeWeight="0.5">
 
-                    <position value="top" />
+					<position value="top" />
 
-                    <JPanel>
+					<JPanel>
 
-                        <awt:BorderLayout />
+						<awt:BorderLayout />
 
-                        <position value="center" />
+						<position value="center" />
 
-                        <JScrollPane>
+						<JScrollPane>
 
-                            <JTextArea
-                                id="text_prev_send"
-                                editable="false" />
-                        </JScrollPane>
+							<JTextArea id="text_prev_send" editable="false" />
+						</JScrollPane>
 
-                        <position value="east" />
+						<position value="east" />
 
-                        <JButton
-                            id="btn_copy_to_send"
-                            preferredSizeX="200"
-                            text="copy to send-box" />
-                    </JPanel>
+						<JButton id="btn_copy_to_send" preferredSizeX="200"
+							text="copy to send-box" />
+					</JPanel>
 
-                    <position value="bottom" />
+					<position value="bottom" />
 
-                    <JPanel>
+					<JPanel>
 
-                        <awt:BorderLayout />
+						<awt:BorderLayout />
 
-                        <position value="center" />
+						<position value="center" />
 
-                        <JScrollPane>
+						<JScrollPane>
 
-                            <JTextArea id="text_send" />
-                        </JScrollPane>
+							<JTextArea id="text_send" />
+						</JScrollPane>
 
-                        <position value="east" />
+						<position value="east" />
 
-                        <JButton
-                            id="btn_send"
-                            preferredSizeX="200"
-                            text="send" />
-                    </JPanel>
-                </JSplitPane>
+						<JButton id="btn_send" preferredSizeX="200" text="send" />
+					</JPanel>
+				</JSplitPane>
 
-                <position value="south" />
+				<position value="south" />
 
-                <JPanel preferredSizeY="30" >
-                </JPanel>
-            </JPanel>
-        </JFrame>
-    </Body>
+				<JPanel preferredSizeY="30">
+				</JPanel>
+			</JPanel>
+		</JFrame>
+	</Body>
 
 </Blueprint>

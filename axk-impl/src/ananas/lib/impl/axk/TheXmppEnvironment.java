@@ -35,6 +35,8 @@ public class TheXmppEnvironment implements XmppEnvironment {
 	private void init() {
 		this.mBpEnvi.loadNamespace(
 				"ananas.lib.blueprint3.loader.eom.EomReflectInfo", true);
+		this.mBpEnvi.loadNamespace(
+				"ananas.lib.blueprint3.element.bpbase.TheNamespaceInfo", true);
 		this.mBpEnvi.loadNamespace(TheXmppClientNsInfo.class, true);
 	}
 
