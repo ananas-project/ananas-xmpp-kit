@@ -9,8 +9,6 @@ import java.util.Map;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 
-import org.apache.log4j.Logger;
-
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.constant.XmppStatus;
@@ -24,7 +22,8 @@ import ananas.lib.axk.element.xmpp_tls.Xmpp_proceed;
 import ananas.lib.axk.element.xmpp_tls.Xmpp_starttls;
 import ananas.lib.axk.util.XmppStanzaBuilder;
 import ananas.lib.impl.axk.client.conn.XmppConnection.DefaultCreateContext;
-import ananas.lib.util.log4j.AbstractLoggerFactory;
+import ananas.lib.util.logging.AbstractLoggerFactory;
+import ananas.lib.util.logging.Logger;
 
 public class TheMainConnCtrl extends XmppConnectionController {
 

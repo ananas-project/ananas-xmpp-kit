@@ -3,10 +3,9 @@ package ananas.lib.impl.axk.security;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import org.apache.log4j.Logger;
-
 import ananas.lib.axk.security.AXKSecurityListener;
-import ananas.lib.util.log4j.AbstractLoggerFactory;
+import ananas.lib.util.logging.AbstractLoggerFactory;
+import ananas.lib.util.logging.Logger;
 
 public class DefaultAXKSecurityListener implements AXKSecurityListener {
 

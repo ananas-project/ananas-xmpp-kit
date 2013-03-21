@@ -4,8 +4,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ananas-base"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="/ananas-base-jar/jar-lib/log4j-1.2-api-2.0-beta4.jar"/>
-	<classpathentry kind="lib" path="/ananas-base-jar/jar-lib/log4j-api-2.0-beta4.jar"/>
-	<classpathentry kind="lib" path="/ananas-base-jar/jar-lib/log4j-core-2.0-beta4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

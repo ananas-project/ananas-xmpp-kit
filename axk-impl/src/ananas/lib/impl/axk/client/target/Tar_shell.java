@@ -1,7 +1,5 @@
 package ananas.lib.impl.axk.client.target;
 
-import org.apache.log4j.Logger;
-
 import ananas.lib.axk.DefaultXmppAccount;
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClient;
@@ -11,7 +9,8 @@ import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.IExCore;
 import ananas.lib.axk.api.IExShell;
 import ananas.lib.axk.constant.XmppStatus;
-import ananas.lib.util.log4j.AbstractLoggerFactory;
+import ananas.lib.util.logging.AbstractLoggerFactory;
+import ananas.lib.util.logging.Logger;
 
 public class Tar_shell extends Tar_abstractClient implements IExShell {
 

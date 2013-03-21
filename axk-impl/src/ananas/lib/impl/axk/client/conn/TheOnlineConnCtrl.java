@@ -1,9 +1,8 @@
 package ananas.lib.impl.axk.client.conn;
 
-import org.apache.log4j.Logger;
-
 import ananas.lib.axk.element.stream.Xmpp_stream;
-import ananas.lib.util.log4j.AbstractLoggerFactory;
+import ananas.lib.util.logging.AbstractLoggerFactory;
+import ananas.lib.util.logging.Logger;
 
 public class TheOnlineConnCtrl extends XmppConnectionController {
 

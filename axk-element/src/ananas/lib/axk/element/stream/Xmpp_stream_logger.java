@@ -2,9 +2,8 @@ package ananas.lib.axk.element.stream;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
-import ananas.lib.util.log4j.AbstractLoggerFactory;
+import ananas.lib.util.logging.AbstractLoggerFactory;
+import ananas.lib.util.logging.Logger;
 
 public class Xmpp_stream_logger {
 

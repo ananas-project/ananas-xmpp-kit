@@ -1,9 +1,8 @@
 package ananas.lib.axk.command;
 
-import org.apache.log4j.Logger;
-
 import ananas.lib.axk.XmppClient;
-import ananas.lib.util.log4j.AbstractLoggerFactory;
+import ananas.lib.util.logging.AbstractLoggerFactory;
+import ananas.lib.util.logging.Logger;
 
 public class TraceCommand extends ControlCommand {
 

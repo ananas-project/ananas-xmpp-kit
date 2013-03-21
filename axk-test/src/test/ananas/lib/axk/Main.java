@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-
 import test.ananas.lib.axk_with_bp2ui.MainFrame;
 import ananas.lib.axk.DefaultXmppAccount;
 import ananas.lib.axk.DefaultXmppAddress;
@@ -22,7 +20,8 @@ import ananas.lib.axk.XmppEventListener;
 import ananas.lib.axk.XmppUtil;
 import ananas.lib.axk.api.IExCore;
 import ananas.lib.axk.security.AXKSecurityManager;
-import ananas.lib.util.log4j.AbstractLoggerFactory;
+import ananas.lib.util.logging.AbstractLoggerFactory;
+import ananas.lib.util.logging.Logger;
 
 public class Main implements Runnable, XmppEventListener {
 

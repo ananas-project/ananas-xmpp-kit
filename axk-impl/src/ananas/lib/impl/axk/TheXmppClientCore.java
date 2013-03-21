@@ -1,7 +1,5 @@
 package ananas.lib.impl.axk;
 
-import org.apache.log4j.Logger;
-
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppClientExAPI;
@@ -10,7 +8,8 @@ import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.XmppEvent;
 import ananas.lib.axk.XmppEventListener;
 import ananas.lib.axk.api.IExCore;
-import ananas.lib.util.log4j.AbstractLoggerFactory;
+import ananas.lib.util.logging.AbstractLoggerFactory;
+import ananas.lib.util.logging.Logger;
 
 public class TheXmppClientCore implements XmppClient, IExCore {
 

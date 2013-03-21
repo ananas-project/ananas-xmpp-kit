@@ -9,8 +9,6 @@ import java.net.SocketAddress;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLContext;
 
-import org.apache.log4j.Logger;
-
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppClientExAPI;
@@ -27,7 +25,8 @@ import ananas.lib.impl.axk.client.conn.SocketKitFactory;
 import ananas.lib.impl.axk.client.conn.XmppConnection;
 import ananas.lib.impl.axk.client.conn.XmppConnection.DefaultCreateContext;
 import ananas.lib.impl.axk.client.conn.XmppConnectionListener;
-import ananas.lib.util.log4j.AbstractLoggerFactory;
+import ananas.lib.util.logging.AbstractLoggerFactory;
+import ananas.lib.util.logging.Logger;
 
 public class Tar_connection extends Tar_abstractClient implements IExConnection {
 

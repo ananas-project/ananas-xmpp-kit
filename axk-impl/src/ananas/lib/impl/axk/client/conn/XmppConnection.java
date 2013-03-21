@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import org.apache.log4j.Logger;
-
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.XmppEnvironment;
@@ -17,7 +15,8 @@ import ananas.lib.impl.axk.client.parser.DefaultXmppParserFactory;
 import ananas.lib.impl.axk.client.parser.XmppParser;
 import ananas.lib.impl.axk.client.parser.XmppParserCallback;
 import ananas.lib.impl.axk.client.parser.XmppParserFactory;
-import ananas.lib.util.log4j.AbstractLoggerFactory;
+import ananas.lib.util.logging.AbstractLoggerFactory;
+import ananas.lib.util.logging.Logger;
 
 public class XmppConnection implements Runnable {
 

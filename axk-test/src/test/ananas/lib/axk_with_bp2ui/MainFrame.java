@@ -14,8 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
-
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.IExCore;
@@ -25,9 +23,10 @@ import ananas.lib.axk.api.roster.IRosterGroup;
 import ananas.lib.blueprint3.awt.helper.IResponseChainNode;
 import ananas.lib.blueprint3.core.Blueprint;
 import ananas.lib.blueprint3.core.dom.BPDocument;
-import ananas.lib.io.IConnector;
-import ananas.lib.io.IStreamConnection;
-import ananas.lib.util.log4j.AbstractLoggerFactory;
+import ananas.lib.io.Connector;
+import ananas.lib.io.StreamConnection;
+import ananas.lib.util.logging.AbstractLoggerFactory;
+import ananas.lib.util.logging.Logger;
 
 public class MainFrame {
 
@@ -303,9 +302,9 @@ public class MainFrame {
 			try {
 				IExCore core = (IExCore) MainFrame.this.mClient
 						.getExAPI(IExCore.class);
-				IConnector con = core.getEnvironment().getBPEnvironment()
+				Connector con = core.getEnvironment().getBPEnvironment()
 						.getConnector();
-				IStreamConnection conn = (IStreamConnection) con.open(url);
+				StreamConnection conn = (StreamConnection) con.open(url);
 				InputStream in = conn.getInputStream();
 				byte[] buff = new byte[256];
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
