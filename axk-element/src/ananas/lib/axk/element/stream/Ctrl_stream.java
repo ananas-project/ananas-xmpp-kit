@@ -24,6 +24,10 @@ public class Ctrl_stream extends AbstractElement {
 		return true;
 	}
 
+	public boolean set_attribute_lang(BPAttribute attr) {
+		return true;
+	}
+
 	public boolean append_child_(BPElement child) {
 		Object rx = child.getTarget(true);
 		this.getTarget_stream().dispatchRxObject(rx);

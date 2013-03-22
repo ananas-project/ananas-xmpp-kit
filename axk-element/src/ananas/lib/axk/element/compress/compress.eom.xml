@@ -33,7 +33,7 @@
 			<attribute name="id" />
 
 			<!-- <element name="test" type="java.lang.Object" /> -->
-
+			<text />
 		</class>
 
 

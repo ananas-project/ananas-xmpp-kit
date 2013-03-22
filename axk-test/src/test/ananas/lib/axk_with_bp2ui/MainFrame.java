@@ -72,7 +72,10 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final String text = MainFrame.this.mTextSend.getText();
+				final String text = MainFrame.this.mTextSend.getText().trim();
+				if (text.length() < 1) {
+					return;
+				}
 				MainFrame.this.mTextSend.setText("");
 				MainFrame.this.mTextPrevSend.setText(text);
 				if (text.length() > 0) {
@@ -382,6 +385,8 @@ public class MainFrame {
 			StanzaTemplateSet ts = MainFrame.this.getTemplateSet();
 			String raw = ts.findRawString(cmd);
 			if (raw == null) {
+				return false;
+			} else if (raw.length() <= 0) {
 				return false;
 			}
 			MainFrame.this._updateTempLoaderProperties();

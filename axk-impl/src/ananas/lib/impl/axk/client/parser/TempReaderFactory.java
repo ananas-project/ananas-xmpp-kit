@@ -11,7 +11,7 @@ public class TempReaderFactory implements BPXMLReaderFactory {
 	@Override
 	public XMLReader newReader() throws SAXException {
 
-		String cls = "ananas.lib.blueprint.xmlparser.SAXParser";
+		String cls = "ananas.lib.blueprint3.xmlparser.SAXParser";
 		return XMLReaderFactory.createXMLReader(cls);
 	}
 

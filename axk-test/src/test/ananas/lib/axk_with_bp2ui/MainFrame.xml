@@ -5,7 +5,8 @@
 	<Head>
 		<Import type="class:NamespaceInfo" value="ananas.lib.blueprint3.awt.AwtNamespaceInfo" />
 
-		<Import type="class:NamespaceInfo" value="ananas.lib.blueprint3.awt.swing.SwingNamespaceInfo" />
+		<Import type="class:NamespaceInfo"
+			value="ananas.lib.blueprint3.awt.swing.SwingNamespaceInfo" />
 
 	</Head>
 
@@ -25,62 +26,63 @@
 
 			<JMenuBar actionListener="#resp_chain">
 
-				<JMenu label="Connection">
+				<JMenu text="Connection">
 
-					<JMenuItem command="conn_reset" label="Reset" />
+					<JMenuItem command="conn_reset" text="Reset" />
 
-					<JMenuItem command="conn_connect" label="Connect" />
+					<JMenuItem command="conn_connect" text="Connect" />
 
-					<JMenuItem command="conn_disconnect" label="Disconnect" />
+					<JMenuItem command="conn_disconnect" text="Disconnect" />
 
-					<JMenuItem command="conn_close" label="Close" />
+					<JMenuItem command="conn_close" text="Close" />
 				</JMenu>
 
-				<JMenu label="View">
+				<JMenu text="View">
 
-					<JMenuItem command="view_clear_console" label="clear console" />
+					<JMenuItem command="view_clear_console" text="clear console" />
 
-					<JMenuItem command="view_print_roster" label="print roster" />
+					<JMenuItem command="view_print_roster" text="print roster" />
 
-					<JMenuItem command="view_print_presence_table" label="print presence-table" />
+					<JMenuItem command="view_print_presence_table" text="print presence-table" />
 				</JMenu>
 
-				<JMenu label="Template">
+				<JMenu text="Template">
 
-					<JMenuItem command="temp_message" label="send message" />
+					<JMenuItem command="temp_message" text="send message" />
 
-					<JMenuItem command="temp_presence" label="send presence" />
+					<JMenuItem command="temp_presence" text="send presence" />
 
-					<JMenuItem command="temp_iq" label="send iq" />
+					<JMenuItem command="temp_iq" text="send iq" />
 
-					<JMenu label="roster management">
+					<JMenu text="roster management">
 
-						<JMenuItem command="temp_roster_add" label="add contact" />
+						<JMenuItem command="temp_roster_add" text="add contact" />
 
-						<JMenuItem command="temp_roster_modify" label="modify contact" />
+						<JMenuItem command="temp_roster_modify" text="modify contact" />
 
-						<JMenuItem command="temp_roster_remove" label="remove contact" />
+						<JMenuItem command="temp_roster_remove" text="remove contact" />
 
-						<JMenuItem command="temp_roster_pull" label="pull all" />
+						<JMenuItem command="temp_roster_pull" text="pull all" />
 					</JMenu>
 
-					<JMenu label="subscription management">
+					<JMenu text="subscription management">
 
-						<JMenuItem command="temp_subscription_subscribe" label="do subscribe" />
+						<JMenuItem command="temp_subscription_subscribe" text="do subscribe" />
 
-						<JMenuItem command="temp_subscription_subscribed" label="do subscribed" />
+						<JMenuItem command="temp_subscription_subscribed" text="do subscribed" />
 
 						<JMenuItem command="temp_subscription_unsubscribe"
-							label="do unsubscribe" />
+							text="do unsubscribe" />
 
 						<JMenuItem command="temp_subscription_unsubscribed"
-							label="do unsubscribed" />
+							text="do unsubscribed" />
 
 						<JMenuItem command="temp_subscription_unavailable"
-							label="do unavailable" />
+							text="do unavailable" />
 					</JMenu>
 				</JMenu>
 			</JMenuBar>
+
 
 			<JPanel>
 

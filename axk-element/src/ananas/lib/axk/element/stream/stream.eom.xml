@@ -29,6 +29,7 @@
 			<attribute name="to" />
 			<attribute name="id" />
 			<attribute name="version" />
+			<attribute name="lang" />
 
 			<element type="#BPElement" />
 

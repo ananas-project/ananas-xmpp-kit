@@ -10,7 +10,7 @@ public class Ctrl_method extends AbstractElement {
 		return true;
 	}
 
-	public boolean onAppendText(BPText text) {
+	public boolean append_text(BPText text) {
 		Xmpp_method mtd = this.getTarget_method();
 		mtd.setName(text.getData());
 		return true;
