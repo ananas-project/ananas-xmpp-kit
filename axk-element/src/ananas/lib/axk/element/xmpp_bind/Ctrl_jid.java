@@ -1,9 +1,9 @@
 package ananas.lib.axk.element.xmpp_bind;
 
-import ananas.lib.blueprint3.core.dom.AbstractElement;
-import ananas.lib.blueprint3.core.dom.BPText;
+import ananas.lib.axk.element.XmppObject;
+import ananas.lib.blueprint3.dom.BPText;
 
-public class Ctrl_jid extends AbstractElement {
+public class Ctrl_jid extends XmppObject {
 
 	public boolean append_text(BPText text) {
 		this.target_jid().setText(text.getData());

@@ -1,9 +1,9 @@
 package ananas.lib.axk.element.iq_roster;
 
-import ananas.lib.blueprint3.core.dom.AbstractElement;
-import ananas.lib.blueprint3.core.dom.BPText;
+import ananas.lib.axk.element.XmppObject;
+import ananas.lib.blueprint3.dom.BPText;
 
-public class Ctrl_group extends AbstractElement {
+public class Ctrl_group extends XmppObject {
 
 	public Xmpp_group target_group() {
 		return (Xmpp_group) this.getTarget(true);

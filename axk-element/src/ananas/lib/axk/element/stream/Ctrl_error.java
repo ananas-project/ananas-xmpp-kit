@@ -1,9 +1,9 @@
 package ananas.lib.axk.element.stream;
 
-import ananas.lib.blueprint3.core.dom.AbstractElement;
-import ananas.lib.blueprint3.core.dom.BPAttribute;
+import ananas.lib.axk.element.XmppObject;
+import ananas.lib.blueprint3.dom.BPAttribute;
 
-public class Ctrl_error extends AbstractElement {
+public class Ctrl_error extends XmppObject {
 
 	public boolean set_attribute_to(BPAttribute attr) {
 		return true;

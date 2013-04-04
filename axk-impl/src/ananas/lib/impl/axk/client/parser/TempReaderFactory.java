@@ -4,7 +4,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import ananas.lib.blueprint3.core.util.BPXMLReaderFactory;
+import ananas.lib.blueprint3.util.BPXMLReaderFactory;
 
 public class TempReaderFactory implements BPXMLReaderFactory {
 

@@ -2,6 +2,7 @@ package ananas.lib.impl.axk.client.parser;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -11,16 +12,16 @@ import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.element.stream.Ctrl_stream;
 import ananas.lib.axk.element.stream.XmppStreamListener;
 import ananas.lib.axk.element.stream.Xmpp_stream;
-import ananas.lib.blueprint3.core.dom.BPDocument;
-import ananas.lib.blueprint3.core.dom.BPElement;
-import ananas.lib.blueprint3.core.lang.BPEnvironment;
-import ananas.lib.blueprint3.core.lang.BPNamespace;
-import ananas.lib.blueprint3.core.lang.BPNamespaceRegistrar;
-import ananas.lib.blueprint3.core.lang.BPType;
-import ananas.lib.blueprint3.core.util.BPBuilder;
-import ananas.lib.blueprint3.core.util.BPElementProvider;
-import ananas.lib.blueprint3.core.util.BPErrorHandler;
-import ananas.lib.blueprint3.core.util.BPXMLReaderFactory;
+import ananas.lib.blueprint3.dom.BPDocument;
+import ananas.lib.blueprint3.dom.BPElement;
+import ananas.lib.blueprint3.lang.BPEnvironment;
+import ananas.lib.blueprint3.lang.BPNamespace;
+import ananas.lib.blueprint3.lang.BPNamespaceRegistrar;
+import ananas.lib.blueprint3.lang.BPType;
+import ananas.lib.blueprint3.util.BPBuilder;
+import ananas.lib.blueprint3.util.BPElementProvider;
+import ananas.lib.blueprint3.util.BPErrorHandler;
+import ananas.lib.blueprint3.util.BPXMLReaderFactory;
 import ananas.lib.util.logging.AbstractLoggerFactory;
 import ananas.lib.util.logging.Logger;
 
@@ -48,8 +49,11 @@ public class DefaultXmppParserFactory implements XmppParserFactory {
 
 			final BPEnvironment envi = this.mEnvi.getBPEnvironment();
 
-			BPDocument doc = envi.getImplementation().createDocument(envi,
-					"xmpp-dom");
+			URI uri = URI.create("xmpp:///parser.internal/");
+			boolean doRegister = false;
+			boolean doLoading = false;
+			BPDocument doc = envi.getImplementation().createDocumentGroup(envi)
+					.openDocument(uri, doRegister, doLoading);
 
 			BPBuilder builder = envi.getBuilderFactory().newBuilder(doc);
 			builder.setBPElementProvider(new MyElementProvider(envi, callback));

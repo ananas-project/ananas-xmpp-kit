@@ -1,9 +1,9 @@
 package ananas.lib.axk.element.jabber_client;
 
-import ananas.lib.axk.element.AbstractXmppObject;
-import ananas.lib.blueprint3.core.dom.BPText;
+import ananas.lib.axk.element.XmppObject;
+import ananas.lib.blueprint3.dom.BPText;
 
-public class Ctrl_body extends AbstractXmppObject {
+public class Ctrl_body extends XmppObject {
 
 	final StringBuilder mSB = new StringBuilder();
 

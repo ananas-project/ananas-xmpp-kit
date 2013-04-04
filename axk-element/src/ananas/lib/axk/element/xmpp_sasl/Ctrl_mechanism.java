@@ -1,10 +1,10 @@
 package ananas.lib.axk.element.xmpp_sasl;
 
-import ananas.lib.blueprint3.core.dom.AbstractElement;
-import ananas.lib.blueprint3.core.dom.BPAttribute;
-import ananas.lib.blueprint3.core.dom.BPText;
+import ananas.lib.axk.element.XmppObject;
+import ananas.lib.blueprint3.dom.BPAttribute;
+import ananas.lib.blueprint3.dom.BPText;
 
-public class Ctrl_mechanism extends AbstractElement {
+public class Ctrl_mechanism extends XmppObject {
 
 	public boolean set_attribute_id(BPAttribute attr) {
 		return false;

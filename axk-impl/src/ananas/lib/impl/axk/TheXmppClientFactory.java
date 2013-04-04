@@ -1,15 +1,15 @@
 package ananas.lib.impl.axk;
 
-import java.io.InputStream;
+import java.net.URI;
 
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppClientFactory;
 import ananas.lib.axk.XmppEnvironment;
-import ananas.lib.blueprint3.core.dom.BPDocument;
-import ananas.lib.blueprint3.core.lang.BPDocumentLoader;
-import ananas.lib.blueprint3.core.lang.BPEnvironment;
+import ananas.lib.blueprint3.dom.BPDocument;
+import ananas.lib.blueprint3.lang.BPEnvironment;
 import ananas.lib.impl.axk.client.target.Tar_connection;
+import ananas.lib.util.ClassUriGen;
 
 public class TheXmppClientFactory implements XmppClientFactory {
 
@@ -28,20 +28,16 @@ public class TheXmppClientFactory implements XmppClientFactory {
 
 	@Override
 	public XmppClient newClient(XmppAccount account, XmppEnvironment envi) {
+
 		String path = "xmpp-client.xml";
-		InputStream in = this.getClass().getResourceAsStream(path);
-		if (in == null) {
-			throw new RuntimeException("cannot find file " + path);
-		}
+		URI uri = ClassUriGen.getURI(this.getClass(), path);
 
 		TheXmppClientCore core = new TheXmppClientCore(envi, account);
 		XmppClient client = null;
 
 		try {
-
 			BPEnvironment bp = envi.getBPEnvironment();
-			BPDocumentLoader docldr = bp.getDocumentLoaderFactory().newLoader();
-			BPDocument doc = docldr.loadDocument(bp, in, path);
+			BPDocument doc = bp.loadDocument(uri);
 
 			Tar_connection conn = (Tar_connection) doc.findTargetById("conn");
 			conn.addTarget(core);

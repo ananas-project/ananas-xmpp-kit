@@ -2,10 +2,10 @@ package ananas.lib.axk.element.iq_roster;
 
 import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.constant.XmppSubscription;
-import ananas.lib.axk.element.AbstractXmppObject;
-import ananas.lib.blueprint3.core.dom.BPAttribute;
+import ananas.lib.axk.element.XmppObject;
+import ananas.lib.blueprint3.dom.BPAttribute;
 
-public class Ctrl_item extends AbstractXmppObject {
+public class Ctrl_item extends XmppObject {
 
 	public boolean set_attribute_jid(BPAttribute attr) {
 		XmppAddress addr = this.getXmppAddress(attr.getValue(), false);

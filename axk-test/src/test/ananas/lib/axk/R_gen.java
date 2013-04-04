@@ -4,7 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Properties;
 
-import ananas.lib.blueprint3.core.tools.R_file_generator;
+import ananas.lib.blueprint3.tools.R_file_generator;
 import ananas.lib.util.CommandLinePropertiesUtil;
 
 public class R_gen {

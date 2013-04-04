@@ -20,9 +20,9 @@ import ananas.lib.axk.api.IExCore;
 import ananas.lib.axk.api.roster.IExRosterManager;
 import ananas.lib.axk.api.roster.IRosterContact;
 import ananas.lib.axk.api.roster.IRosterGroup;
+import ananas.lib.blueprint3.Blueprint;
 import ananas.lib.blueprint3.awt.helper.IResponseChainNode;
-import ananas.lib.blueprint3.core.Blueprint;
-import ananas.lib.blueprint3.core.dom.BPDocument;
+import ananas.lib.blueprint3.dom.BPDocument;
 import ananas.lib.io.Connector;
 import ananas.lib.io.StreamConnection;
 import ananas.lib.util.logging.AbstractLoggerFactory;
@@ -96,7 +96,7 @@ public class MainFrame {
 
 	public BPDocument loadDocument(String uri) {
 		try {
-			return Blueprint.loadDocument(uri);
+			return Blueprint.Util.loadDocument(uri);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

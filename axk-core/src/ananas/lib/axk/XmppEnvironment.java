@@ -1,7 +1,7 @@
 package ananas.lib.axk;
 
 import ananas.lib.axk.security.AXKSecurityManager;
-import ananas.lib.blueprint3.core.lang.BPEnvironment;
+import ananas.lib.blueprint3.lang.BPEnvironment;
 
 public interface XmppEnvironment {
 

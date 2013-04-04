@@ -1,9 +1,9 @@
 package ananas.lib.impl.axk.client.ctrl;
 
-import ananas.lib.blueprint3.core.dom.AbstractElement;
-import ananas.lib.blueprint3.core.dom.BPAttribute;
-import ananas.lib.blueprint3.core.dom.BPDocument;
-import ananas.lib.blueprint3.core.dom.BPElementMap;
+import ananas.lib.blueprint3.dom.AbstractElement;
+import ananas.lib.blueprint3.dom.BPAttribute;
+import ananas.lib.blueprint3.dom.BPDocument;
+import ananas.lib.blueprint3.dom.BPElementMap;
 import ananas.lib.impl.axk.client.target.Tar_abstractClient;
 
 public class Ctl_abstractClient extends AbstractElement {

@@ -1,8 +1,8 @@
 package ananas.lib.axk.element.xmpp_sasl;
 
-import ananas.lib.blueprint3.core.dom.AbstractElement;
+import ananas.lib.axk.element.XmppObject;
 
-public class Ctrl_sasl_error extends AbstractElement {
+public class Ctrl_sasl_error extends XmppObject {
 
 	@Override
 	public Object createTarget() {

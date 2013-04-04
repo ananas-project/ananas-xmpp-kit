@@ -1,8 +1,8 @@
 package ananas.lib.axk.element.xmpp_bind;
 
-import ananas.lib.blueprint3.core.dom.AbstractElement;
+import ananas.lib.axk.element.XmppObject;
 
-public class Ctrl_bind extends AbstractElement {
+public class Ctrl_bind extends XmppObject {
 
 	public boolean append_child_jid(Ctrl_jid jid) {
 		this.target_bind().setJID(jid.target_jid());

@@ -1,9 +1,9 @@
 package ananas.lib.axk.element.rosterver;
 
-import ananas.lib.blueprint3.core.dom.AbstractElement;
-import ananas.lib.blueprint3.core.dom.BPAttribute;
+import ananas.lib.axk.element.XmppObject;
+import ananas.lib.blueprint3.dom.BPAttribute;
 
-public class Ctrl_optional extends AbstractElement {
+public class Ctrl_optional extends XmppObject {
 
 	public boolean set_attribute_id(BPAttribute attr) {
 		return true;

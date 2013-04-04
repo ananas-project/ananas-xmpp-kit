@@ -1,8 +1,8 @@
 package ananas.lib.axk.element.xmpp_sasl;
 
-import ananas.lib.blueprint3.core.dom.AbstractElement;
+import ananas.lib.axk.element.XmppObject;
 
-public class Ctrl_failure extends AbstractElement {
+public class Ctrl_failure extends XmppObject {
 
 	public boolean append_child_(Ctrl_sasl_error err) {
 		Xmpp_sasl_error error = (Xmpp_sasl_error) err.getTarget(true);

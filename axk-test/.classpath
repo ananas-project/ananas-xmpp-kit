@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="src" path="res"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/axk-core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/axk-impl"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-core-impl"/>
@@ -14,7 +13,9 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/axk-element"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-xml-parser"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/axk-api"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-swing"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-kit"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-element"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-swing"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

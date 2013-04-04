@@ -1,10 +1,10 @@
 package ananas.lib.axk.element.stream;
 
-import ananas.lib.blueprint3.core.dom.AbstractElement;
-import ananas.lib.blueprint3.core.dom.BPAttribute;
-import ananas.lib.blueprint3.core.dom.BPElement;
+import ananas.lib.axk.element.XmppObject;
+import ananas.lib.blueprint3.dom.BPAttribute;
+import ananas.lib.blueprint3.dom.BPElement;
 
-public class Ctrl_stream extends AbstractElement {
+public class Ctrl_stream extends XmppObject {
 
 	private Xmpp_stream mTargetStream;
 

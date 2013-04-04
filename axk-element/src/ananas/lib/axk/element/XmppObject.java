@@ -2,9 +2,9 @@ package ananas.lib.axk.element;
 
 import ananas.lib.axk.DefaultXmppAddress;
 import ananas.lib.axk.XmppAddress;
-import ananas.lib.blueprint3.core.dom.AbstractElement;
+import ananas.lib.blueprint3.lang.CObject;
 
-public abstract class AbstractXmppObject extends AbstractElement {
+public abstract class XmppObject extends CObject {
 
 	protected XmppAddress getXmppAddress(String jid, boolean noCache) {
 		if (noCache) {

@@ -1,8 +1,8 @@
 package ananas.lib.axk.element.iq_roster;
 
-import ananas.lib.blueprint3.core.dom.AbstractElement;
+import ananas.lib.axk.element.XmppObject;
 
-public class Ctrl_query extends AbstractElement {
+public class Ctrl_query extends XmppObject {
 
 	public boolean append_child_item(Ctrl_item item) {
 		this.target_query().addItem(item.target_item());
