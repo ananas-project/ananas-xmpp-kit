@@ -15,6 +15,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import ananas.lib.axk.XmppClient;
+import ananas.lib.axk.XmppEvent;
+import ananas.lib.axk.XmppEventListener;
 import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.IExCore;
 import ananas.lib.axk.api.roster.IExRosterManager;
@@ -68,6 +70,15 @@ public class MainFrame {
 	}
 
 	private void installListeners() {
+
+		this.mClient.setXmppEventListener(new XmppEventListener() {
+
+			@Override
+			public void onEvent(XmppEvent event) {
+				System.err.println(event + "");
+			}
+		});
+
 		this.mBtnSend.addActionListener(new ActionListener() {
 
 			@Override

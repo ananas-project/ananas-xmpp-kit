@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="src" path="res"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/axk-core"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/axk-impl"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-core-impl"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-eom"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ananas-base"/>
@@ -17,5 +16,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-element"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint3-swing"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/axk-impl"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,5 +1,7 @@
 package ananas.lib.impl.axk;
 
+import org.w3c.dom.DOMImplementation;
+
 import ananas.lib.axk.XmppClientFactory;
 import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.security.AXKSecurityManager;
@@ -38,6 +40,7 @@ public class TheXmppEnvironment implements XmppEnvironment {
 		this.mBpEnvi.loadNamespace(
 				"ananas.lib.blueprint3.element.bpbase.TheNamespaceInfo", true);
 		this.mBpEnvi.loadNamespace(TheXmppClientNsInfo.class, true);
+		// this.mBpEnvi.loadNamespace(TheXmppDomClientNsInfo.class, true);
 	}
 
 	@Override
@@ -72,6 +75,11 @@ public class TheXmppEnvironment implements XmppEnvironment {
 			this.mSecurityMan = man = new AXKSecurityManagerImpl();
 		}
 		return man;
+	}
+
+	@Override
+	public DOMImplementation getDOMImplementation() {
+		throw new RuntimeException("no impl");
 	}
 
 }
