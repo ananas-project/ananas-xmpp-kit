@@ -24,8 +24,10 @@ final class XEngineImpl implements XEngine {
 		// out
 		StringBuilder sb = new StringBuilder();
 		{
+			sb.append("<?xml encoding='UTF-8' ?>");
 			sb.append("<stream:stream");
-			sb.append(" xmlns='...'");
+			sb.append(" xmlns:stream='http://etherx.jabber.org/streams'");
+			sb.append(" xmlns='jabber:client'");
 			sb.append(" version='1.0'");
 			sb.append(">");
 		}
