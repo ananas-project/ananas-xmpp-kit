@@ -5,7 +5,7 @@ import org.xml.sax.ErrorHandler;
 
 import ananas.lib.axk.engine.XContext;
 
-class MyBuilderImpl implements MyBuilder {
+class MyBuilderImpl implements XBuilder {
 
 	public MyBuilderImpl(XContext context) {
 		// TODO Auto-generated constructor stub

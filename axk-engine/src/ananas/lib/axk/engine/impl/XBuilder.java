@@ -5,11 +5,11 @@ import org.xml.sax.ErrorHandler;
 
 import ananas.lib.axk.engine.XContext;
 
-interface MyBuilder {
+interface XBuilder {
 
 	class Factory {
 
-		public static MyBuilder createBuilder(XContext context) {
+		public static XBuilder createBuilder(XContext context) {
 			return new MyBuilderImpl(context);
 		}
 

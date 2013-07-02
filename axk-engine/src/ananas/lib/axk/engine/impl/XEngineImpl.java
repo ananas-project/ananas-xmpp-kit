@@ -33,7 +33,7 @@ final class XEngineImpl implements XEngine {
 		out.flush();
 
 		// in
-		MyBuilder builder = MyBuilder.Factory.createBuilder(context);
+		XBuilder builder = XBuilder.Factory.createBuilder(context);
 		XMLReader reader = context.getXMLReaderProvider().newReader();
 		reader.setContentHandler(builder.getContentHandler());
 		reader.setErrorHandler(builder.getErrorHandler());
