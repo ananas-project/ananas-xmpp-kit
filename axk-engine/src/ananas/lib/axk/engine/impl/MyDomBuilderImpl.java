@@ -116,8 +116,8 @@ class MyDomBuilderImpl implements XBuilder {
 
 		@Override
 		public void startDocument() throws SAXException {
-			String namespaceURI = null;
-			String qualifiedName = null;
+			String namespaceURI = "";
+			String qualifiedName = "";
 			DocumentType doctype = null;
 			Document doc = this.mContext.getDOMImplementation().createDocument(
 					namespaceURI, qualifiedName, doctype);

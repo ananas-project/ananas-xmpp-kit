@@ -17,7 +17,14 @@ public class TheContextFactory implements XContextFactory {
 		context.m_engineListener = new LoginListenerAgent(listener);
 		context.m_engineFactory = new TheDefaultXEngineFactory();
 		context.m_socketContext = new InitSocketContext(context);
-		context.m_xmlReaderProvider=  new  MyXMLReaderProvider   ()  ;
+		context.m_xmlReaderProvider = new MyXMLReaderProvider();
+		try {
+			context.m_domImpl = org.w3c.dom.bootstrap.DOMImplementationRegistry
+					.newInstance().getDOMImplementation("");
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | ClassCastException e) {
+			e.printStackTrace();
+		}
 
 		return context;
 	}
