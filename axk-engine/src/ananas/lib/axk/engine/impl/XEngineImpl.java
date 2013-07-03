@@ -37,6 +37,7 @@ final class XEngineImpl implements XEngine {
 		// in
 		XBuilder builder = XBuilder.Factory.createBuilder(context);
 		XMLReader reader = context.getXMLReaderProvider().newReader();
+		// reader.setFeature(name, false);
 		reader.setContentHandler(builder.getContentHandler());
 		reader.setErrorHandler(builder.getErrorHandler());
 		reader.parse(new InputSource(in));

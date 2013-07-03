@@ -1,5 +1,11 @@
 package ananas.lib.axk.engine.impl;
 
+import java.util.Stack;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ErrorHandler;
@@ -9,12 +15,12 @@ import org.xml.sax.SAXParseException;
 
 import ananas.lib.axk.engine.XContext;
 
-class MyBuilderImpl implements XBuilder {
+class MyDomBuilderImpl implements XBuilder {
 
 	private final ContentHandler m_ch;
 	private final ErrorHandler m_eh;
 
-	public MyBuilderImpl(XContext context) {
+	public MyDomBuilderImpl(XContext context) {
 		this.m_ch = new myContentHandler(context);
 		this.m_eh = new myErrorHandler(context);
 	}
@@ -31,28 +37,49 @@ class MyBuilderImpl implements XBuilder {
 
 	class myContentHandler implements ContentHandler {
 
+		private final XContext mContext;
+		private Document mDoc;
+		private final Stack<Element> mElementStack;
+
 		public myContentHandler(XContext context) {
-			// TODO Auto-generated constructor stub
+			this.mContext = context;
+			this.mElementStack = new Stack<Element>();
 		}
 
 		@Override
-		public void characters(char[] arg0, int arg1, int arg2)
+		public void characters(char[] chs, int offset, int length)
 				throws SAXException {
-			// TODO Auto-generated method stub
 
+			String s = new String(chs, offset, length);
+			System.out.println(this + ".text:        " + s);
+
+			// build dom
+			if (this.mElementStack.size() > 0) {
+				Element element = this.mElementStack.peek();
+				Text text = this.mDoc.createTextNode(s);
+				element.appendChild(text);
+			}
 		}
 
 		@Override
 		public void endDocument() throws SAXException {
-			// TODO Auto-generated method stub
-
+			this.mElementStack.clear();
 		}
 
 		@Override
-		public void endElement(String arg0, String arg1, String arg2)
+		public void endElement(String uri, String localName, String qName)
 				throws SAXException {
-			// TODO Auto-generated method stub
 
+			System.out.println(this + ".element: </" + qName + ">");
+
+			// build dom
+			Element child = this.mElementStack.pop();
+			if (this.mElementStack.size() > 0) {
+				Element parent = this.mElementStack.peek();
+				parent.appendChild(child);
+			} else {
+				this.mDoc.appendChild(child);
+			}
 		}
 
 		@Override
@@ -89,8 +116,13 @@ class MyBuilderImpl implements XBuilder {
 
 		@Override
 		public void startDocument() throws SAXException {
-			// TODO Auto-generated method stub
-
+			String namespaceURI = null;
+			String qualifiedName = null;
+			DocumentType doctype = null;
+			Document doc = this.mContext.getDOMImplementation().createDocument(
+					namespaceURI, qualifiedName, doctype);
+			this.mDoc = doc;
+			this.mElementStack.clear();
 		}
 
 		@Override
@@ -107,8 +139,19 @@ class MyBuilderImpl implements XBuilder {
 				sb.append(" " + k + "='" + v + "'");
 			}
 			sb.append(">");
-			System.out.println(this + ".startElement:" + sb.toString());
+			System.out.println(this + ".element: " + sb.toString());
 
+			// build dom
+			Element element = this.mDoc.createElementNS(uri, qName);
+			len = atts.getLength();
+			for (int i = 0; i < len; i++) {
+				String attrURI, attrQName, attrValue;
+				attrURI = atts.getURI(i);
+				attrQName = atts.getQName(i);
+				attrValue = atts.getValue(i);
+				element.setAttributeNS(attrURI, attrQName, attrValue);
+			}
+			this.mElementStack.push(element);
 		}
 
 		@Override

@@ -10,7 +10,7 @@ interface XBuilder {
 	class Factory {
 
 		public static XBuilder createBuilder(XContext context) {
-			return new MyBuilderImpl(context);
+			return new MyDomBuilderImpl(context);
 		}
 
 	}
