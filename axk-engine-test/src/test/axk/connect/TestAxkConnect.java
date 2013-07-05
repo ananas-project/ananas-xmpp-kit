@@ -10,7 +10,9 @@ import ananas.lib.axk.engine.XContext;
 import ananas.lib.axk.engine.XContextFactory;
 import ananas.lib.axk.engine.XEngineListener;
 import ananas.lib.axk.engine.XPhase;
+import ananas.lib.axk.engine.util.DefaultEngineRunner;
 import ananas.lib.axk.engine.util.DefaultXAccount;
+import ananas.lib.axk.engine.util.EngineRunner;
 
 public class TestAxkConnect {
 
@@ -27,13 +29,11 @@ public class TestAxkConnect {
 			account0.password = "12345678";
 
 			XAccount account = (new AccountLoader()).load();
-
 			XEngineListener listener = new MyListener();
-
 			XContext context = XContextFactory.Util.getFactory().createContext(
 					account, listener);
-
-			context.getEngineFactory().createEngine().run(context);
+			EngineRunner runner = new DefaultEngineRunner(context);
+			runner.run();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -58,6 +58,11 @@ public class TestAxkConnect {
 		@Override
 		public void onPhaseChanged(XContext context, XPhase phase) {
 			System.out.println(this + ".onPhase:" + phase);
+
+			if (phase.equals(XPhase.online)) {
+				// throw new RuntimeException("online throw");
+			}
+
 		}
 	}
 }

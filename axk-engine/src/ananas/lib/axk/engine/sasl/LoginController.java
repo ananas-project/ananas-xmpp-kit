@@ -80,6 +80,7 @@ public class LoginController extends AbstractXContextController implements
 	}
 
 	private void doBind_ok(XContext context, Element stanza) {
+		this.println("doBind_ok");
 		XContextController ctrl = new OnlineController();
 		context.getContextControllerAgent().setContextController(ctrl);
 
@@ -93,7 +94,7 @@ public class LoginController extends AbstractXContextController implements
 	}
 
 	private void doBind(XContext context, Element stanza) {
-		// System.out.println("do Bind");
+		this.println("doBind");
 		context.getContextControllerAgent()
 				.onPhaseChanged(context, XPhase.bind);
 		StringBuilder sb = new StringBuilder();
@@ -106,7 +107,7 @@ public class LoginController extends AbstractXContextController implements
 	}
 
 	private void doSASL_ok(XContext context, Element stanza) {
-		// System.out.println("SASL ok");
+		this.println("doSASL_ok");
 		try {
 			DefaultXContext context2 = new DefaultXContext(context);
 			XEngine engine = context.getEngineFactory().createEngine();
@@ -117,7 +118,7 @@ public class LoginController extends AbstractXContextController implements
 	}
 
 	private void doSASL(XContext context, Element stanza) {
-		// System.out.println("do SASL");
+		this.println("doSASL");
 		context.getContextControllerAgent()
 				.onPhaseChanged(context, XPhase.sasl);
 		NodeList chs = stanza.getElementsByTagName("mechanism");
@@ -141,13 +142,14 @@ public class LoginController extends AbstractXContextController implements
 	}
 
 	private void doStartTLS_1(XContext context) {
+		this.println("doStartTLS_1");
 		context.getContextControllerAgent().onPhaseChanged(context, XPhase.tls);
 		String s = "<starttls xmlns='urn:ietf:params:xml:ns:xmpp-tls'/>";
 		this.send(context, s);
 	}
 
 	private void doStartTLS_2(XContext context) {
-		System.out.println("start TLS");
+		this.println("doStartTLS_2");
 		try {
 			XAccount account = context.getAccount();
 			String host = account.getHost();
@@ -163,6 +165,11 @@ public class LoginController extends AbstractXContextController implements
 		} catch (IOException | SAXException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void println(String string) {
+		// System.out.println();
+		// System.out.println(this + "." + string);
 	}
 
 	@Override

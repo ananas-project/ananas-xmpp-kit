@@ -10,14 +10,12 @@ public class OnlineController implements XContextController {
 
 	@Override
 	public void onStanzaElement(XContext context, Element element) {
-		// TODO Auto-generated method stub
-
+		context.getEngineListener().onStanzaElement(context, element);
 	}
 
 	@Override
 	public void onPhaseChanged(XContext context, XPhase phase) {
-		// TODO Auto-generated method stub
-		
+		context.getEngineListener().onPhaseChanged(context, phase);
 	}
 
 }

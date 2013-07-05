@@ -22,7 +22,8 @@ public class AccountLoader {
 			account.host = this.getString(prop, "host");
 			account.port = this.getInt(prop, "port");
 			account.password = this.getString(prop, "password");
-			account.resource = this.getString(prop, "resource");
+			account.resource = this.getString(prop, "resource")
+					+ System.currentTimeMillis();
 			account.useSSL = this.getBoolean(prop, "useSSL");
 			return account;
 		} catch (IOException e) {
