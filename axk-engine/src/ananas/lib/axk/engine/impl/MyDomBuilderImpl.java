@@ -5,6 +5,7 @@ import java.util.Stack;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -14,6 +15,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import ananas.lib.axk.engine.XContext;
+import ananas.lib.axk.engine.XEngineListener;
 
 class MyDomBuilderImpl implements XBuilder {
 
@@ -38,8 +40,8 @@ class MyDomBuilderImpl implements XBuilder {
 	class myContentHandler implements ContentHandler {
 
 		private final XContext mContext;
-		private Document mDoc;
 		private final Stack<Element> mElementStack;
+		private Document mDoc;
 
 		public myContentHandler(XContext context) {
 			this.mContext = context;
@@ -50,11 +52,8 @@ class MyDomBuilderImpl implements XBuilder {
 		public void characters(char[] chs, int offset, int length)
 				throws SAXException {
 
-			String s = new String(chs, offset, length);
-			System.out.println(this + ".text:        " + s);
-
-			// build dom
 			if (this.mElementStack.size() > 0) {
+				String s = new String(chs, offset, length);
 				Element element = this.mElementStack.peek();
 				Text text = this.mDoc.createTextNode(s);
 				element.appendChild(text);
@@ -64,21 +63,17 @@ class MyDomBuilderImpl implements XBuilder {
 		@Override
 		public void endDocument() throws SAXException {
 			this.mElementStack.clear();
+			this.mDoc = null;
 		}
 
 		@Override
 		public void endElement(String uri, String localName, String qName)
 				throws SAXException {
 
-			System.out.println(this + ".element: </" + qName + ">");
-
-			// build dom
 			Element child = this.mElementStack.pop();
 			if (this.mElementStack.size() > 0) {
 				Element parent = this.mElementStack.peek();
 				parent.appendChild(child);
-			} else {
-				this.mDoc.appendChild(child);
 			}
 		}
 
@@ -116,40 +111,41 @@ class MyDomBuilderImpl implements XBuilder {
 
 		@Override
 		public void startDocument() throws SAXException {
-			String namespaceURI = "";
-			String qualifiedName = "";
+			String namespaceURI = "http://etherx.jabber.org/streams";
+			String qualifiedName = "stream:stream";
 			DocumentType doctype = null;
 			Document doc = this.mContext.getDOMImplementation().createDocument(
 					namespaceURI, qualifiedName, doctype);
+
 			this.mDoc = doc;
 			this.mElementStack.clear();
+
+			Element root = new MyStanzaListener(this.mContext);
+			this.mElementStack.push(root);
 		}
+
+		final static String streamQName = "stream:stream";
+		final static String streamURI = "http://etherx.jabber.org/streams";
+		final static String streamLocalName = "stream";
 
 		@Override
 		public void startElement(String uri, String localName, String qName,
 				Attributes atts) throws SAXException {
 
-			StringBuilder sb = new StringBuilder();
-			sb.append("<" + qName);
+			if (qName.equals(streamQName))
+				if (uri.equals(streamURI))
+					if (localName.equals(streamLocalName)) {
+						// skip the <stream:stream />
+						return;
+					}
+
+			Element element = this.mDoc.createElementNS(uri, qName);
 			int len = atts.getLength();
 			for (int i = 0; i < len; i++) {
-				String k, v;
-				k = atts.getQName(i);
-				v = atts.getValue(i);
-				sb.append(" " + k + "='" + v + "'");
-			}
-			sb.append(">");
-			System.out.println(this + ".element: " + sb.toString());
-
-			// build dom
-			Element element = this.mDoc.createElementNS(uri, qName);
-			len = atts.getLength();
-			for (int i = 0; i < len; i++) {
-				String attrURI, attrQName, attrValue;
-				attrURI = atts.getURI(i);
+				String attrQName, attrValue;
 				attrQName = atts.getQName(i);
 				attrValue = atts.getValue(i);
-				element.setAttributeNS(attrURI, attrQName, attrValue);
+				element.setAttribute(attrQName, attrValue);
 			}
 			this.mElementStack.push(element);
 		}
@@ -184,6 +180,34 @@ class MyDomBuilderImpl implements XBuilder {
 		public void warning(SAXParseException arg0) throws SAXException {
 			// TODO Auto-generated method stub
 
+		}
+	}
+
+	class MyStanzaListener extends AbstractElement {
+
+		private final XEngineListener mEngineListener;
+		private final XContext mContext;
+
+		public MyStanzaListener(XContext context) {
+			this.mContext = context;
+			this.mEngineListener = context.getContextControllerAgent();
+		}
+
+		@Override
+		public Node appendChild(Node newChild) {
+
+			if (newChild instanceof Element) {
+				Element element = (Element) newChild;
+				this.mEngineListener.onStanzaElement(this.mContext, element);
+			}
+			/*
+			 * DOMImplementation impl = newChild.getOwnerDocument()
+			 * .getImplementation(); DOMImplementationLS ls =
+			 * (DOMImplementationLS) impl.getFeature( "LS", "3.0"); LSSerializer
+			 * seri = ls.createLSSerializer(); System.out.println(this +
+			 * ".onElement:" + seri.writeToString(newChild));
+			 */
+			return null;
 		}
 	}
 }

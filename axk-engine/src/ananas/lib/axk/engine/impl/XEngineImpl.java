@@ -31,7 +31,8 @@ final class XEngineImpl implements XEngine {
 			sb.append(" version='1.0'");
 			sb.append(">");
 		}
-		out.write(sb.toString().getBytes("UTF-8"));
+		byte[] buff = sb.toString().getBytes("UTF-8");
+		out.write(buff);
 		out.flush();
 
 		// in

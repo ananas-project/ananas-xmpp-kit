@@ -6,6 +6,7 @@ import org.w3c.dom.DOMImplementation;
 
 import ananas.lib.axk.engine.XAccount;
 import ananas.lib.axk.engine.XContext;
+import ananas.lib.axk.engine.XContextControllerAgent;
 import ananas.lib.axk.engine.XEngineFactory;
 import ananas.lib.axk.engine.XEngineListener;
 import ananas.lib.axk.engine.XMLReaderProvider;
@@ -20,8 +21,20 @@ public class DefaultXContext implements XContext {
 	public DOMImplementation m_domImpl;
 	public SSLSocketFactory m_sslSocketFactory;
 	public XEngineFactory m_engineFactory;
+	public XContextControllerAgent m_ctrlAgent;
 
 	public DefaultXContext() {
+	}
+
+	public DefaultXContext(XContext context) {
+		this.m_account = context.getAccount();
+		this.m_domImpl = context.getDOMImplementation();
+		this.m_engineFactory = context.getEngineFactory();
+		this.m_engineListener = context.getEngineListener();
+		this.m_socketContext = context.getSocketContext();
+		this.m_sslSocketFactory = context.getSSLSocketFactory();
+		this.m_xmlReaderProvider = context.getXMLReaderProvider();
+		this.m_ctrlAgent = context.getContextControllerAgent();
 	}
 
 	@Override
@@ -57,6 +70,11 @@ public class DefaultXContext implements XContext {
 	@Override
 	public SSLSocketFactory getSSLSocketFactory() {
 		return this.m_sslSocketFactory;
+	}
+
+	@Override
+	public XContextControllerAgent getContextControllerAgent() {
+		return this.m_ctrlAgent;
 	}
 
 }

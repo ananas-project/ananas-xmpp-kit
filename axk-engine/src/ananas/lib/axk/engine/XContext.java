@@ -12,6 +12,8 @@ public interface XContext {
 
 	XAccount getAccount();
 
+	XContextControllerAgent getContextControllerAgent();
+
 	XEngineListener getEngineListener();
 
 	DOMImplementation getDOMImplementation();

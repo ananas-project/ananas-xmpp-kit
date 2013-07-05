@@ -6,6 +6,7 @@ import org.w3c.dom.DOMImplementation;
 
 import ananas.lib.axk.engine.XAccount;
 import ananas.lib.axk.engine.XContext;
+import ananas.lib.axk.engine.XContextControllerAgent;
 import ananas.lib.axk.engine.XEngineFactory;
 import ananas.lib.axk.engine.XEngineListener;
 import ananas.lib.axk.engine.XMLReaderProvider;
@@ -52,5 +53,10 @@ public class XContextWrapper implements XContext {
 	@Override
 	public SSLSocketFactory getSSLSocketFactory() {
 		return this.mInner.getSSLSocketFactory();
+	}
+
+	@Override
+	public XContextControllerAgent getContextControllerAgent() {
+		return this.mInner.getContextControllerAgent();
 	}
 }
