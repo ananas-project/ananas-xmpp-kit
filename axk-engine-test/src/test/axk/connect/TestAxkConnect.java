@@ -9,6 +9,7 @@ import ananas.lib.axk.engine.XAccount;
 import ananas.lib.axk.engine.XContext;
 import ananas.lib.axk.engine.XContextFactory;
 import ananas.lib.axk.engine.XEngineListener;
+import ananas.lib.axk.engine.XPhase;
 import ananas.lib.axk.engine.util.DefaultXAccount;
 
 public class TestAxkConnect {
@@ -52,6 +53,11 @@ public class TestAxkConnect {
 			System.out.println(this + ".onElement:"
 					+ seri.writeToString(element));
 
+		}
+
+		@Override
+		public void onPhaseChanged(XContext context, XPhase phase) {
+			System.out.println(this + ".onPhase:" + phase);
 		}
 	}
 }

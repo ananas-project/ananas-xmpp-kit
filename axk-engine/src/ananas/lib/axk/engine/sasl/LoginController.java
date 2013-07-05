@@ -15,6 +15,7 @@ import ananas.lib.axk.engine.XContext;
 import ananas.lib.axk.engine.XContextController;
 import ananas.lib.axk.engine.XContextControllerFactory;
 import ananas.lib.axk.engine.XEngine;
+import ananas.lib.axk.engine.XPhase;
 import ananas.lib.axk.engine.util.DefaultSocketContext;
 import ananas.lib.axk.engine.util.DefaultXContext;
 
@@ -63,6 +64,12 @@ public class LoginController extends AbstractXContextController implements
 		} else if (fu.equals("urn:ietf:params:xml:ns:xmpp-sasl#success")) {
 			this.doSASL_ok(context, stanza);
 			return;
+		} else if (fu.equals("jabber:client#iq")) {
+			NodeList bind = stanza.getElementsByTagName("bind");
+			if (bind.getLength() > 0) {
+				this.doBind_ok(context, stanza);
+				return;
+			}
 		} else {
 			// ...
 		}
@@ -72,9 +79,30 @@ public class LoginController extends AbstractXContextController implements
 
 	}
 
-	private void doBind(XContext context, Element stanza) {
-		// TODO Auto-generated method stub
+	private void doBind_ok(XContext context, Element stanza) {
+		XContextController ctrl = new OnlineController();
+		context.getContextControllerAgent().setContextController(ctrl);
 
+		NodeList jid = stanza.getElementsByTagName("jid");
+		Text txt = (Text) jid.item(0).getFirstChild();
+		context.getContextControllerAgent().setBindedFullJID(txt.getData());
+
+		context.getContextControllerAgent().onPhaseChanged(context,
+				XPhase.online);
+
+	}
+
+	private void doBind(XContext context, Element stanza) {
+		// System.out.println("do Bind");
+		context.getContextControllerAgent()
+				.onPhaseChanged(context, XPhase.bind);
+		StringBuilder sb = new StringBuilder();
+		sb.append("<iq id='bind_1' type='set'>");
+		sb.append("<bind xmlns='urn:ietf:params:xml:ns:xmpp-bind'>");
+		sb.append("<resource>");
+		sb.append(context.getAccount().getResource() + "");
+		sb.append("</resource></bind></iq>");
+		this.send(context, sb.toString());
 	}
 
 	private void doSASL_ok(XContext context, Element stanza) {
@@ -89,7 +117,9 @@ public class LoginController extends AbstractXContextController implements
 	}
 
 	private void doSASL(XContext context, Element stanza) {
-		System.out.println("do SASL");
+		// System.out.println("do SASL");
+		context.getContextControllerAgent()
+				.onPhaseChanged(context, XPhase.sasl);
 		NodeList chs = stanza.getElementsByTagName("mechanism");
 		int len = chs.getLength();
 		XContextControllerFactory saslProc = null;
@@ -111,6 +141,7 @@ public class LoginController extends AbstractXContextController implements
 	}
 
 	private void doStartTLS_1(XContext context) {
+		context.getContextControllerAgent().onPhaseChanged(context, XPhase.tls);
 		String s = "<starttls xmlns='urn:ietf:params:xml:ns:xmpp-tls'/>";
 		this.send(context, s);
 	}
@@ -132,6 +163,11 @@ public class LoginController extends AbstractXContextController implements
 		} catch (IOException | SAXException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void onPhaseChanged(XContext context, XPhase phase) {
+		context.getEngineListener().onPhaseChanged(context, phase);
 	}
 
 }

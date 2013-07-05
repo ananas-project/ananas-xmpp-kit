@@ -6,4 +6,8 @@ public interface XContextControllerAgent extends XEngineListener {
 
 	void setContextController(XContextController ctrl);
 
+	void setBindedFullJID(String data);
+
+	String getBindedFullJID();
+
 }

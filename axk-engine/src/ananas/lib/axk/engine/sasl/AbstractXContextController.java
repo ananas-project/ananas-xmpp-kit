@@ -10,6 +10,7 @@ import org.w3c.dom.ls.LSSerializer;
 
 import ananas.lib.axk.engine.XContext;
 import ananas.lib.axk.engine.XContextController;
+import ananas.lib.axk.engine.XPhase;
 
 public abstract class AbstractXContextController implements XContextController {
 
@@ -39,6 +40,12 @@ public abstract class AbstractXContextController implements XContextController {
 		LSSerializer seri = ls.createLSSerializer();
 		System.out.println(this + ".unsupportedElement:"
 				+ seri.writeToString(stanza));
+
+	}
+
+	@Override
+	public void onPhaseChanged(XContext context, XPhase phase) {
+		// TODO Auto-generated method stub
 
 	}
 
