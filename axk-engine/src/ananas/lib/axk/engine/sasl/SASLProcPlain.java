@@ -37,13 +37,19 @@ public class SASLProcPlain extends AbstractSASLProc {
 				this.doAuth(context);
 				return;
 			}
-		} else if (fn.equals("")) {
-			// ...
+		} else if (fn.equals("urn:ietf:params:xml:ns:xmpp-sasl#success")) {
+			this.doSuccess(context, element);
 		} else {
 			// ...
 		}
 		super.onStanzaElement(context, element);
 
+	}
+
+	private void doSuccess(XContext context, Element element) {
+		LoginController ctrl = new LoginController();
+		context.getContextControllerAgent().setContextController(ctrl);
+		ctrl.onStanzaElement(context, element);
 	}
 
 	public void doAuth(XContext context) {

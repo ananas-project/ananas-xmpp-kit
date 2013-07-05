@@ -44,16 +44,24 @@ public class LoginController extends AbstractXContextController implements
 
 			NodeList starttls = stanza.getElementsByTagName("starttls");
 			NodeList mechanisms = stanza.getElementsByTagName("mechanisms");
+			NodeList bind = stanza.getElementsByTagName("bind");
 
 			if (starttls.getLength() > 0) {
 				this.doStartTLS_1(context);
+				return;
+			} else if (bind.getLength() > 0) {
+				this.doBind(context, stanza);
 				return;
 			} else if (mechanisms.getLength() > 0) {
 				this.doSASL(context, stanza);
 				return;
 			}
+
 		} else if (fu.equals("urn:ietf:params:xml:ns:xmpp-tls#proceed")) {
 			this.doStartTLS_2(context);
+			return;
+		} else if (fu.equals("urn:ietf:params:xml:ns:xmpp-sasl#success")) {
+			this.doSASL_ok(context, stanza);
 			return;
 		} else {
 			// ...
@@ -62,6 +70,22 @@ public class LoginController extends AbstractXContextController implements
 		// default
 		super.onStanzaElement(context, stanza);
 
+	}
+
+	private void doBind(XContext context, Element stanza) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void doSASL_ok(XContext context, Element stanza) {
+		// System.out.println("SASL ok");
+		try {
+			DefaultXContext context2 = new DefaultXContext(context);
+			XEngine engine = context.getEngineFactory().createEngine();
+			engine.run(context2);
+		} catch (IOException | SAXException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void doSASL(XContext context, Element stanza) {

@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
 
+import ananas.lib.axk.engine.XAccount;
 import ananas.lib.axk.engine.XContext;
 import ananas.lib.axk.engine.XContextFactory;
 import ananas.lib.axk.engine.XEngineListener;
@@ -15,14 +16,16 @@ public class TestAxkConnect {
 	public static void main(String[] args) {
 
 		try {
-			DefaultXAccount account = new DefaultXAccount();
+			DefaultXAccount account0 = new DefaultXAccount();
 
-			account.jid = "xukun@jabber.org";
-			account.host = "jabber.org";
-			account.port = 5222;
-			account.useSSL = false;
-			account.resource = "abcd";
-			account.password = "12345678";
+			account0.jid = "xukun@jabber.org";
+			account0.host = "jabber.org";
+			account0.port = 5222;
+			account0.useSSL = false;
+			account0.resource = "abcd";
+			account0.password = "12345678";
+
+			XAccount account = (new AccountLoader()).load();
 
 			XEngineListener listener = new MyListener();
 
