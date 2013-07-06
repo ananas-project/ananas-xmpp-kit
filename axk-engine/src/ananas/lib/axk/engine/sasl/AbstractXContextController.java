@@ -45,8 +45,7 @@ public abstract class AbstractXContextController implements XContextController {
 
 	@Override
 	public void onPhaseChanged(XContext context, XPhase phase) {
-		// TODO Auto-generated method stub
-
+		context.getEngineListener().onPhaseChanged(context, phase);
 	}
 
 }

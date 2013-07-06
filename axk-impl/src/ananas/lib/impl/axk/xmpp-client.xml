@@ -3,9 +3,9 @@
 		<message-manager>
 			<roster-manager>
 				<presence-manager>
-					<dom:connection id="conn">
+					<dom:connection-v2 id="conn">
 						<core />
-					</dom:connection>
+					</dom:connection-v2>
 				</presence-manager>
 			</roster-manager>
 		</message-manager>

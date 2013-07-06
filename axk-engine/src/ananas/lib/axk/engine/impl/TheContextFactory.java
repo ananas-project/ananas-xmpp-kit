@@ -10,7 +10,12 @@ public class TheContextFactory implements XContextFactory {
 
 	@Override
 	public XContext createContext(XAccount account, XEngineListener listener) {
+		return this.createMutableContext(account, listener);
+	}
 
+	@Override
+	public DefaultXContext createMutableContext(XAccount account,
+			XEngineListener listener) {
 		DefaultXContext context = new DefaultXContext();
 
 		context.m_account = account;

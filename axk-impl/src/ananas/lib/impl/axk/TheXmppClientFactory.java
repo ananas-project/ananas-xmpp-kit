@@ -5,10 +5,10 @@ import java.net.URI;
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppClientFactory;
+import ananas.lib.axk.XmppClientWrapper;
 import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.blueprint3.dom.BPDocument;
 import ananas.lib.blueprint3.lang.BPEnvironment;
-import ananas.lib.impl.axk.client.target.Tar_connection;
 import ananas.lib.util.ClassUriGen;
 
 public class TheXmppClientFactory implements XmppClientFactory {
@@ -39,7 +39,8 @@ public class TheXmppClientFactory implements XmppClientFactory {
 			BPEnvironment bp = envi.getBPEnvironment();
 			BPDocument doc = bp.loadDocument(uri);
 
-			Tar_connection conn = (Tar_connection) doc.findTargetById("conn");
+			XmppClientWrapper conn = (XmppClientWrapper) doc
+					.findTargetById("conn");
 			conn.addTarget(core);
 
 			client = (XmppClient) doc.getRootElement().getTarget(true);

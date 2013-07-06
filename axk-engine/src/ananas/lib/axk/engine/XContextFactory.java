@@ -1,8 +1,13 @@
 package ananas.lib.axk.engine;
 
+import ananas.lib.axk.engine.util.DefaultXContext;
+
 public interface XContextFactory {
 
 	XContext createContext(XAccount account, XEngineListener listener);
+
+	DefaultXContext createMutableContext(XAccount account,
+			XEngineListener listener);
 
 	class Util {
 

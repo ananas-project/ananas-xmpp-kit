@@ -195,18 +195,10 @@ class MyDomBuilderImpl implements XBuilder {
 
 		@Override
 		public Node appendChild(Node newChild) {
-
 			if (newChild instanceof Element) {
 				Element element = (Element) newChild;
 				this.mEngineListener.onStanzaElement(this.mContext, element);
 			}
-			/*
-			 * DOMImplementation impl = newChild.getOwnerDocument()
-			 * .getImplementation(); DOMImplementationLS ls =
-			 * (DOMImplementationLS) impl.getFeature( "LS", "3.0"); LSSerializer
-			 * seri = ls.createLSSerializer(); System.out.println(this +
-			 * ".onElement:" + seri.writeToString(newChild));
-			 */
 			return null;
 		}
 	}

@@ -32,8 +32,9 @@
 		<class name="shell" isElement="true" extends="#abstractClient">
 		</class>
 
-		<class name="connection" isElement="true" extends="#abstractClient">
-		</class>
+		<class name="connection" isElement="true" extends="#abstractClient" />
+		<class name="connection-v2" isElement="true" extends="#abstractClient" />
+
 
 		<class name="core" isElement="true" extends="#abstractClient">
 		</class>

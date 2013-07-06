@@ -7,5 +7,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/axk-element"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/axk-api"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/axk-engine"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
