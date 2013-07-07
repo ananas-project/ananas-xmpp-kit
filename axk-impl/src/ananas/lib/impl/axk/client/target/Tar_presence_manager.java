@@ -1,8 +1,5 @@
 package ananas.lib.impl.axk.client.target;
 
-import java.util.Hashtable;
-import java.util.Map;
-
 import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppEvent;
@@ -18,12 +15,12 @@ import ananas.lib.axk.event.PhaseEvent;
 public class Tar_presence_manager extends Tar_abstractClient implements
 		IExPresenceManager {
 
-	private final Map<XmppAddress, Xmpp_presence> mPresenceMap;
+	// private final Map<XmppAddress, Xmpp_presence> mPresenceMap;
 	private boolean mIsAutoPresenceAfterBinding;
 	private String mMyPresence;
 
 	public Tar_presence_manager() {
-		this.mPresenceMap = new Hashtable<XmppAddress, Xmpp_presence>();
+		// this.mPresenceMap = new Hashtable<XmppAddress, Xmpp_presence>();
 		this.mIsAutoPresenceAfterBinding = false;
 		this.mMyPresence = "<presence><show></show></presence>";
 	}
@@ -109,19 +106,19 @@ public class Tar_presence_manager extends Tar_abstractClient implements
 		}
 	}
 
-//	  final Map < XmppAddress,  >  mTableForPrescen ;
-	  
+	// final Map < XmppAddress, > mTableForPrescen ;
+
 	private void onReceiveStanzaPresence(Object data, Xmpp_presence pres) {
 
-		XmppAddress addrFrom = pres.getFrom();
-		 ;
+		// XmppAddress addrFrom = pres.getFrom();
+		;
 
 	}
 
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

@@ -8,9 +8,12 @@ import org.w3c.dom.Element;
 
 import ananas.lib.axk.XmppAccount;
 import ananas.lib.axk.XmppClientExAPI;
+import ananas.lib.axk.XmppEvent;
 import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.IExCore;
 import ananas.lib.axk.constant.XmppStatus;
+import ananas.lib.axk.event.DefaultPhaseEvent;
+import ananas.lib.axk.event.DefaultStanzaEvent;
 import ananas.lib.impl.axk.client.conn.v2.ConnV2Runner;
 import ananas.lib.impl.axk.client.conn.v2.ConnV2RunnerCallback;
 import ananas.lib.impl.axk.client.conn.v2.ConnV2Token;
@@ -151,23 +154,33 @@ public class Tar_connection_v2 extends Tar_abstractClient implements
 
 		@Override
 		public void onStanza(Element element) {
-			// TODO Auto-generated method stub
-			System.out.println(this + ".onStanza:" + element);
-
+			// System.out.println(this + ".onStanza:" + element);
+			Tar_connection_v2 pthis = Tar_connection_v2.this;
+			DefaultStanzaEvent event = new DefaultStanzaEvent(pthis, element);
+			this.__dispEvent(event);
 		}
 
 		@Override
-		public void onStatusChanged(XmppStatus status) {
-			// TODO Auto-generated method stub
+		public void onStatusChanged(XmppStatus oldStatus, XmppStatus newStatus) {
+			// System.out.println(this + ".onStatusChanged:" + newStatus);
+			Tar_connection_v2 pthis = Tar_connection_v2.this;
+			XmppEvent event = new DefaultPhaseEvent(pthis, oldStatus, newStatus);
+			this.__dispEvent(event);
+		}
 
-			System.out.println(this + ".onStatusChanged:" + status);
+		private void __dispEvent(XmppEvent event) {
+			try {
+				Tar_connection_v2 pthis = Tar_connection_v2.this;
+				pthis.onEvent(event);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		@Override
 		public void onStatusOnline(String fullJID, InputStream in,
 				OutputStream out) {
-			// TODO Auto-generated method stub
-			System.out.println(this + ".onStatusOnline:" + fullJID);
+			// System.out.println(this + ".onStatusOnline:" + fullJID);
 		}
 	}
 

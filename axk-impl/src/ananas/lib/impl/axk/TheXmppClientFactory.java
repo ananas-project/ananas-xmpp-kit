@@ -40,7 +40,7 @@ public class TheXmppClientFactory implements XmppClientFactory {
 			BPDocument doc = bp.loadDocument(uri);
 
 			XmppClientWrapper conn = (XmppClientWrapper) doc
-					.findTargetById("conn");
+					.findTargetById("core");
 			conn.addTarget(core);
 
 			client = (XmppClient) doc.getRootElement().getTarget(true);

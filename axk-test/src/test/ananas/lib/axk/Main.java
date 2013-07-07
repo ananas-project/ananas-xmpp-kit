@@ -107,7 +107,6 @@ public class Main implements Runnable, XmppEventListener {
 
 	@Override
 	public void onEvent(XmppEvent event) {
-		// TODO Auto-generated method stub
 
 	}
 }

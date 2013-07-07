@@ -113,7 +113,7 @@ public class LoginController extends AbstractXContextController implements
 			XEngine engine = context.getEngineFactory().createEngine();
 			engine.run(context2);
 		} catch (IOException | SAXException e) {
-			e.printStackTrace();
+			this.__logError(e);
 		}
 	}
 
@@ -163,8 +163,12 @@ public class LoginController extends AbstractXContextController implements
 			XEngine engine = context.getEngineFactory().createEngine();
 			engine.run(context2);
 		} catch (IOException | SAXException e) {
-			e.printStackTrace();
+			this.__logError(e);
 		}
+	}
+
+	private void __logError(Exception e) {
+		System.err.println(e);
 	}
 
 	private void println(String string) {

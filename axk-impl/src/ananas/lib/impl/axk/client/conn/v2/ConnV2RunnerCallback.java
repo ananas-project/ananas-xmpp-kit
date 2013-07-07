@@ -16,7 +16,7 @@ public interface ConnV2RunnerCallback {
 
 	void onStanza(Element element);
 
-	void onStatusChanged(XmppStatus status);
+	void onStatusChanged(XmppStatus oldStatus, XmppStatus newStatus);
 
 	void onStatusOnline(String fullJID, InputStream in, OutputStream out);
 

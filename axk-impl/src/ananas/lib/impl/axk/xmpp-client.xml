@@ -3,9 +3,11 @@
 		<message-manager>
 			<roster-manager>
 				<presence-manager>
-					<dom:connection-v2 id="conn">
-						<core />
-					</dom:connection-v2>
+					<connection-v2>
+						<stanza-convertor>
+							<core id="core" />
+						</stanza-convertor>
+					</connection-v2>
 				</presence-manager>
 			</roster-manager>
 		</message-manager>

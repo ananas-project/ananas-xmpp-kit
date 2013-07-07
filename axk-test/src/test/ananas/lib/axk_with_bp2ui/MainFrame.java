@@ -22,11 +22,14 @@ import ananas.lib.axk.api.IExCore;
 import ananas.lib.axk.api.roster.IExRosterManager;
 import ananas.lib.axk.api.roster.IRosterContact;
 import ananas.lib.axk.api.roster.IRosterGroup;
+import ananas.lib.axk.constant.XmppStatus;
+import ananas.lib.axk.event.PhaseEvent;
+import ananas.lib.axk.event.StanzaEvent;
 import ananas.lib.blueprint3.Blueprint;
 import ananas.lib.blueprint3.awt.helper.IResponseChainNode;
 import ananas.lib.blueprint3.dom.BPDocument;
 import ananas.lib.io.Connector;
-import ananas.lib.io.StreamConnection;
+import ananas.lib.io.InputConnection;
 import ananas.lib.util.logging.AbstractLoggerFactory;
 import ananas.lib.util.logging.Logger;
 
@@ -75,7 +78,37 @@ public class MainFrame {
 
 			@Override
 			public void onEvent(XmppEvent event) {
-				System.err.println(event + "");
+
+				if (event == null) {
+				} else if (event instanceof PhaseEvent) {
+					PhaseEvent pe = (PhaseEvent) event;
+					XmppStatus pnew = pe.getNewPhase();
+					XmppStatus pold = pe.getOldPhase();
+					System.out.println(this + ".onPhaseChanged: " + pold
+							+ " -> " + pnew);
+
+					if (pnew.equals(XmppStatus.online)) {
+						this.doGetRoster();
+					}
+
+				} else if (event instanceof StanzaEvent) {
+
+					// System.out.println(this + ".onEvent:" + event);
+					StanzaEvent se = (StanzaEvent) event;
+					String s = se.getTarget().stanzaToString();
+					System.out.println("stanza :    " + s);
+
+				} else {
+					System.out.println(this + ".onEvent:" + event);
+				}
+
+			}
+
+			private void doGetRoster() {
+				IExConnection conn = (IExConnection) mClient
+						.getExAPI(IExConnection.class);
+				String s = "<iq  id='roster_1' type='get'><query xmlns='jabber:iq:roster'/></iq>";
+				conn.sendStanza(s);
 			}
 		});
 
@@ -125,6 +158,8 @@ public class MainFrame {
 	}
 
 	private void installCommands(ICommandRegistrar cr) {
+
+		// conn ////////////////////////////////////////////////////
 
 		cr.reg(R.command.conn_reset, new Runnable() {
 
@@ -209,8 +244,44 @@ public class MainFrame {
 				System.out.println("...");
 			}
 		});
+
+		// temp ////////////////////////////////////////////////////
+
+		this.regTemplate(cr, R.command.temp_iq);
+		this.regTemplate(cr, R.command.temp_message);
+		this.regTemplate(cr, R.command.temp_presence);
+
+		this.regTemplate(cr, R.command.temp_roster_pull);
+		this.regTemplate(cr, R.command.temp_roster_add);
+		this.regTemplate(cr, R.command.temp_roster_modify);
+		this.regTemplate(cr, R.command.temp_roster_remove);
+
+		this.regTemplate(cr, R.command.temp_subscription_unavailable);
+		this.regTemplate(cr, R.command.temp_subscription_subscribe);
+		this.regTemplate(cr, R.command.temp_subscription_subscribed);
+		this.regTemplate(cr, R.command.temp_subscription_unsubscribe);
+		this.regTemplate(cr, R.command.temp_subscription_unsubscribed);
+
 		// end ////////////////////////////////////////////////////
 
+	}
+
+	private void regTemplate(ICommandRegistrar cr, String cmd) {
+		cr.reg(cmd, new MyTemplateCommandRunnable(cmd));
+	}
+
+	class MyTemplateCommandRunnable implements Runnable {
+
+		private final String m_url;
+
+		public MyTemplateCommandRunnable(String cmd) {
+			this.m_url = "resource:///template/" + cmd + ".xml";
+		}
+
+		@Override
+		public void run() {
+			MainFrame.this._loadXmlToSendBoxByUrl(this.m_url);
+		}
 	}
 
 	interface MyMacro {
@@ -219,12 +290,17 @@ public class MainFrame {
 
 	}
 
-	protected void _loadXmlToSendBox(String url) {
+	protected void _loadXmlToSendBoxByUrl(String url) {
 		String to = this.mTextTo.getText();
 		Properties prop = this.mTempLoader.getProperties();
 		prop.setProperty(MyMacro.stanza_attr_to, to);
 		String str = this.mTempLoader.get(url);
 		this.mTextSend.setText(str);
+	}
+
+	protected void _loadXmlToSendBoxByFileName(String filename) {
+		String url = "resource:///template/" + filename;
+		this._loadXmlToSendBoxByUrl(url);
 	}
 
 	protected IExConnection _getConnectionAPI() {
@@ -318,7 +394,7 @@ public class MainFrame {
 						.getExAPI(IExCore.class);
 				Connector con = core.getEnvironment().getBPEnvironment()
 						.getConnector();
-				StreamConnection conn = (StreamConnection) con.open(url);
+				InputConnection conn = (InputConnection) con.open(url);
 				InputStream in = conn.getInputStream();
 				byte[] buff = new byte[256];
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();

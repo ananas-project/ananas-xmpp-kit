@@ -39,15 +39,21 @@ public class ConnV2RxRunnable implements Runnable {
 		this.__setPhase(XmppStatus.init);
 		this.m_retry_interval = min_retry_interval;
 
-		for (; !this.m_is_closed;) {
+		for (int i = 0; !this.m_is_closed; i++) {
 			// connect
 			this.__setPhase(XmppStatus.connect);
-			this.__doConnect();
+			boolean success = this.__doConnect();
 			// sleep to retry
 			if (this.m_is_closed) {
+				this.__setPhase(XmppStatus.closed);
 				break;
 			} else {
-				this.__setPhase(XmppStatus.dropped);
+				if ((i == 0) && (!success)) {
+					this.__setPhase(XmppStatus.error);
+					break;
+				} else {
+					this.__setPhase(XmppStatus.dropped);
+				}
 			}
 			int timeout = this.m_retry_interval;
 			this.m_retry_interval *= 2;
@@ -71,10 +77,9 @@ public class ConnV2RxRunnable implements Runnable {
 				timeout -= step;
 			}
 		}
-		this.__setPhase(XmppStatus.closed);
 	}
 
-	class MyListener implements XEngineListener {
+	private final XEngineListener m_engine_listener = new XEngineListener() {
 
 		private Map<XPhase, XmppStatus> m_map;
 
@@ -90,7 +95,9 @@ public class ConnV2RxRunnable implements Runnable {
 					.getCallback();
 
 			if (XPhase.online.equals(phase)) {
+
 				ConnV2RxRunnable.this.m_retry_interval = min_retry_interval;
+				ConnV2RxRunnable.this.m_is_success = true;
 
 				XSocketContext sock = context.getSocketContext();
 
@@ -108,8 +115,6 @@ public class ConnV2RxRunnable implements Runnable {
 			}
 			XmppStatus status = this.phase2status(phase);
 			ConnV2RxRunnable.this.__setPhase(status);
-
-			callback.onStatusChanged(status);
 		}
 
 		private XmppStatus phase2status(XPhase phase) {
@@ -132,12 +137,12 @@ public class ConnV2RxRunnable implements Runnable {
 			}
 			return ret;
 		}
-	}
+	};
+	private boolean m_is_success;
 
-	private final XEngineListener m_engine_listener = new MyListener();
-
-	private void __doConnect() {
+	private boolean __doConnect() {
 		try {
+			this.m_is_success = false;
 			XAccount account = this.__getAccount();
 			XEngineListener listener = this.m_engine_listener;
 			DefaultXContext context = XContextFactory.Util.getFactory()
@@ -146,7 +151,9 @@ public class ConnV2RxRunnable implements Runnable {
 			runner.run();
 		} catch (Exception e) {
 			e.printStackTrace();
+			// System.err.println(e);
 		}
+		return this.m_is_success;
 	}
 
 	private XAccount __getAccount() {
@@ -159,7 +166,16 @@ public class ConnV2RxRunnable implements Runnable {
 	}
 
 	private void __setPhase(XmppStatus status) {
+		XmppStatus old = this.__swapPhase(status);
+		if (!status.equals(old)) {
+			this.m_runner.getCallback().onStatusChanged(old, status);
+		}
+	}
+
+	private synchronized XmppStatus __swapPhase(XmppStatus status) {
+		XmppStatus old = this.m_current_status;
 		this.m_current_status = status;
+		return old;
 	}
 
 	private void _safe_sleep(int ms) {

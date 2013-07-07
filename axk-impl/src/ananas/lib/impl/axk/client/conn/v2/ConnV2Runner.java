@@ -57,17 +57,31 @@ public class ConnV2Runner {
 		} else {
 			this.m_isStart = true;
 		}
-		ConnV2RxRunnable rx = this.m_rx_runn;
-		ConnV2TxRunnable tx = this.m_tx_runn;
+		int id = this.hashCode();
+		Runnable rx = new MyRunnableProxy(this.m_rx_runn, "Rx" + id);
+		Runnable tx = new MyRunnableProxy(this.m_tx_runn, "Tx" + id);
 		(new Thread(rx)).start();
 		(new Thread(tx)).start();
 	}
 
 	public boolean sendStanza(byte[] buffer, int offset, int length) {
 		ConnV2TxBuffer txBuff = new ConnV2TxBuffer(buffer, offset, length);
+		txBuff.setOutputAgent(this.__getOutputAgent());
 		Runnable runn = txBuff.getRunnable();
 		return this.m_tx_runn.addTask(runn, -1);
 	}
+
+	private ConnV2OutputAgent __getOutputAgent() {
+		return this.m_OutputAgent;
+	}
+
+	private final ConnV2OutputAgent m_OutputAgent = new ConnV2OutputAgent() {
+
+		@Override
+		public OutputStream getOutputStream() {
+			return ConnV2Runner.this.m_out;
+		}
+	};
 
 	public XmppStatus getPhase() {
 		return this.m_rx_runn.getStatus();
@@ -97,9 +111,9 @@ public class ConnV2Runner {
 		}
 
 		@Override
-		public void onStatusChanged(XmppStatus status) {
+		public void onStatusChanged(XmppStatus oldStatus, XmppStatus newStatus) {
 			ConnV2Runner pthis = ConnV2Runner.this;
-			pthis.m_callback.onStatusChanged(status);
+			pthis.m_callback.onStatusChanged(oldStatus, newStatus);
 		}
 
 		@Override
@@ -119,4 +133,27 @@ public class ConnV2Runner {
 		}
 	};
 
+	class MyRunnableProxy implements Runnable {
+
+		private String m_name;
+		private Runnable m_runn;
+
+		public MyRunnableProxy(Runnable inner, String name) {
+			this.m_runn = inner;
+			this.m_name = name;
+		}
+
+		@Override
+		public void run() {
+			this.__log("begin");
+			this.m_runn.run();
+			this.__log("end");
+		}
+
+		private void __log(String op) {
+			Thread thd = Thread.currentThread();
+			String s = "[" + thd.getName() + "." + this.m_name + "." + op + "]";
+			System.out.println(s);
+		}
+	}
 }

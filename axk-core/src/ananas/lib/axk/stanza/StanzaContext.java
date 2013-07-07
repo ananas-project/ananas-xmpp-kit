@@ -16,4 +16,6 @@ public interface StanzaContext {
 
 	void setStanza(String stanza);
 
+	StanzaConvertor getStanzaConvertor();
+
 }

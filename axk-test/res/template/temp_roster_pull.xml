@@ -1,0 +1,4 @@
+
+<iq from='${stanza_attr_to}' id='bv1bs71f' type='get'>
+	<query xmlns='jabber:iq:roster' />
+</iq>
