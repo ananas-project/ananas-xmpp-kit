@@ -5,7 +5,9 @@ import java.io.OutputStream;
 
 import org.w3c.dom.Element;
 
+import ananas.lib.axk.DefaultXmppAddress;
 import ananas.lib.axk.XmppAccount;
+import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.constant.XmppStatus;
 import ananas.lib.axk.engine.XAccount;
 
@@ -82,6 +84,7 @@ public class ConnV2Runner {
 			return ConnV2Runner.this.m_out;
 		}
 	};
+	protected XmppAddress m_bind_jid;
 
 	public XmppStatus getPhase() {
 		return this.m_rx_runn.getStatus();
@@ -113,6 +116,11 @@ public class ConnV2Runner {
 		@Override
 		public void onStatusChanged(XmppStatus oldStatus, XmppStatus newStatus) {
 			ConnV2Runner pthis = ConnV2Runner.this;
+			if (oldStatus.equals(XmppStatus.online)) {
+				pthis.m_bind_jid = null;
+				pthis.m_in = null;
+				pthis.m_out = null;
+			}
 			pthis.m_callback.onStatusChanged(oldStatus, newStatus);
 		}
 
@@ -124,6 +132,7 @@ public class ConnV2Runner {
 
 			pthis.m_in = in;
 			pthis.m_out = out;
+			pthis.m_bind_jid = new DefaultXmppAddress(fullJID);
 		}
 
 		@Override
@@ -155,5 +164,9 @@ public class ConnV2Runner {
 			String s = "[" + thd.getName() + "." + this.m_name + "." + op + "]";
 			System.out.println(s);
 		}
+	}
+
+	public XmppAddress getBindingJID() {
+		return this.m_bind_jid;
 	}
 }

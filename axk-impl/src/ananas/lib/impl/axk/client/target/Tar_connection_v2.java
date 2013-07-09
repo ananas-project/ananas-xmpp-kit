@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import org.w3c.dom.Element;
 
 import ananas.lib.axk.XmppAccount;
+import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppEvent;
 import ananas.lib.axk.api.IExConnection;
@@ -203,6 +204,15 @@ public class Tar_connection_v2 extends Tar_abstractClient implements
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	@Override
+	public XmppAddress getBindingJID() {
+		ConnV2Runner runner = this.m_curRunner;
+		if (runner == null) {
+			return null;
+		}
+		return runner.getBindingJID();
 	}
 
 }

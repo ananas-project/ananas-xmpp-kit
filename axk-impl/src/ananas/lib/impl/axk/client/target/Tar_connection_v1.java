@@ -10,6 +10,7 @@ import javax.net.SocketFactory;
 import javax.net.ssl.SSLContext;
 
 import ananas.lib.axk.XmppAccount;
+import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppEnvironment;
@@ -28,7 +29,8 @@ import ananas.lib.impl.axk.client.conn.XmppConnectionListener;
 import ananas.lib.util.logging.AbstractLoggerFactory;
 import ananas.lib.util.logging.Logger;
 
-public class Tar_connection extends Tar_abstractClient implements IExConnection {
+public class Tar_connection_v1 extends Tar_abstractClient implements
+		IExConnection {
 
 	private final static Logger logger = (new AbstractLoggerFactory() {
 	}).getLogger();
@@ -36,7 +38,7 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 	private XmppStatus mStatus = XmppStatus.init;
 	private Worker mCurWorker;
 
-	public Tar_connection() {
+	public Tar_connection_v1() {
 	}
 
 	@Override
@@ -383,7 +385,7 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 					break;
 				}
 				// this.setCurPhase(XmppStatus.logining);
-				IExCore api = Tar_connection.this.getCoreApi();
+				IExCore api = Tar_connection_v1.this.getCoreApi();
 				DefaultCreateContext cc = new XmppConnection.DefaultCreateContext();
 				cc.mAccount = api.getAccount();
 				cc.mEnvironment = api.getEnvironment();
@@ -468,7 +470,7 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 		@Override
 		public void onReceive(XmppConnection conn, Object object) {
 			// System.out.println(this + ".onResceive:" + object);
-			Tar_connection.this._onReceiveObject(this, conn, object);
+			Tar_connection_v1.this._onReceiveObject(this, conn, object);
 		}
 
 		@Override
@@ -499,7 +501,7 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 				this.mPhase = phase;
 			}
 			if (!old.equals(phase)) {
-				Tar_connection.this.onPhaseChanged(this, old, phase);
+				Tar_connection_v1.this.onPhaseChanged(this, old, phase);
 			}
 		}
 	}
@@ -617,5 +619,11 @@ public class Tar_connection extends Tar_abstractClient implements IExConnection 
 			return false;
 		}
 		return this.sendStanza(ba, 0, ba.length);
+	}
+
+	@Override
+	public XmppAddress getBindingJID() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

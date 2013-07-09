@@ -2,6 +2,7 @@ package ananas.lib.impl.axk.client.target;
 
 import ananas.lib.axk.DefaultXmppAccount;
 import ananas.lib.axk.XmppAccount;
+import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppClientExAPI;
 import ananas.lib.axk.XmppEnvironment;
@@ -139,6 +140,12 @@ public class Tar_shell extends Tar_abstractClient implements IExShell {
 	public XmppClient getOuter() {
 		IExCore core = this._getTargetCore();
 		return core.getOuter();
+	}
+
+	@Override
+	public XmppAddress getBindingJID() {
+		IExConnection conn = this._getTargetConnection();
+		return conn.getBindingJID();
 	}
 
 }
