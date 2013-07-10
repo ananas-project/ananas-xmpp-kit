@@ -7,6 +7,7 @@ import ananas.lib.axk.api.IExConnection;
 import ananas.lib.axk.api.presence.IExPresenceManager;
 import ananas.lib.axk.api.presence.IPresenceRes;
 import ananas.lib.axk.api.presence.IPresenceSet;
+import ananas.lib.axk.constant.XmppShow;
 import ananas.lib.axk.constant.XmppStatus;
 import ananas.lib.axk.element.jabber_client.Xmpp_presence;
 import ananas.lib.axk.event.DataEvent;
@@ -16,13 +17,13 @@ public class Tar_presence_manager extends Tar_abstractClient implements
 		IExPresenceManager {
 
 	// private final Map<XmppAddress, Xmpp_presence> mPresenceMap;
-	private boolean mIsAutoPresenceAfterBinding;
-	private String mMyPresence;
+	private boolean m_isAutoPresenceAfterBinding;
+	private XmppShow m_my_show;
 
 	public Tar_presence_manager() {
 		// this.mPresenceMap = new Hashtable<XmppAddress, Xmpp_presence>();
-		this.mIsAutoPresenceAfterBinding = false;
-		this.mMyPresence = "<presence><show></show></presence>";
+		this.m_isAutoPresenceAfterBinding = true;
+		this.m_my_show = XmppShow.empty;
 	}
 
 	@Override
@@ -37,30 +38,12 @@ public class Tar_presence_manager extends Tar_abstractClient implements
 
 	@Override
 	public boolean isAutoPresenceAfterBinding() {
-		return this.mIsAutoPresenceAfterBinding;
+		return this.m_isAutoPresenceAfterBinding;
 	}
 
 	@Override
 	public void setAutoPresenceAfterBinding(boolean value) {
-		this.mIsAutoPresenceAfterBinding = value;
-	}
-
-	@Override
-	public void setMyPresence(String presence) {
-		if (presence != null) {
-			this.mMyPresence = presence;
-		}
-	}
-
-	@Override
-	public String getMyPresence() {
-		return this.mMyPresence;
-	}
-
-	@Override
-	public void sendMyPresence() {
-		String presence = this.mMyPresence;
-		this._doSendMyPresence(presence);
+		this.m_isAutoPresenceAfterBinding = value;
 	}
 
 	private void _doSendMyPresence(String presence) {
@@ -68,14 +51,6 @@ public class Tar_presence_manager extends Tar_abstractClient implements
 			IExConnection conn = (IExConnection) this
 					.getExAPI(IExConnection.class);
 			conn.sendStanza(presence);
-		}
-	}
-
-	@Override
-	public void sendMyPresence(String presence) {
-		if (presence != null) {
-			this.mMyPresence = presence;
-			this._doSendMyPresence(presence);
 		}
 	}
 
@@ -99,10 +74,17 @@ public class Tar_presence_manager extends Tar_abstractClient implements
 		XmppStatus pold = se.getOldPhase();
 		XmppStatus pnew = se.getNewPhase();
 		if (pold.equals(XmppStatus.bind) && pnew.equals(XmppStatus.online)) {
-			if (this.mIsAutoPresenceAfterBinding) {
-				String pres = this.mMyPresence;
-				this._doSendMyPresence(pres);
+			if (this.m_isAutoPresenceAfterBinding) {
+				StringBuilder sb = new StringBuilder();
+				sb.append("<presence>");
+				sb.append("<show>" + this.m_my_show + "</show>");
+				sb.append("</presence>");
+				this._doSendMyPresence(sb.toString());
 			}
+			IExConnection conn = (IExConnection) this
+					.getExAPI(IExConnection.class);
+			XmppAddress bind = conn.getBindingJID();
+			System.out.println("bind:" + bind);
 		}
 	}
 
@@ -131,6 +113,18 @@ public class Tar_presence_manager extends Tar_abstractClient implements
 	public IPresenceRes getPresenceRes(XmppAddress jid) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setMyPresenceShow(XmppShow show) {
+		if (show != null) {
+			this.m_my_show = show;
+		}
+	}
+
+	@Override
+	public XmppShow getMyPresenceShow() {
+		return this.m_my_show;
 	}
 
 }

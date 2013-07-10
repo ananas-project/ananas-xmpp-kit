@@ -2,26 +2,15 @@ package ananas.lib.axk.api.presence;
 
 import ananas.lib.axk.XmppAddress;
 import ananas.lib.axk.XmppClientExAPI;
+import ananas.lib.axk.constant.XmppShow;
 
 public interface IExPresenceManager extends XmppClientExAPI {
 
 	// my presence
 
-	/**
-	 * @param presence
-	 *            a presence stanza
-	 * */
-	void setMyPresence(String presence);
+	void setMyPresenceShow(XmppShow show);
 
-	/**
-	 * @return a presence stanza
-	 * */
-
-	String getMyPresence();
-
-	void sendMyPresence();
-
-	void sendMyPresence(String presence);
+	XmppShow getMyPresenceShow();
 
 	// attributes
 
