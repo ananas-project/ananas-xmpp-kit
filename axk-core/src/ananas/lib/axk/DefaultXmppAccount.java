@@ -23,6 +23,10 @@ public class DefaultXmppAccount implements XmppAccount {
 		this.ignoreSSLError = acc.isIgnoreSSLError();
 	}
 
+	public void setAddress(String addr) {
+		this.address = new DefaultXmppAddress(addr);
+	}
+
 	@Override
 	public String getHost() {
 		return this.host;
