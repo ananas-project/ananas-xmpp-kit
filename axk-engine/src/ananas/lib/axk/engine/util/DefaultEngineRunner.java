@@ -1,9 +1,5 @@
 package ananas.lib.axk.engine.util;
 
-import java.io.IOException;
-
-import org.xml.sax.SAXException;
-
 import ananas.lib.axk.engine.XContext;
 import ananas.lib.axk.engine.XEngine;
 import ananas.lib.axk.engine.XEngineListener;
@@ -24,7 +20,7 @@ public class DefaultEngineRunner implements EngineRunner {
 			XEngineListener l = this.mContext.getEngineListener();
 			l.onPhaseChanged(mContext, XPhase.connect);
 			engine.run(mContext);
-		} catch (IOException | SAXException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}

@@ -29,8 +29,7 @@ public class TheContextFactory implements XContextFactory {
 		try {
 			context.m_domImpl = org.w3c.dom.bootstrap.DOMImplementationRegistry
 					.newInstance().getDOMImplementation("");
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | ClassCastException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

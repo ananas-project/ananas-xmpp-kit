@@ -1,6 +1,5 @@
 package ananas.lib.axk.engine.sasl;
 
-import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +7,6 @@ import java.util.Map;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
 import ananas.lib.axk.engine.XAccount;
 import ananas.lib.axk.engine.XContext;
@@ -112,7 +110,7 @@ public class LoginController extends AbstractXContextController implements
 			DefaultXContext context2 = new DefaultXContext(context);
 			XEngine engine = context.getEngineFactory().createEngine();
 			engine.run(context2);
-		} catch (IOException | SAXException e) {
+		} catch (Exception e) {
 			this.__logError(e);
 		}
 	}
@@ -162,7 +160,7 @@ public class LoginController extends AbstractXContextController implements
 			context2.m_socketContext = new DefaultSocketContext(sockSSL);
 			XEngine engine = context.getEngineFactory().createEngine();
 			engine.run(context2);
-		} catch (IOException | SAXException e) {
+		} catch (Exception e) {
 			this.__logError(e);
 		}
 	}
