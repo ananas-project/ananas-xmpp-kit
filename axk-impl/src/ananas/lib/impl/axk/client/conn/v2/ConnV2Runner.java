@@ -23,31 +23,47 @@ public class ConnV2Runner {
 
 	public ConnV2Runner(ConnV2RunnerCallback callback) {
 		this.m_callback = callback;
-		this.m_rx_runn = new ConnV2RxRunnable(this);
+
 		this.m_tx_runn = new ConnV2TxRunnable(this);
+		this.m_rx_runn = new ConnV2RxRunnable(this, this.m_tx_runn);
+
 	}
 
 	public void close() {
+
 		this.m_isStop = true;
+
 		ConnV2TxRunnable tx = this.m_tx_runn;
 		ConnV2RxRunnable rx = this.m_rx_runn;
+
 		if (rx != null) {
 			rx.close();
 		}
+
 		if (tx != null) {
-			tx.close();
+			// tx.close();
 		}
 
 		try {
-			this.m_in.close();
+			String s = "</stream:stream>";
+			byte[] buff = s.getBytes("UTF-8");
+			this.sendStanza(buff, 0, buff.length);
 		} catch (Exception e) {
-			// e.printStackTrace();
+			e.printStackTrace();
 		}
+
 		try {
-			this.m_out.close();
+			// this.m_in.close();
 		} catch (Exception e) {
 			// e.printStackTrace();
 		}
+
+		try {
+			// this.m_out.close();
+		} catch (Exception e) {
+			// e.printStackTrace();
+		}
+
 	}
 
 	public void open() {
@@ -59,11 +75,17 @@ public class ConnV2Runner {
 		} else {
 			this.m_isStart = true;
 		}
+
+		this.startThread(this.m_rx_runn, "Rx");
+
+	}
+
+	public Thread startThread(Runnable runn, String title) {
 		int id = this.hashCode();
-		Runnable rx = new MyRunnableProxy(this.m_rx_runn, "Rx" + id);
-		Runnable tx = new MyRunnableProxy(this.m_tx_runn, "Tx" + id);
-		(new Thread(rx)).start();
-		(new Thread(tx)).start();
+		Runnable runn2 = new MyRunnableProxy(runn, title + "-" + id);
+		Thread thd = new Thread(runn2);
+		thd.start();
+		return thd;
 	}
 
 	public boolean sendStanza(byte[] buffer, int offset, int length) {

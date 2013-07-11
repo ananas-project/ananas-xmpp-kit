@@ -26,15 +26,19 @@ public class ConnV2RxRunnable implements Runnable {
 	private XAccount mAccount;
 	private final ConnV2Runner m_runner;
 	private XmppStatus m_current_status = XmppStatus.init;
+	private ConnV2TxRunnable m_tx_runn;
 
 	static final int min_retry_interval = 1000;
 
-	public ConnV2RxRunnable(ConnV2Runner runner) {
+	public ConnV2RxRunnable(ConnV2Runner runner, ConnV2TxRunnable tx_runn) {
 		this.m_runner = runner;
+		this.m_tx_runn = tx_runn;
 	}
 
 	@Override
 	public void run() {
+
+		final Thread thd = this.m_runner.startThread(this.m_tx_runn, "Tx");
 
 		this.__setPhase(XmppStatus.init);
 		this.m_retry_interval = min_retry_interval;
@@ -77,6 +81,14 @@ public class ConnV2RxRunnable implements Runnable {
 				timeout -= step;
 			}
 		}
+
+		try {
+			this.m_tx_runn.close();
+			thd.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private final XEngineListener m_engine_listener = new XEngineListener() {
@@ -141,18 +153,34 @@ public class ConnV2RxRunnable implements Runnable {
 	private boolean m_is_success;
 
 	private boolean __doConnect() {
+		XSocketContext sock = null;
 		try {
 			this.m_is_success = false;
 			XAccount account = this.__getAccount();
 			XEngineListener listener = this.m_engine_listener;
 			DefaultXContext context = XContextFactory.Util.getFactory()
 					.createMutableContext(account, listener);
+			sock = context.getSocketContext();
 			EngineRunner runner = new DefaultEngineRunner(context);
 			runner.run();
 		} catch (Exception e) {
-			e.printStackTrace();
-			// System.err.println(e);
+			// e.printStackTrace();
+			System.err.println(e);
 		}
+
+		try {
+			sock.getInput().close();
+		} catch (Exception e) {
+		}
+		try {
+			sock.getOutput().close();
+		} catch (Exception e) {
+		}
+		try {
+			sock.getSocket().close();
+		} catch (Exception e) {
+		}
+
 		return this.m_is_success;
 	}
 
