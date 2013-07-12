@@ -4,6 +4,7 @@ import org.w3c.dom.Element;
 
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppEventListener;
+import ananas.lib.axk.XmppFilter;
 import ananas.lib.axk.api.IExStanzaConvertorProvider;
 import ananas.lib.axk.stanza.DefaultStanzaContext;
 import ananas.lib.axk.stanza.StanzaContext;
@@ -56,6 +57,12 @@ public class DefaultStanzaEvent implements StanzaEvent {
 	@Override
 	public void setTarget(StanzaContext target) {
 		this.m_target = target;
+	}
+
+	@Override
+	public void onFilter(XmppFilter filter) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

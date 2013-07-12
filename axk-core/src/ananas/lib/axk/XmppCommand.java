@@ -4,4 +4,6 @@ public interface XmppCommand {
 
 	void onSendByClient(XmppClient client);
 
+	void onFilter(XmppFilter filter);
+
 }

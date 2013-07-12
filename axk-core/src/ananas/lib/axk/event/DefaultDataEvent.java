@@ -2,6 +2,7 @@ package ananas.lib.axk.event;
 
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppEventListener;
+import ananas.lib.axk.XmppFilter;
 
 public class DefaultDataEvent implements DataEvent {
 
@@ -25,6 +26,12 @@ public class DefaultDataEvent implements DataEvent {
 	@Override
 	public Object getData() {
 		return this.mData;
+	}
+
+	@Override
+	public void onFilter(XmppFilter filter) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

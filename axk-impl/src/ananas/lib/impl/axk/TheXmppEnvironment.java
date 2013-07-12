@@ -4,6 +4,7 @@ import org.w3c.dom.DOMImplementation;
 
 import ananas.lib.axk.XmppClientFactory;
 import ananas.lib.axk.XmppEnvironment;
+import ananas.lib.axk.plugin.PluginManager;
 import ananas.lib.axk.security.AXKSecurityManager;
 import ananas.lib.blueprint3.Blueprint;
 import ananas.lib.blueprint3.lang.BPEnvironment;
@@ -80,6 +81,12 @@ public class TheXmppEnvironment implements XmppEnvironment {
 	@Override
 	public DOMImplementation getDOMImplementation() {
 		throw new RuntimeException("no impl");
+	}
+
+	@Override
+	public PluginManager getPluginManager() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

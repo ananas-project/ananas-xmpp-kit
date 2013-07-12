@@ -8,4 +8,10 @@ public class AbstractXmppEvent implements XmppEvent {
 		
 	}
 
+	@Override
+	public void onFilter(XmppFilter filter) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

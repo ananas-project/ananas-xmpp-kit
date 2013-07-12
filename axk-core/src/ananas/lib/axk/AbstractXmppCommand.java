@@ -8,4 +8,10 @@ public class AbstractXmppCommand implements XmppCommand {
 		
 	}
 
+	@Override
+	public void onFilter(XmppFilter filter) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

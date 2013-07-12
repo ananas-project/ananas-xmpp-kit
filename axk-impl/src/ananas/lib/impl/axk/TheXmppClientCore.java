@@ -7,6 +7,7 @@ import ananas.lib.axk.XmppCommand;
 import ananas.lib.axk.XmppEnvironment;
 import ananas.lib.axk.XmppEvent;
 import ananas.lib.axk.XmppEventListener;
+import ananas.lib.axk.XmppFilter;
 import ananas.lib.axk.api.IExCore;
 import ananas.lib.util.logging.AbstractLoggerFactory;
 import ananas.lib.util.logging.Logger;
@@ -67,6 +68,12 @@ public class TheXmppClientCore implements XmppClient, IExCore {
 				this.mClient = client;
 				logger.trace(".onRecByListener:" + listener);
 			}
+		}
+
+		@Override
+		public void onFilter(XmppFilter filter) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 

@@ -2,6 +2,7 @@ package ananas.lib.axk.event;
 
 import ananas.lib.axk.XmppClient;
 import ananas.lib.axk.XmppEventListener;
+import ananas.lib.axk.XmppFilter;
 import ananas.lib.axk.constant.XmppStatus;
 
 public class DefaultPhaseEvent implements PhaseEvent {
@@ -36,6 +37,12 @@ public class DefaultPhaseEvent implements PhaseEvent {
 	@Override
 	public XmppStatus getNewPhase() {
 		return this.mNewPhase;
+	}
+
+	@Override
+	public void onFilter(XmppFilter filter) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
