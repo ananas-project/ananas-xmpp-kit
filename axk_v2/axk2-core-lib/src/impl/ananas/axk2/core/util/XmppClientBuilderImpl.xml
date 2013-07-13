@@ -1,0 +1,8 @@
+<axk xmlns="ananas:axk:configuration">
+	<connection>
+		<filter-list>
+			<local />
+			<remote />
+		</filter-list>
+	</connection>
+</axk>

@@ -4,9 +4,14 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import ananas.axk2.core.XmppConnection;
+import ananas.axk2.core.XmppEnvironment;
 import ananas.axk2.core.util.XmppClientBuilder;
+import ananas.blueprint4.core.BPEnvironment;
+import ananas.blueprint4.core.lang.BPDocument;
 
 public class XmppClientBuilderImpl implements XmppClientBuilder {
+
+	private InputStream _in;
 
 	@Override
 	public XmppClientBuilder setJID(String jid) {
@@ -58,14 +63,35 @@ public class XmppClientBuilderImpl implements XmppClientBuilder {
 
 	@Override
 	public XmppClientBuilder loadConfigXML(InputStream in) {
-		// TODO Auto-generated method stub
-		return null;
+		this._in = in;
+		return this;
 	}
 
 	@Override
 	public XmppConnection createClient() {
-		// TODO Auto-generated method stub
+
+		try {
+			XmppEnvironment envi = XmppEnvironment.Factory.getDefault();
+			BPEnvironment bp = envi.getBlueprintEnvironment();
+			BPDocument doc = bp.loadBPDocument(this._getConfigXmlInput(), "");
+			Object targetRoot = doc.getRootController().getTarget(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 
+	private InputStream _getConfigXmlInput() {
+		InputStream in = _in;
+		_in = null;
+		if (in == null) {
+			String name = this.getClass().getSimpleName() + ".xml";
+			in = this.getClass().getResourceAsStream(name);
+			if (in == null) {
+				System.err.println("cannot find file " + name);
+			}
+		}
+		return in;
+	}
 }

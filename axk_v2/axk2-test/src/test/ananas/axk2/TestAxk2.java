@@ -35,9 +35,8 @@ public class TestAxk2 {
 		}
 
 		try {
-			InputStream in = this.getClass().getResourceAsStream(
-					"config.properties");
-			xcb.loadConfigXML(in);
+			InputStream in = this.getClass().getResourceAsStream("config.xml");
+			// xcb.loadConfigXML(in);
 			in.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,7 +66,7 @@ public class TestAxk2 {
 			Collections.sort(list);
 			for (String key : list) {
 				String value = System.getProperty(key);
-				System.out.println(key + "    =    " + value);
+				System.out.println("'" + key + "'    =    '" + value + "'");
 			}
 
 		} catch (Exception e) {
