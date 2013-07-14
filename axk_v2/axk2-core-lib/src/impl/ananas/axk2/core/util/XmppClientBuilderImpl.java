@@ -73,7 +73,11 @@ public class XmppClientBuilderImpl implements XmppClientBuilder {
 		try {
 			XmppEnvironment envi = XmppEnvironment.Factory.getDefault();
 			BPEnvironment bp = envi.getBlueprintEnvironment();
-			BPDocument doc = bp.loadBPDocument(this._getConfigXmlInput(), "");
+			InputStream in = this._getConfigXmlInput();
+			BPDocument doc;
+			// doc = bp.loadBPDocument(this._getConfigXmlInput(), "");
+			doc = bp.loadBPDocument(in);
+
 			Object targetRoot = doc.getRootElement().getTarget(true);
 		} catch (Exception e) {
 			e.printStackTrace();
