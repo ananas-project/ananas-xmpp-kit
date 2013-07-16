@@ -3,7 +3,10 @@ package ananas.axk2.core.util;
 import java.io.InputStream;
 import java.util.Properties;
 
+import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppConnection;
+import ananas.axk2.core.XmppConnector;
+import ananas.axk2.core.XmppContext;
 import ananas.lib.util.SingletonLoader;
 
 public interface XmppClientBuilder {
@@ -16,6 +19,7 @@ public interface XmppClientBuilder {
 	String key_resource = "resource";
 	String key_password = "password";
 	String key_use_ssl = "use_ssl";
+	String key_ignore_ssl_error = "ignore_ssl_error";
 
 	XmppClientBuilder setJID(String jid);
 
@@ -38,7 +42,14 @@ public interface XmppClientBuilder {
 	XmppClientBuilder loadConfigXML(InputStream in);
 
 	// create end-point
+
 	XmppConnection createClient();
+
+	XmppConnector getConnector();
+
+	XmppAccount getAccount();
+
+	XmppContext getContext();
 
 	class Factory {
 

@@ -1,0 +1,9 @@
+<AXK xmlns="ananas:axk:base">
+	<Connection>
+		<FilterList>
+			<Local />
+			<Engine />
+			<Remote />
+		</FilterList>
+	</Connection>
+</AXK>

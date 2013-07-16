@@ -1,4 +1,4 @@
-package impl.ananas.axk2.core.connection;
+package impl.ananas.axk2.core.base;
 
 import ananas.blueprint4.core.namespace.AbstractBPNamespace;
 
