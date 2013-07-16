@@ -2,6 +2,7 @@
 <namespace xmlns="ananas:blueprint4:namespace">
 	<head>
 		<property key="namespace.uri">ananas:axk:configuration</property>
+		<property key="namespace.default.prefix">axk-conf</property>
 
 		<property key="target.package">ananas.axk.configuration</property>
 		<property key="target.classname.prefix">Prefix_</property>
