@@ -19,8 +19,7 @@ public class TestAxk2 {
 
 	private void run() {
 
-		PropertiesLoader spl = new PropertiesLoader();
-		spl.loadPropertiesToSystem(this, "system.properties");
+		PropertiesLoader.Util.loadPropertiesToSystem(this, "system.properties");
 
 		XmppClientBuilder xcb = XmppClientBuilder.Factory.getDefault();
 
