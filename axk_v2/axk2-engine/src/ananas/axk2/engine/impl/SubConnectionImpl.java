@@ -9,11 +9,8 @@ class SubConnectionImpl implements XSubConnection {
 
 	private final XThreadRuntime _parent;
 	private final int _dropTime;
-
 	private boolean _isClose;
-
 	private boolean _isOpen;
-
 	private boolean _hasOnline;
 
 	public SubConnectionImpl(XThreadRuntime parent, int dropTime) {
@@ -41,10 +38,15 @@ class SubConnectionImpl implements XSubConnection {
 		log.trace(this + ".run(begin)");
 
 		// log to online
+		final XThreadRuntime parent = this.getParent();
+		parent.setPhase(XmppStatus.connect);
+		try {
+
+		} catch (Exception e) {
+			log.error(e);
+		}
 
 		// dropped phase
-		XThreadRuntime parent = this.getParent();
-		parent.setPhase(XmppStatus.dropped);
 		if (this._dropTime > 0) {
 			parent.setPhase(XmppStatus.dropped);
 			for (int timeout = _dropTime; timeout > 0;) {
