@@ -14,6 +14,7 @@ public interface XmppStatus {
 
 	XmppStatus offline = _F.get("offline");
 	XmppStatus dropped = _F.get("dropped");
+	XmppStatus error = _F.get("error");
 	XmppStatus closed = _F.get("closed");
 
 	class _F {

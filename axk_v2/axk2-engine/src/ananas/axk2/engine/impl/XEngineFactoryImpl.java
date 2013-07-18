@@ -8,7 +8,7 @@ public class XEngineFactoryImpl implements XEngineFactory {
 
 	@Override
 	public XEngine createEngine(XEngineContext context) {
-		return new XEngineImpl(context);
+		return new EngineImpl(context);
 	}
 
 }
