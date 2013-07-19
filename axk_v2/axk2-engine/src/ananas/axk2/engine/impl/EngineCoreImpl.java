@@ -51,8 +51,10 @@ public class EngineCoreImpl implements XEngineCore {
 		XStanzaListener listener = new MyStanzaListener(erc);
 		XDomBuilder builder = XDomBuilder.Factory.newInstance(impl, listener);
 
-		String feature_ns = "http://xml.org/sax/features/namespaces";
-		reader.setFeature(feature_ns, true);
+		reader.setFeature("http://xml.org/sax/features/namespaces", true);
+		reader.setFeature("http://xml.org/sax/features/validation", false);
+		reader.setFeature("http://apache.org/xml/features/validation/schema",
+				false);
 
 		reader.setContentHandler(builder.getContentHandler());
 		reader.setErrorHandler(new MyErrorHandler());

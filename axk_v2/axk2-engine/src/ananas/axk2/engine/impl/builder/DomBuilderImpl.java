@@ -148,9 +148,25 @@ public class DomBuilderImpl implements XDomBuilder, ContentHandler {
 
 		log.trace(this + ".startElement() : " + qName);
 
-		Element element = _doc.createElementNS(uri, qName);
+		final Document doc = _doc;
+		Element element = doc.createElementNS(uri, qName);
 		this._stack.push(element);
 
+		int len = atts.getLength();
+		for (int i = 0; i < len; i++) {
+			String attrURI = atts.getURI(i);
+			String attrQName = atts.getQName(i);
+			String attrValue = atts.getValue(i);
+			// Attr attr = doc.createAttributeNS(attrURI, attrQName);
+			if (attrQName.startsWith("xmlns")) {
+				if (attrQName.equals("xmlns")) {
+					continue;
+				} else if (attrQName.startsWith("xmlns:")) {
+					continue;
+				}
+			}
+			element.setAttributeNS(attrURI, attrQName, attrValue);
+		}
 	}
 
 	@Override
