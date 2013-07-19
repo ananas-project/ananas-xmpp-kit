@@ -41,7 +41,10 @@ class SubConnectionImpl implements XSubConnection {
 		final XThreadRuntime parent = this.getParent();
 		parent.setPhase(XmppStatus.connect);
 		try {
-
+			XSubConnection subConn = this;
+			XEngineRuntimeContext erc = new RootERC(subConn);
+			XEngineCore core = new EngineCoreImpl();
+			core.run(erc);
 		} catch (Exception e) {
 			log.error(e);
 		}
