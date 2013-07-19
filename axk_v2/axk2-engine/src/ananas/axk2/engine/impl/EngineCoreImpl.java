@@ -14,7 +14,6 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import ananas.axk2.engine.XEngineContext;
-import ananas.axk2.engine.impl.builder.XDomBuilder;
 import ananas.axk2.engine.util.XEngineUtil;
 import ananas.lib.util.logging.Logger;
 
@@ -64,14 +63,20 @@ public class EngineCoreImpl implements XEngineCore {
 
 	class MyStanzaListener implements XStanzaListener {
 
+		private final XEngineRuntimeContext _erc;
+		private final XStanzaProcessorManager _stanzaPM;
+
 		public MyStanzaListener(XEngineRuntimeContext erc) {
-			// TODO Auto-generated constructor stub
+			this._erc = erc;
+			this._stanzaPM = erc.getSubConnection().getStanzaProcessorManager();
 		}
 
 		@Override
 		public void onStanza(Element element) {
 			String s = XEngineUtil.nodeToString(element);
 			log.info(this + ".onStanza : " + s);
+			XStanzaProcessor proc = this._stanzaPM.getCurrentProcessor();
+			proc.onStanza(_erc, element);
 		}
 	}
 

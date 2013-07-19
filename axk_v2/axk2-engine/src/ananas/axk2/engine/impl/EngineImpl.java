@@ -6,12 +6,17 @@ import ananas.axk2.engine.XEngineContext;
 class EngineImpl implements XEngine, XSuperConnection {
 
 	private XThreadRuntime _curThreadRuntime;
-	private boolean _isClose;
-	private boolean _isOpen;
+	// private boolean _isClose;
+	// private boolean _isOpen;
 	private final XEngineContext _context;
 
 	public EngineImpl(XEngineContext context) {
 		this._context = context;
+	}
+
+	@Override
+	public void open() {
+		// this._isOpen = true;
 	}
 
 	@Override
@@ -21,8 +26,14 @@ class EngineImpl implements XEngine, XSuperConnection {
 
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
+		this.__setCurrentThreadRuntime(null);
+	}
 
+	@Override
+	public void close() {
+		// this._isClose = true;
+		// this.stop();
+		this.__setCurrentThreadRuntime(null);
 	}
 
 	@Override
@@ -35,7 +46,8 @@ class EngineImpl implements XEngine, XSuperConnection {
 		}
 	}
 
-	private XThreadRuntime __setCurrentThreadRuntime(final XThreadRuntime newTR) {
+	private XThreadRuntime __setCurrentThreadRuntime(XThreadRuntime newTR) {
+
 		final XThreadRuntime oldTR;
 		synchronized (this) {
 			oldTR = this._curThreadRuntime;
@@ -51,19 +63,13 @@ class EngineImpl implements XEngine, XSuperConnection {
 	}
 
 	@Override
-	public void open() {
-		this._isOpen = true;
-	}
-
-	@Override
-	public void close() {
-		this._isClose = true;
-		this.__setCurrentThreadRuntime(null);
-	}
-
-	@Override
 	public XEngineContext getContext() {
 		return this._context;
+	}
+
+	@Override
+	public XThreadRuntime getCurrentTR() {
+		return this._curThreadRuntime;
 	}
 
 }

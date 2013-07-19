@@ -1,9 +1,8 @@
-package ananas.axk2.engine.impl.builder;
+package ananas.axk2.engine.impl;
 
 import org.w3c.dom.DOMImplementation;
 import org.xml.sax.ContentHandler;
 
-import ananas.axk2.engine.impl.XStanzaListener;
 
 public interface XDomBuilder {
 

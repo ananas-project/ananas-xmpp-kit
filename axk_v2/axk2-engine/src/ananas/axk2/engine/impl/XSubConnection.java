@@ -7,4 +7,6 @@ public interface XSubConnection extends XLifeCycle {
 	void run();
 
 	boolean hasOnline();
+
+	XStanzaProcessorManager getStanzaProcessorManager();
 }

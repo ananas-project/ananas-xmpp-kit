@@ -1,6 +1,13 @@
 package ananas.axk2.engine.impl;
 
+import java.util.Properties;
+import java.util.Set;
+
 import ananas.axk2.core.XmppStatus;
+import ananas.axk2.engine.dom_wrapper.DOMWrapperFactoryLoader;
+import ananas.axk2.engine.dom_wrapper.DOMWrapperImplementation;
+import ananas.axk2.engine.dom_wrapper.DOMWrapperImplementation2;
+import ananas.lib.util.ClassPropertiesLoader;
 import ananas.lib.util.logging.Logger;
 
 class ThreadRuntimeImpl implements XThreadRuntime {
@@ -17,9 +24,12 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 	 * */
 	private int _countOnline = 1;
 
+	private final DOMWrapperImplementation _domWrapperImpl;
+
 	public ThreadRuntimeImpl(XSuperConnection parent) {
 		this._parent = parent;
 		this._threadRx = __newThread(new MyRxRunnable());
+		this._domWrapperImpl = new DOMWrapperImplementation2();
 	}
 
 	class MyTxRunnable implements Runnable {
@@ -45,6 +55,7 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 		threadTx.start();
 		String bar = "========================================";
 		log.trace(this + ".run(begin)");
+		this.__regDOMWrappers();
 		for (int index = 0; !this._closed; index++) {
 			final XSubConnection subConn = new SubConnectionImpl(this, index);
 			this._curSubConn = subConn;
@@ -69,6 +80,28 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 			threadTx.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void __regDOMWrappers() {
+		DOMWrapperImplementation impl = this.getDOMWrapperImplementation();
+		String prefix = DOMWrapperFactoryLoader.class.getSimpleName() + "@";
+		log.trace("load wrapper-ns by keys with prefix :" + prefix);
+		Properties prop = (new ClassPropertiesLoader(this.getClass())).load();
+		Set<Object> keys = prop.keySet();
+		for (Object k : keys) {
+			String key = k.toString();
+			String value = prop.getProperty(key);
+			if (key.startsWith(prefix)) {
+				try {
+					Class<?> cls = Class.forName(value);
+					DOMWrapperFactoryLoader ldr = (DOMWrapperFactoryLoader) cls
+							.newInstance();
+					ldr.load(impl);
+				} catch (Exception e) {
+					log.error(e);
+				}
+			}
 		}
 	}
 
@@ -115,6 +148,11 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 			this._phase = newPhase;
 		}
 		log.info(this + ".onStatusChanged: " + oldPhase + " -> " + newPhase);
+	}
+
+	@Override
+	public DOMWrapperImplementation getDOMWrapperImplementation() {
+		return this._domWrapperImpl;
 	}
 
 }

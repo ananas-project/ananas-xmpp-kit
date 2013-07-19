@@ -6,4 +6,6 @@ public interface XSuperConnection extends XLifeCycle {
 
 	XEngineContext getContext();
 
+	XThreadRuntime getCurrentTR();
+
 }

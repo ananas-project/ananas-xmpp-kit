@@ -13,9 +13,12 @@ class SubConnectionImpl implements XSubConnection {
 	private boolean _isOpen;
 	private boolean _hasOnline;
 
+	private final XStanzaProcessorManager _stanzaProcMan;
+
 	public SubConnectionImpl(XThreadRuntime parent, int dropTime) {
 		this._parent = parent;
 		this._dropTime = dropTime;
+		this._stanzaProcMan = new XStanzaProcessorManagerImpl();
 	}
 
 	public void open() {
@@ -83,5 +86,10 @@ class SubConnectionImpl implements XSubConnection {
 	@Override
 	public boolean hasOnline() {
 		return this._hasOnline;
+	}
+
+	@Override
+	public XStanzaProcessorManager getStanzaProcessorManager() {
+		return this._stanzaProcMan;
 	}
 }

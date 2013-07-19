@@ -1,4 +1,4 @@
-package ananas.axk2.engine.impl.builder;
+package ananas.axk2.engine.impl;
 
 import java.util.Stack;
 
@@ -11,7 +11,6 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
-import ananas.axk2.engine.impl.XStanzaListener;
 import ananas.lib.util.logging.Logger;
 
 public class DomBuilderImpl implements XDomBuilder, ContentHandler {
@@ -38,8 +37,6 @@ public class DomBuilderImpl implements XDomBuilder, ContentHandler {
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
 
-		log.trace(this + ".characters()");
-
 		int i1, i2;
 		i1 = start;
 		i2 = start + length - 1;
@@ -65,6 +62,7 @@ public class DomBuilderImpl implements XDomBuilder, ContentHandler {
 		int len = (i2 - i1) + 1;
 		if (len > 0) {
 			String s = new String(ch, i1, len);
+			// log.trace(this + ".characters() : " + s);
 			if (_stack.size() > 0) {
 				Element node = _stack.peek();
 				Text txt = node.getOwnerDocument().createTextNode(s);
@@ -86,8 +84,8 @@ public class DomBuilderImpl implements XDomBuilder, ContentHandler {
 			throws SAXException {
 
 		Element child = _stack.pop();
-		log.info(this + ".endElement() : " + child.getNamespaceURI() + "#"
-				+ child.getLocalName());
+		// log.info(this + ".endElement() : " + child.getNamespaceURI() + "#"
+		// + child.getLocalName());
 
 		if (_stack.size() > 0) {
 			Element parent = _stack.peek();
@@ -136,7 +134,7 @@ public class DomBuilderImpl implements XDomBuilder, ContentHandler {
 	@Override
 	public void startDocument() throws SAXException {
 
-		log.trace(this + ".startDocument()");
+		// log.trace(this + ".startDocument()");
 
 		Document doc = this._dom_impl.createDocument(null, null, null);
 		this._doc = doc;
@@ -146,7 +144,7 @@ public class DomBuilderImpl implements XDomBuilder, ContentHandler {
 	public void startElement(String uri, String localName, String qName,
 			Attributes atts) throws SAXException {
 
-		log.trace(this + ".startElement() : " + qName);
+		// log.trace(this + ".startElement() : " + qName);
 
 		final Document doc = _doc;
 		Element element = doc.createElementNS(uri, qName);
