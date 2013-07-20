@@ -2,21 +2,12 @@ package ananas.axk2.engine.test;
 
 import java.util.Properties;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.w3c.dom.DOMImplementation;
-import org.xml.sax.XMLReader;
-
 import ananas.axk2.core.DefaultAddress;
 import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppAddress;
 import ananas.axk2.engine.XEngine;
-import ananas.axk2.engine.XEngineContext;
 import ananas.axk2.engine.XEngineFactory;
+import ananas.axk2.engine.util.DefaultEngineContext;
 import ananas.lib.util.PropertiesLoader;
 import ananas.lib.util.logging.Logger;
 
@@ -30,46 +21,14 @@ public class TestAxkEngine {
 	}
 
 	private void run() {
-		log.trace("start " + this);
+		log.trace(this + ".run(begin)");
 		XEngineFactory factory = XEngineFactory.Agent.getDefault();
-		XEngineContext context = new MyEngineContext();
+		DefaultEngineContext context = new DefaultEngineContext();
+		context._account = new MyAccount();
+		log.info("login to " + context._account);
 		XEngine engine = factory.createEngine(context);
-		engine.start();
-	}
-
-	static class MyEngineContext implements XEngineContext {
-
-		private final XmppAccount _account = new MyAccount();
-
-		@Override
-		public XmppAccount getAccount() {
-			return this._account;
-		}
-
-		@Override
-		public DOMImplementation getDOMImplementation() {
-			try {
-				DocumentBuilderFactory dbf = DocumentBuilderFactory
-						.newInstance();
-				DocumentBuilder db = dbf.newDocumentBuilder();
-				return db.getDOMImplementation();
-			} catch (ParserConfigurationException e) {
-				log.error(e);
-				return null;
-			}
-		}
-
-		@Override
-		public XMLReader newXMLReader() {
-			try {
-				SAXParser parser = SAXParserFactory.newInstance()
-						.newSAXParser();
-				return parser.getXMLReader();
-			} catch (Exception e) {
-				log.error(e);
-				return null;
-			}
-		}
+		engine.connect();
+		log.trace(this + ".run(end)");
 	}
 
 	static class MyAccount implements XmppAccount {
@@ -126,5 +85,22 @@ public class TestAxkEngine {
 			String s = this._str("ignore_tls_error");
 			return Boolean.parseBoolean(s);
 		}
+
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append("XmppAccount:");
+
+			sb.append("\n    jid = " + this.jid());
+			sb.append("\n    password = '*'x" + this.password().length());
+			sb.append("\n    host = " + this.host());
+			sb.append("\n    port = " + this.port());
+			sb.append("\n    resource = " + this.resource());
+
+			sb.append("\n    ssl = " + this.useSSL());
+			sb.append("\n    ignore_err = " + this.ignoreTLSError());
+
+			return sb.toString();
+		}
+
 	}
 }

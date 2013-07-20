@@ -1,5 +1,6 @@
 package ananas.axk2.engine.impl;
 
+import ananas.axk2.core.XmppStatus;
 import ananas.axk2.engine.XEngine;
 import ananas.axk2.engine.XEngineContext;
 
@@ -15,18 +16,20 @@ class EngineImpl implements XEngine, XSuperConnection {
 	}
 
 	@Override
+	public void connect() {
+		XSuperConnection superConn = this;
+		XThreadRuntime tr = new ThreadRuntimeImpl(superConn);
+		this.__setCurrentThreadRuntime(tr);
+	}
+
+	@Override
+	public void disconnect() {
+		this.__setCurrentThreadRuntime(null);
+	}
+
+	@Override
 	public void open() {
 		// this._isOpen = true;
-	}
-
-	@Override
-	public void start() {
-		this.restart(true);
-	}
-
-	@Override
-	public void stop() {
-		this.__setCurrentThreadRuntime(null);
 	}
 
 	@Override
@@ -34,16 +37,6 @@ class EngineImpl implements XEngine, XSuperConnection {
 		// this._isClose = true;
 		// this.stop();
 		this.__setCurrentThreadRuntime(null);
-	}
-
-	@Override
-	public void restart(boolean newThread) {
-		if (newThread) {
-			XSuperConnection superConn = this;
-			XThreadRuntime tr = new ThreadRuntimeImpl(superConn);
-			this.__setCurrentThreadRuntime(tr);
-		} else {
-		}
 	}
 
 	private XThreadRuntime __setCurrentThreadRuntime(XThreadRuntime newTR) {
@@ -70,6 +63,24 @@ class EngineImpl implements XEngine, XSuperConnection {
 	@Override
 	public XThreadRuntime getCurrentTR() {
 		return this._curThreadRuntime;
+	}
+
+	@Override
+	public XmppStatus getStatus() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public XmppStatus getPhase() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void send() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -6,7 +6,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import ananas.lib.util.logging.Logger;
+
 public class DWDocumentImpl implements DWDocument {
+
+	final static Logger log = Logger.Agent.getLogger();
 
 	private final Document _dom;
 	private final DOMWrapperImplementation _impl;
@@ -37,6 +41,9 @@ public class DWDocumentImpl implements DWDocument {
 		DOMWrapperFactory factory = this._impl.getRegistrar().getFactory(
 				element);
 		if (factory == null) {
+			String uri = element.getNamespaceURI();
+			String lname = element.getLocalName();
+			log.warn("no wrap for element : " + uri + "#" + lname);
 			factory = DefaultElementWrapper.getFactory();
 		}
 		return factory.wrapElement(element, this);

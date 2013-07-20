@@ -1,5 +1,8 @@
 package ananas.axk2.engine.impl;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import ananas.axk2.core.XmppStatus;
 import ananas.lib.util.logging.Logger;
 
@@ -14,11 +17,15 @@ class SubConnectionImpl implements XSubConnection {
 	private boolean _hasOnline;
 
 	private final XStanzaProcessorManager _stanzaProcMan;
+	private final SASLProcessorManager _saslProcMan;
 
-	public SubConnectionImpl(XThreadRuntime parent, int dropTime) {
+	private SocketAgent _curSockAgent;
+
+	public SubConnectionImpl(int index, XThreadRuntime parent, int dropTime) {
 		this._parent = parent;
 		this._dropTime = dropTime;
 		this._stanzaProcMan = new XStanzaProcessorManagerImpl();
+		this._saslProcMan = new SASLProcessorManagerImpl();
 	}
 
 	public void open() {
@@ -45,8 +52,8 @@ class SubConnectionImpl implements XSubConnection {
 		parent.setPhase(XmppStatus.connect);
 		try {
 			XSubConnection subConn = this;
-			XEngineRuntimeContext erc = new RootERC(subConn);
-			XEngineCore core = new EngineCoreImpl();
+			XEngineRuntimeContext erc = new ErcRoot(subConn);
+			XEngineCore core = XEngineCore.Factory.newInstance();
 			core.run(erc);
 		} catch (Exception e) {
 			log.error(e);
@@ -59,6 +66,9 @@ class SubConnectionImpl implements XSubConnection {
 				if (this._isClose) {
 					break;
 				} else {
+
+					log.info("retry after " + (timeout / 1000) + " sec");
+
 					int step = this.__getDropTimeStep(timeout);
 					timeout -= step;
 					try {
@@ -91,5 +101,28 @@ class SubConnectionImpl implements XSubConnection {
 	@Override
 	public XStanzaProcessorManager getStanzaProcessorManager() {
 		return this._stanzaProcMan;
+	}
+
+	@Override
+	public void send_sync(String data) throws IOException {
+		OutputStream out = this._curSockAgent.getOutputStream();
+		out.write(data.getBytes(XEncoding.theDefault));
+	}
+
+	@Override
+	public void setCurrentSocketAgent(SocketAgent sa) {
+		if (sa != null) {
+			this._curSockAgent = sa;
+		}
+	}
+
+	@Override
+	public SocketAgent getCurrentSocketAgent() {
+		return this._curSockAgent;
+	}
+
+	@Override
+	public SASLProcessorManager getSASLProcessorManager() {
+		return this._saslProcMan;
 	}
 }

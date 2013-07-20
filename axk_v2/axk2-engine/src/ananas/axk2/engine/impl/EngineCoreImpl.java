@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Element;
@@ -14,7 +15,6 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import ananas.axk2.engine.XEngineContext;
-import ananas.axk2.engine.util.XEngineUtil;
 import ananas.lib.util.logging.Logger;
 
 public class EngineCoreImpl implements XEngineCore {
@@ -23,11 +23,13 @@ public class EngineCoreImpl implements XEngineCore {
 
 	@Override
 	public void run(XEngineRuntimeContext erc)
-			throws UnsupportedEncodingException, IOException, SAXException {
+			throws UnsupportedEncodingException, IOException, SAXException,
+			GeneralSecurityException {
 
 		SocketAgent sa = erc.openSocket();
 		InputStream in = sa.getInputStream();
 		OutputStream out = sa.getOutputStream();
+		erc.getSubConnection().setCurrentSocketAgent(sa);
 
 		// send starting of stream
 		StringBuilder sb = new StringBuilder();
@@ -46,7 +48,7 @@ public class EngineCoreImpl implements XEngineCore {
 				.getContext();
 
 		DOMImplementation impl = context.getDOMImplementation();
-		XMLReader reader = context.newXMLReader();
+		XMLReader reader = context.getXMLReaderProvider().newXMLReader();
 		XStanzaListener listener = new MyStanzaListener(erc);
 		XDomBuilder builder = XDomBuilder.Factory.newInstance(impl, listener);
 
@@ -73,8 +75,8 @@ public class EngineCoreImpl implements XEngineCore {
 
 		@Override
 		public void onStanza(Element element) {
-			String s = XEngineUtil.nodeToString(element);
-			log.info(this + ".onStanza : " + s);
+			// String s = XEngineUtil.nodeToString(element);
+			// log.info(this + ".onStanza : " + s);
 			XStanzaProcessor proc = this._stanzaPM.getCurrentProcessor();
 			proc.onStanza(_erc, element);
 		}

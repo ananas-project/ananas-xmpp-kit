@@ -1,7 +1,6 @@
 package ananas.axk2.engine;
 
 import org.w3c.dom.DOMImplementation;
-import org.xml.sax.XMLReader;
 
 import ananas.axk2.core.XmppAccount;
 
@@ -11,6 +10,11 @@ public interface XEngineContext {
 
 	DOMImplementation getDOMImplementation();
 
-	XMLReader newXMLReader();
+	// XMLReader newXMLReader();
+	XMLReaderProvider getXMLReaderProvider();
+
+	XEngineConnector getConnector();
+
+	XEngineListener getListener();
 
 }

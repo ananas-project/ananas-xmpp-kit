@@ -3,41 +3,43 @@ package ananas.axk2.engine.impl;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
+import java.security.GeneralSecurityException;
 
 import javax.net.SocketFactory;
+import javax.net.ssl.SSLSocketFactory;
 
 import ananas.axk2.core.XmppAccount;
 import ananas.axk2.engine.XEngineContext;
 
-public class RootERC implements XEngineRuntimeContext {
+public class ErcRoot implements XEngineRuntimeContext {
 
 	private final XSubConnection _sub_conn;
 	private SocketAgent _sock_agent;
 
-	public RootERC(XSubConnection subConn) {
+	public ErcRoot(XSubConnection subConn) {
 		this._sub_conn = subConn;
 	}
 
 	@Override
-	public SocketAgent openSocket() throws IOException {
+	public SocketAgent openSocket() throws IOException, GeneralSecurityException {
 		SocketAgent sa = this._sock_agent;
 		if (sa == null) {
-			Socket sock = null;
-
-			XEngineContext context = this._sub_conn.getParent().getParent()
-					.getContext();
-
+			final XEngineContext context = this._sub_conn.getParent()
+					.getParent().getContext();
 			XmppAccount account = context.getAccount();
+			final Socket sock;
 			if (account.useSSL()) {
-				// TODO open ssl socket
-				throw new RuntimeException("no impl");
+				SSLSocketFactory factory = context.getConnector()
+						.getSSLContext().getSocketFactory();
+				sock = factory.createSocket();
 			} else {
 				sock = SocketFactory.getDefault().createSocket();
 			}
-			String host = account.host();
-			int port = account.port();
-			SocketAddress addr = new InetSocketAddress(host, port);
+			InetSocketAddress addr = context.getConnector()
+					.getAddressByAccount(account);
+			// String host = account.host();
+			// int port = account.port();
+			// SocketAddress addr = new InetSocketAddress(host, port);
 			sock.connect(addr);
 			sa = new DefaultSocketAgent(sock);
 			this._sock_agent = sa;

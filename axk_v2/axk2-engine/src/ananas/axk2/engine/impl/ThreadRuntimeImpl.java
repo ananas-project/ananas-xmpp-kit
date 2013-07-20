@@ -1,6 +1,7 @@
 package ananas.axk2.engine.impl;
 
 import java.util.Properties;
+import java.util.Random;
 import java.util.Set;
 
 import ananas.axk2.core.XmppStatus;
@@ -25,6 +26,8 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 	private int _countOnline = 1;
 
 	private final DOMWrapperImplementation _domWrapperImpl;
+
+	private int _current_drop_time;
 
 	public ThreadRuntimeImpl(XSuperConnection parent) {
 		this._parent = parent;
@@ -57,7 +60,9 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 		log.trace(this + ".run(begin)");
 		this.__regDOMWrappers();
 		for (int index = 0; !this._closed; index++) {
-			final XSubConnection subConn = new SubConnectionImpl(this, index);
+			int dropTime = this.genDropTime();
+			final XSubConnection subConn = new SubConnectionImpl(index, this,
+					dropTime);
 			this._curSubConn = subConn;
 			log.trace(bar);// bar===================
 			subConn.open();
@@ -153,6 +158,30 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 	@Override
 	public DOMWrapperImplementation getDOMWrapperImplementation() {
 		return this._domWrapperImpl;
+	}
+
+	@Override
+	public int genDropTime() {
+		int dt = this._current_drop_time;
+		dt = this.setDropTime(dt * 2);
+		// add a random value between 1 to 60 second
+		Random rand = new Random();
+		rand.setSeed(System.currentTimeMillis());
+		int n = (rand.nextInt(60) + 1) * 1000;
+		// log.trace("dropTime = base:" + dt + " + rand:" + n);
+		return (dt + n);
+	}
+
+	@Override
+	public int setDropTime(int time) {
+		final int dt_max = 3600 * 1000;
+		final int dt_min = 5 * 1000;
+		if (time > dt_max)
+			time = dt_max;
+		if (time < dt_min)
+			time = dt_min;
+		this._current_drop_time = time;
+		return time;
 	}
 
 }

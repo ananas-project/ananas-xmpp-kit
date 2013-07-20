@@ -13,4 +13,15 @@ public interface XThreadRuntime extends XLifeCycle {
 
 	DOMWrapperImplementation getDOMWrapperImplementation();
 
+	/**
+	 * get the time span while dropped
+	 * */
+	int genDropTime();
+
+	/**
+	 * set the time span while dropped
+	 * */
+
+	int setDropTime(int time);
+
 }

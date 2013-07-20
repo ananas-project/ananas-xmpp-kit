@@ -14,7 +14,7 @@ public class AbstractElementWrapper implements DWElement {
 	private final DWDocument _ownerDoc;
 	private final Element _element;
 
-	public AbstractElementWrapper(Element element, DWDocument owner) {
+	protected AbstractElementWrapper(Element element, DWDocument owner) {
 		this._element = element;
 		this._ownerDoc = owner;
 	}
