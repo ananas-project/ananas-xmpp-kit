@@ -5,6 +5,9 @@ import java.util.Random;
 import java.util.Set;
 
 import ananas.axk2.core.XmppStatus;
+import ananas.axk2.engine.api.XSubConnection;
+import ananas.axk2.engine.api.XSuperConnection;
+import ananas.axk2.engine.api.XThreadRuntime;
 import ananas.axk2.engine.dom_wrapper.DOMWrapperFactoryLoader;
 import ananas.axk2.engine.dom_wrapper.DOMWrapperImplementation;
 import ananas.axk2.engine.dom_wrapper.DOMWrapperImplementation2;

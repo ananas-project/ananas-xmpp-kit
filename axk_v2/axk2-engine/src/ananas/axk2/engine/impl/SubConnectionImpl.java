@@ -4,6 +4,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import ananas.axk2.core.XmppStatus;
+import ananas.axk2.engine.api.XEncoding;
+import ananas.axk2.engine.api.XEngineCore;
+import ananas.axk2.engine.api.XEngineRuntimeContext;
+import ananas.axk2.engine.api.XStanzaProcessorManager;
+import ananas.axk2.engine.api.XSubConnection;
+import ananas.axk2.engine.api.XThreadRuntime;
 import ananas.lib.util.logging.Logger;
 
 class SubConnectionImpl implements XSubConnection {
@@ -24,7 +30,7 @@ class SubConnectionImpl implements XSubConnection {
 	public SubConnectionImpl(int index, XThreadRuntime parent, int dropTime) {
 		this._parent = parent;
 		this._dropTime = dropTime;
-		this._stanzaProcMan = new XStanzaProcessorManagerImpl();
+		this._stanzaProcMan = new StanzaProcessorManagerImpl();
 		this._saslProcMan = new SASLProcessorManagerImpl();
 	}
 

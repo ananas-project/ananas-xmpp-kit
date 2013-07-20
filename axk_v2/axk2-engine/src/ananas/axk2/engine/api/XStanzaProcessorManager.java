@@ -1,4 +1,4 @@
-package ananas.axk2.engine.impl;
+package ananas.axk2.engine.api;
 
 import ananas.axk2.core.XmppStatus;
 

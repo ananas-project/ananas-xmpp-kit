@@ -15,6 +15,13 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import ananas.axk2.engine.XEngineContext;
+import ananas.axk2.engine.api.XDomBuilder;
+import ananas.axk2.engine.api.XEncoding;
+import ananas.axk2.engine.api.XEngineCore;
+import ananas.axk2.engine.api.XEngineRuntimeContext;
+import ananas.axk2.engine.api.XStanzaListener;
+import ananas.axk2.engine.api.XStanzaProcessor;
+import ananas.axk2.engine.api.XStanzaProcessorManager;
 import ananas.lib.util.logging.Logger;
 
 public class EngineCoreImpl implements XEngineCore {

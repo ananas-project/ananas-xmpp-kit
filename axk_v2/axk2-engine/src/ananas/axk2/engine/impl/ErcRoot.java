@@ -10,6 +10,8 @@ import javax.net.ssl.SSLSocketFactory;
 
 import ananas.axk2.core.XmppAccount;
 import ananas.axk2.engine.XEngineContext;
+import ananas.axk2.engine.api.XEngineRuntimeContext;
+import ananas.axk2.engine.api.XSubConnection;
 
 public class ErcRoot implements XEngineRuntimeContext {
 

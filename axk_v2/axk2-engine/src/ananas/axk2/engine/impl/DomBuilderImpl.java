@@ -11,6 +11,8 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
+import ananas.axk2.engine.api.XDomBuilder;
+import ananas.axk2.engine.api.XStanzaListener;
 import ananas.lib.util.logging.Logger;
 
 public class DomBuilderImpl implements XDomBuilder, ContentHandler {

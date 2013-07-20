@@ -1,4 +1,4 @@
-package ananas.axk2.engine.test;
+package test.ananas.axk2.engine;
 
 import java.util.Properties;
 

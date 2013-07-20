@@ -16,6 +16,29 @@ public class TheLoader implements DOMWrapperFactoryLoader {
 
 		hp.reg("mechanisms", Mechanisms.getFactory());
 		hp.reg("mechanism", Mechanism.getFactory());
+		hp.reg("abort", Abort.getFactory());
+		hp.reg("auth", Auth.getFactory());
+		hp.reg("challenge", Challenge.getFactory());
+		hp.reg("response", Response.getFactory());
+		hp.reg("success", Success.getFactory());
+		hp.reg("failure", Failure.getFactory());
+		hp.reg("text", Text.getFactory());
+
+		hp.reg("empty", Empty.getFactory());
+
+		hp.reg("aborted", Empty.getFactory());
+		hp.reg("account-disabled", Empty.getFactory());
+		hp.reg("credentials-expired", Empty.getFactory());
+		hp.reg("encryption-required", Empty.getFactory());
+		hp.reg("incorrect-encoding", Empty.getFactory());
+		hp.reg("invalid-authzid", Empty.getFactory());
+		hp.reg("invalid-mechanism", Empty.getFactory());
+		hp.reg("malformed-request", Empty.getFactory());
+		hp.reg("mechanism-too-weak", Empty.getFactory());
+		hp.reg("not-authorized", Empty.getFactory());
+		hp.reg("temporary-auth-failure", Empty.getFactory());
+		hp.reg("transition-needed", Empty.getFactory());
+
 	}
 
 	class MyHelper {

@@ -1,6 +1,9 @@
-package ananas.axk2.engine.impl;
+package ananas.axk2.engine.api;
 
 import java.io.IOException;
+
+import ananas.axk2.engine.impl.SASLProcessorManager;
+import ananas.axk2.engine.impl.SocketAgent;
 
 public interface XSubConnection extends XLifeCycle {
 

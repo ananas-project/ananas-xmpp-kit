@@ -3,6 +3,8 @@ package ananas.axk2.engine.impl;
 import ananas.axk2.core.XmppStatus;
 import ananas.axk2.engine.XEngine;
 import ananas.axk2.engine.XEngineContext;
+import ananas.axk2.engine.api.XSuperConnection;
+import ananas.axk2.engine.api.XThreadRuntime;
 
 class EngineImpl implements XEngine, XSuperConnection {
 

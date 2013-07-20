@@ -7,19 +7,24 @@ import org.w3c.dom.Element;
 
 import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppStatus;
+import ananas.axk2.engine.api.XEngineCore;
+import ananas.axk2.engine.api.XEngineRuntimeContext;
+import ananas.axk2.engine.api.XStanzaProcessor;
 import ananas.axk2.engine.dom_wrapper.DOMWrapperImplementation;
 import ananas.axk2.engine.dom_wrapper.DWDocument;
 import ananas.axk2.engine.dom_wrapper.DWElement;
 import ananas.axk2.engine.dom_wrapper.streams.Features;
+import ananas.axk2.engine.dom_wrapper.xmpp_sasl.Failure;
 import ananas.axk2.engine.dom_wrapper.xmpp_sasl.Mechanism;
 import ananas.axk2.engine.dom_wrapper.xmpp_sasl.Mechanisms;
+import ananas.axk2.engine.dom_wrapper.xmpp_sasl.Success;
 import ananas.axk2.engine.dom_wrapper.xmpp_tls.Proceed;
 import ananas.axk2.engine.dom_wrapper.xmpp_tls.Starttls;
 import ananas.axk2.engine.util.Base64;
 import ananas.axk2.engine.util.XEngineUtil;
 import ananas.lib.util.logging.Logger;
 
-public class XStanzaProcessorForLogin implements XStanzaProcessor {
+public class StanzaProcessorForLogin implements XStanzaProcessor {
 
 	final static Logger log = Logger.Agent.getLogger();
 
@@ -34,10 +39,35 @@ public class XStanzaProcessorForLogin implements XStanzaProcessor {
 
 		if (dwElement instanceof Features) {
 			this.__onStanzaFeatures(erc, (Features) dwElement);
+
 		} else if (dwElement instanceof Proceed) {
 			this.__doTLS_run(erc);
+
+		} else if (dwElement instanceof Failure) {
+			this.__onStanzaSaslFailure(erc, (Failure) dwElement);
+
+		} else if (dwElement instanceof Success) {
+			this.__onStanzaSaslSuccess(erc);
+
 		} else {
 			this.__onStanzaUnknow(erc, dwElement);
+		}
+	}
+
+	private void __onStanzaSaslFailure(XEngineRuntimeContext erc,
+			Failure failure) {
+
+		log.error("error : " + failure.getErrorReason());
+
+	}
+
+	private void __onStanzaSaslSuccess(XEngineRuntimeContext erc) {
+		try {
+			XEngineRuntimeContext ercNext = new ErcSASL(erc);
+			XEngineCore core = XEngineCore.Factory.newInstance();
+			core.run(ercNext);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -72,6 +102,7 @@ public class XStanzaProcessorForLogin implements XStanzaProcessor {
 	}
 
 	private void __doSASL_start(XEngineRuntimeContext erc, Mechanisms mechs) {
+		erc.getSubConnection().getParent().setPhase(XmppStatus.sasl);
 		// select a supported mechanism
 		final SASLProcessorManager sasl_pm = erc.getSubConnection()
 				.getSASLProcessorManager();

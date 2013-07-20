@@ -1,17 +1,19 @@
 package ananas.axk2.engine.impl;
 
 import ananas.axk2.core.XmppStatus;
+import ananas.axk2.engine.api.XStanzaProcessor;
+import ananas.axk2.engine.api.XStanzaProcessorManager;
 
-public class XStanzaProcessorManagerImpl implements XStanzaProcessorManager {
+public class StanzaProcessorManagerImpl implements XStanzaProcessorManager {
 
 	private XStanzaProcessor _current;
 	private final XStanzaProcessor _proc_login;
 	private final XStanzaProcessor _proc_online;
 
-	public XStanzaProcessorManagerImpl() {
+	public StanzaProcessorManagerImpl() {
 
-		this._proc_login = new XStanzaProcessorForLogin();
-		this._proc_online = new XStanzaProcessorForOnline();
+		this._proc_login = new StanzaProcessorForLogin();
+		this._proc_online = new StanzaProcessorForOnline();
 
 		XStanzaProcessor proc = this.getProcessorForStatus(XmppStatus.connect);
 		this.setCurrentProcessor(proc);

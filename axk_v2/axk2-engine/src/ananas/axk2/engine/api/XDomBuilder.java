@@ -1,7 +1,9 @@
-package ananas.axk2.engine.impl;
+package ananas.axk2.engine.api;
 
 import org.w3c.dom.DOMImplementation;
 import org.xml.sax.ContentHandler;
+
+import ananas.axk2.engine.impl.DomBuilderImpl;
 
 
 public interface XDomBuilder {

@@ -2,7 +2,10 @@ package ananas.axk2.engine.impl;
 
 import org.w3c.dom.Element;
 
-public class XStanzaProcessorForOnline implements XStanzaProcessor {
+import ananas.axk2.engine.api.XEngineRuntimeContext;
+import ananas.axk2.engine.api.XStanzaProcessor;
+
+public class StanzaProcessorForOnline implements XStanzaProcessor {
 
 	@Override
 	public void onStanza(XEngineRuntimeContext erc, Element element) {

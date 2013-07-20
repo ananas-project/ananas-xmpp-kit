@@ -1,10 +1,12 @@
-package ananas.axk2.engine.impl;
+package ananas.axk2.engine.api;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 
 import org.xml.sax.SAXException;
+
+import ananas.axk2.engine.impl.EngineCoreImpl;
 
 public interface XEngineCore {
 
