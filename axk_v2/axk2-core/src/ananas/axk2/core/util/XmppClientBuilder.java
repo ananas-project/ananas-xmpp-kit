@@ -1,7 +1,12 @@
 package ananas.axk2.core.util;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppConnection;
@@ -39,7 +44,8 @@ public interface XmppClientBuilder {
 
 	// set config
 
-	XmppClientBuilder loadConfigXML(InputStream in);
+	XmppClientBuilder loadConfigXML(InputStream in) throws SAXException,
+			IOException, ParserConfigurationException;
 
 	// create end-point
 

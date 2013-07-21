@@ -6,7 +6,7 @@ import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppConnection;
 import ananas.axk2.core.XmppConnector;
 import ananas.axk2.core.XmppContext;
-import ananas.axk2.core.api.XapiClient;
+import ananas.axk2.core.api.IClient;
 import ananas.axk2.core.util.XmppClientBuilder;
 import ananas.lib.util.PropertiesLoader;
 
@@ -34,7 +34,7 @@ public class TestAxk2 {
 
 		try {
 			InputStream in = this.getClass().getResourceAsStream("config.xml");
-			// xcb.loadConfigXML(in);
+			xcb.loadConfigXML(in);
 			in.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -44,7 +44,7 @@ public class TestAxk2 {
 		XmppContext context = xcb.getContext();
 		XmppConnector connector = xcb.getConnector();
 		XmppConnection conn = connector.openConnection(context, account);
-		XapiClient client = (XapiClient) conn.getAPI(XapiClient.class);
+		IClient client = (IClient) conn.getAPI(IClient.class);
 		client.connect();
 	}
 

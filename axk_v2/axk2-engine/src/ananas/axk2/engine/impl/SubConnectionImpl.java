@@ -131,4 +131,10 @@ class SubConnectionImpl implements XSubConnection {
 	public SASLProcessorManager getSASLProcessorManager() {
 		return this._saslProcMan;
 	}
+
+	public String toString() {
+		if (this._isOpen) {
+		}
+		return super.toString();
+	}
 }

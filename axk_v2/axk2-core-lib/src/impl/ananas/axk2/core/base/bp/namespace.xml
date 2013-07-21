@@ -5,10 +5,10 @@
 		<property key="namespace.default.prefix">axk-base</property>
 
 		<property key="target.package">impl.ananas.axk2.core.base</property>
-		<property key="target.classname.prefix">Tar</property>
+		<property key="target.classname.prefix"></property>
 		<property key="target.classname.suffix"></property>
 
-		<property key="controller.package">impl.ananas.axk2.core.base</property>
+		<property key="controller.package">impl.ananas.axk2.core.base.bp</property>
 		<property key="controller.classname.prefix">Ctr</property>
 		<property key="controller.classname.suffix"></property>
 
@@ -16,9 +16,9 @@
 	<body>
 
 		<element name="AXK" />
-		<element name="Local" />
-		<element name="Remote" />
-		<element name="Engine" />
+		<element name="Local" controller=".CtrFilter" />
+		<element name="Remote" controller=".CtrFilter" />
+		<element name="Engine" controller=".CtrFilter" />
 		<element name="FilterList" />
 		<element name="Connection" />
 

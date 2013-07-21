@@ -4,12 +4,18 @@ import java.util.List;
 
 public interface XmppFilterManager {
 
-	boolean insertFilter(XmppFilter filter, int index);
+	int insert(XmppFilter filter, int index);
 
-	boolean removeFilter(int index);
+	int append(XmppFilter filter);
 
-	boolean removeFilter(XmppFilter filter);
+	int count();
 
-	List<XmppFilter> listFilters();
+	XmppFilter get(int index);
+
+	boolean remove(int index);
+
+	boolean remove(XmppFilter filter);
+
+	List<XmppFilter> listAll();
 
 }

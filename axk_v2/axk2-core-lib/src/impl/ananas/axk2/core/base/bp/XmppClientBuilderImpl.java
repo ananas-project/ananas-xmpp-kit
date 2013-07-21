@@ -1,8 +1,14 @@
-package impl.ananas.axk2.core.base;
+package impl.ananas.axk2.core.base.bp;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import ananas.axk2.core.DefaultAccount;
 import ananas.axk2.core.DefaultAddress;
@@ -13,6 +19,7 @@ import ananas.axk2.core.XmppConnection;
 import ananas.axk2.core.XmppConnector;
 import ananas.axk2.core.XmppContext;
 import ananas.axk2.core.util.XmppClientBuilder;
+import ananas.blueprint4.core.BPEnvironment;
 import ananas.lib.util.logging.Logger;
 
 public class XmppClientBuilderImpl implements XmppClientBuilder {
@@ -21,6 +28,8 @@ public class XmppClientBuilderImpl implements XmppClientBuilder {
 
 	private XmppAccount _account;
 	private final MutableAccount _mutableAccount;
+
+	private Document _config_dom;
 
 	public XmppClientBuilderImpl() {
 		this._mutableAccount = new MutableAccount();
@@ -129,9 +138,14 @@ public class XmppClientBuilderImpl implements XmppClientBuilder {
 	}
 
 	@Override
-	public XmppClientBuilder loadConfigXML(InputStream in) {
-		throw new RuntimeException("no impl");
-		// return this;
+	public XmppClientBuilder loadConfigXML(InputStream in) throws SAXException,
+			IOException, ParserConfigurationException {
+		BPEnvironment bp = this.getContext().getBlueprintEnvironment();
+		DocumentBuilder domBuilder = bp.getDOMDocumentBuilderFactory()
+				.newDocumentBuilder();
+		Document doc = domBuilder.parse(in);
+		this._config_dom = doc;
+		return this;
 	}
 
 	@Override
@@ -143,7 +157,7 @@ public class XmppClientBuilderImpl implements XmppClientBuilder {
 
 	@Override
 	public XmppConnector getConnector() {
-		return new XmppConnectorImpl();
+		return new XmppConnectorImpl(this._config_dom);
 	}
 
 	@Override

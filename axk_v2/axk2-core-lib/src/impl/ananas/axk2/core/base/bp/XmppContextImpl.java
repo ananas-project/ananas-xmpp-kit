@@ -1,4 +1,4 @@
-package impl.ananas.axk2.core.base;
+package impl.ananas.axk2.core.base.bp;
 
 import ananas.axk2.core.XmppContext;
 import ananas.blueprint4.core.BPEnvironment;

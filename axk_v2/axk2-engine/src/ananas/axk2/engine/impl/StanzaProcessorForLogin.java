@@ -10,10 +10,14 @@ import ananas.axk2.core.XmppStatus;
 import ananas.axk2.engine.api.XEngineCore;
 import ananas.axk2.engine.api.XEngineRuntimeContext;
 import ananas.axk2.engine.api.XStanzaProcessor;
+import ananas.axk2.engine.api.XStanzaProcessorManager;
 import ananas.axk2.engine.dom_wrapper.DOMWrapperImplementation;
 import ananas.axk2.engine.dom_wrapper.DWDocument;
 import ananas.axk2.engine.dom_wrapper.DWElement;
+import ananas.axk2.engine.dom_wrapper.jabber_client.Iq;
 import ananas.axk2.engine.dom_wrapper.streams.Features;
+import ananas.axk2.engine.dom_wrapper.xmpp_bind.Bind;
+import ananas.axk2.engine.dom_wrapper.xmpp_bind.Jid;
 import ananas.axk2.engine.dom_wrapper.xmpp_sasl.Failure;
 import ananas.axk2.engine.dom_wrapper.xmpp_sasl.Mechanism;
 import ananas.axk2.engine.dom_wrapper.xmpp_sasl.Mechanisms;
@@ -49,9 +53,53 @@ public class StanzaProcessorForLogin implements XStanzaProcessor {
 		} else if (dwElement instanceof Success) {
 			this.__onStanzaSaslSuccess(erc);
 
+		} else if (dwElement instanceof Iq) {
+			this.__onStanzaIq(erc, (Iq) dwElement);
+
 		} else {
 			this.__onStanzaUnknow(erc, dwElement);
 		}
+	}
+
+	private void __onStanzaIq(XEngineRuntimeContext erc, Iq iq) {
+		Object kind = null;
+		List<DWElement> chs = iq.listChildElements();
+		for (DWElement ch : chs) {
+			if (ch instanceof Bind) {
+				this.__onStanzaBindOK(erc, iq, (Bind) ch);
+				kind = ch;
+				break;
+			} else {
+			}
+		}
+		if (kind == null) {
+			this.__onStanzaUnknow(erc, iq);
+		}
+	}
+
+	private void __onStanzaBindOK(XEngineRuntimeContext erc, Iq iq, Bind bind) {
+
+		final Jid jid = (Jid) bind.findChildByClass(Jid.class);
+		if (jid != null) {
+			String jidText = jid.getChildText();
+			log.info("bind to full jid : " + jidText);
+		}
+
+		this.__doOnline_start(erc);
+
+	}
+
+	private void __doOnline_start(XEngineRuntimeContext erc) {
+
+		XStanzaProcessorManager spm = erc.getSubConnection()
+				.getStanzaProcessorManager();
+		spm.setCurrentProcessor(spm.getProcessorForStatus(XmppStatus.online));
+
+		this.__setPhase(erc, XmppStatus.online);
+	}
+
+	private void __setPhase(XEngineRuntimeContext erc, XmppStatus phase) {
+		erc.getSubConnection().getParent().setPhase(phase);
 	}
 
 	private void __onStanzaSaslFailure(XEngineRuntimeContext erc,
@@ -89,6 +137,10 @@ public class StanzaProcessorForLogin implements XStanzaProcessor {
 				this.__doTLS_start(erc);
 				kind = ch;
 				break;
+			} else if (ch instanceof Bind) {
+				this.__doBind_start(erc);
+				kind = ch;
+				break;
 			} else if (ch instanceof Mechanisms) {
 				this.__doSASL_start(erc, (Mechanisms) ch);
 				kind = ch;
@@ -101,8 +153,17 @@ public class StanzaProcessorForLogin implements XStanzaProcessor {
 		}
 	}
 
+	private void __doBind_start(XEngineRuntimeContext erc) {
+		this.__setPhase(erc, XmppStatus.bind);
+		StringBuilder sb = new StringBuilder();
+		sb.append("<iq id='bind-001' type='set'>");
+		sb.append("<bind xmlns='urn:ietf:params:xml:ns:xmpp-bind'/>");
+		sb.append("</iq>");
+		this.__sendStanza(erc, sb.toString());
+	}
+
 	private void __doSASL_start(XEngineRuntimeContext erc, Mechanisms mechs) {
-		erc.getSubConnection().getParent().setPhase(XmppStatus.sasl);
+		this.__setPhase(erc, XmppStatus.sasl);
 		// select a supported mechanism
 		final SASLProcessorManager sasl_pm = erc.getSubConnection()
 				.getSASLProcessorManager();
@@ -146,7 +207,7 @@ public class StanzaProcessorForLogin implements XStanzaProcessor {
 	}
 
 	private void __doTLS_start(XEngineRuntimeContext erc) {
-		erc.getSubConnection().getParent().setPhase(XmppStatus.tls);
+		this.__setPhase(erc, XmppStatus.tls);
 		String s = "<starttls xmlns='urn:ietf:params:xml:ns:xmpp-tls'/>";
 		this.__sendStanza(erc, s);
 	}

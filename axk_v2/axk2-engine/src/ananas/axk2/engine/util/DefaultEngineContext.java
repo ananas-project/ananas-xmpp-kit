@@ -118,10 +118,12 @@ public class DefaultEngineContext implements XEngineContext {
 			}
 
 			@Override
-			public void onPhaseChanged(XmppStatus oldPhase, XmppStatus newPhase) {
+			public void onPhaseChanged(XEngine engine, XmppStatus oldPhase,
+					XmppStatus newPhase) {
 				// TODO Auto-generated method stub
 
 			}
+
 		};
 	}
 

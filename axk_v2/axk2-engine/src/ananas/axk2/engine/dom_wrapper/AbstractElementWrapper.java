@@ -50,6 +50,16 @@ public class AbstractElementWrapper implements DWElement {
 		return this.__getMyChildrenList().getText();
 	}
 
+	public DWElement findChildByClass(Class<?> cls) {
+		List<DWElement> list = this.listChildElements();
+		for (DWElement ch : list) {
+			if (cls.isInstance(ch)) {
+				return ch;
+			}
+		}
+		return null;
+	}
+
 	private MyChildrenCache _children;
 
 	private MyChildrenCache __getMyChildrenList() {

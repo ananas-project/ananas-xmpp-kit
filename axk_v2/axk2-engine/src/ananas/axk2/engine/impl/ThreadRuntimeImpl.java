@@ -106,6 +106,7 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 					DOMWrapperFactoryLoader ldr = (DOMWrapperFactoryLoader) cls
 							.newInstance();
 					ldr.load(impl);
+					log.info("load element-wrapper with " + ldr);
 				} catch (Exception e) {
 					log.error(e);
 				}

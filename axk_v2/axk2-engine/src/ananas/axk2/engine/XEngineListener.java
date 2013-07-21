@@ -8,5 +8,5 @@ public interface XEngineListener {
 
 	void onStanza(XEngine engine, Element stanza);
 
-	void onPhaseChanged(XmppStatus oldPhase, XmppStatus newPhase);
+	void onPhaseChanged(XEngine engine, XmppStatus oldPhase, XmppStatus newPhase);
 }

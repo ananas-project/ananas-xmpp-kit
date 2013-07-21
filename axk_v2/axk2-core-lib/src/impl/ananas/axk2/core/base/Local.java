@@ -1,5 +1,5 @@
 package impl.ananas.axk2.core.base;
 
-public class TarAXK {
+public class Local extends Filter {
 
 }

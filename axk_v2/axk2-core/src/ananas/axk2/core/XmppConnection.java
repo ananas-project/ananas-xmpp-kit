@@ -5,7 +5,7 @@ public interface XmppConnection extends XmppCommandDispatcher,
 
 	XmppAccount getAccount();
 
-	XmppEnvironment getEnvironment();
+	XmppContext getContext();
 
 	XmppFilterManager getFilterManager();
 
