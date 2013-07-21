@@ -55,4 +55,30 @@ public class DefaultAccount implements XmppAccount {
 		return this._resource;
 	}
 
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[" + this.getClass().getSimpleName());
+		sb.append(" jid:" + this._jid);
+		sb.append(" password:" + this.__pswToString());
+		sb.append(" host:" + this._host);
+		sb.append(" port:" + this._port);
+		sb.append(" resource:" + this._resource);
+		sb.append(" use_ssl:" + this._useSSL);
+		sb.append(" ignore_ssl_error:" + this._ignoreTLSError);
+		sb.append("]");
+		return sb.toString();
+	}
+
+	private String __pswToString() {
+		final String psw = this._password;
+		if (psw == null) {
+			return ("" + psw);
+		}
+		char[] chs = psw.toCharArray();
+		for (int i = chs.length - 1; i >= 0; i--) {
+			chs[i] = '*';
+		}
+		return new String(chs);
+	}
+
 }

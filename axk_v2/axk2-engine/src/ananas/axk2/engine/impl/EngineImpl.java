@@ -12,6 +12,7 @@ class EngineImpl implements XEngine, XSuperConnection {
 	// private boolean _isClose;
 	// private boolean _isOpen;
 	private final XEngineContext _context;
+	private XmppStatus _status = XmppStatus.initial;
 
 	public EngineImpl(XEngineContext context) {
 		this._context = context;
@@ -19,6 +20,7 @@ class EngineImpl implements XEngine, XSuperConnection {
 
 	@Override
 	public void connect() {
+		this._status = XmppStatus.online;
 		XSuperConnection superConn = this;
 		XThreadRuntime tr = new ThreadRuntimeImpl(superConn);
 		this.__setCurrentThreadRuntime(tr);
@@ -26,6 +28,7 @@ class EngineImpl implements XEngine, XSuperConnection {
 
 	@Override
 	public void disconnect() {
+		this._status = XmppStatus.offline;
 		this.__setCurrentThreadRuntime(null);
 	}
 
@@ -69,14 +72,16 @@ class EngineImpl implements XEngine, XSuperConnection {
 
 	@Override
 	public XmppStatus getStatus() {
-		// TODO Auto-generated method stub
-		return null;
+		return this._status;
 	}
 
 	@Override
 	public XmppStatus getPhase() {
-		// TODO Auto-generated method stub
-		return null;
+		XThreadRuntime tr = this.getCurrentTR();
+		if (tr == null) {
+			return XmppStatus.offline;
+		}
+		return tr.getPhase();
 	}
 
 	@Override

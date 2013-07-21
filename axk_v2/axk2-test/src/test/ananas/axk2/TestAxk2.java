@@ -9,8 +9,11 @@ import ananas.axk2.core.XmppContext;
 import ananas.axk2.core.api.IClient;
 import ananas.axk2.core.util.XmppClientBuilder;
 import ananas.lib.util.PropertiesLoader;
+import ananas.lib.util.logging.Logger;
 
 public class TestAxk2 {
+
+	final static Logger log = Logger.Agent.getLogger();
 
 	public static void main(String[] arg) {
 		TestAxk2 test = new TestAxk2();
@@ -45,6 +48,16 @@ public class TestAxk2 {
 		XmppConnector connector = xcb.getConnector();
 		XmppConnection conn = connector.openConnection(context, account);
 		IClient client = (IClient) conn.getAPI(IClient.class);
+
+		log.info("current phase : " + client.getPhase());
+		client.connect();
+		try {
+			Thread.sleep(10 * 1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		log.info("current phase : " + client.getPhase());
+
 		client.connect();
 	}
 
