@@ -155,9 +155,19 @@ public class StanzaProcessorForLogin implements XStanzaProcessor {
 
 	private void __doBind_start(XEngineRuntimeContext erc) {
 		this.__setPhase(erc, XmppStatus.bind);
+		String res = erc.getSubConnection().getParent().getParent()
+				.getContext().getAccount().resource();
 		StringBuilder sb = new StringBuilder();
 		sb.append("<iq id='bind-001' type='set'>");
-		sb.append("<bind xmlns='urn:ietf:params:xml:ns:xmpp-bind'/>");
+		if (res == null) {
+			sb.append("<bind xmlns='urn:ietf:params:xml:ns:xmpp-bind'/>");
+		} else {
+			sb.append("<bind xmlns='urn:ietf:params:xml:ns:xmpp-bind'>");
+			sb.append("<resource>");
+			sb.append(res);
+			sb.append("</resource>");
+			sb.append("</bind>");
+		}
 		sb.append("</iq>");
 		this.__sendStanza(erc, sb.toString());
 	}

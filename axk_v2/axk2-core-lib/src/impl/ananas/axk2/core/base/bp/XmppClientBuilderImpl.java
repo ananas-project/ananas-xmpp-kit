@@ -26,7 +26,7 @@ public class XmppClientBuilderImpl implements XmppClientBuilder {
 
 	final static Logger log = Logger.Agent.getLogger();
 
-	private XmppAccount _account;
+	// private XmppAccount _account;
 	private final MutableAccount _mutableAccount;
 
 	private Document _config_dom;
@@ -162,12 +162,7 @@ public class XmppClientBuilderImpl implements XmppClientBuilder {
 
 	@Override
 	public XmppAccount getAccount() {
-		XmppAccount account = this._account;
-		if (account == null) {
-			account = new DefaultAccount(this._mutableAccount);
-			this._account = account;
-		}
-		return account;
+		return new DefaultAccount(this._mutableAccount);
 	}
 
 	@Override

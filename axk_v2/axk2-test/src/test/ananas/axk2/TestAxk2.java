@@ -31,6 +31,10 @@ public class TestAxk2 {
 					"account.properties");
 			xcb.loadAccount(in);
 			in.close();
+
+			String res = xcb.getAccount().resource();
+			xcb.setResource(res + "." + System.currentTimeMillis());
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -58,7 +62,6 @@ public class TestAxk2 {
 		}
 		log.info("current phase : " + client.getPhase());
 
-		client.connect();
 	}
 
 }
