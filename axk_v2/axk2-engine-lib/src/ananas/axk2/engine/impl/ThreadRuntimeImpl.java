@@ -188,4 +188,9 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 		return time;
 	}
 
+	@Override
+	public XSubConnection getCurrentSubConnection() {
+		return this._curSubConn;
+	}
+
 }

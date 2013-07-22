@@ -6,6 +6,7 @@ import ananas.axk2.core.XmppCommand;
 import ananas.axk2.core.XmppConnection;
 import ananas.axk2.core.XmppContext;
 import ananas.axk2.core.XmppEvent;
+import ananas.axk2.core.XmppEventListener;
 import ananas.axk2.core.XmppFilterManager;
 
 public class XmppConnectionFacade implements XmppConnection {
@@ -47,6 +48,16 @@ public class XmppConnectionFacade implements XmppConnection {
 	@Override
 	public XmppContext getContext() {
 		return _inner.getContext();
+	}
+
+	@Override
+	public void addEventListener(XmppEventListener listener) {
+		_inner.addEventListener(listener);
+	}
+
+	@Override
+	public void removeEventListener(XmppEventListener listener) {
+		_inner.removeEventListener(listener);
 	}
 
 }

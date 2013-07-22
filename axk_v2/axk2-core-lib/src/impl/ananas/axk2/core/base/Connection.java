@@ -2,12 +2,15 @@ package impl.ananas.axk2.core.base;
 
 import java.util.List;
 
+import ananas.axk2.core.DefaultXmppEventDispatcher;
 import ananas.axk2.core.XmppAPI;
 import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppCommand;
 import ananas.axk2.core.XmppConnection;
 import ananas.axk2.core.XmppContext;
 import ananas.axk2.core.XmppEvent;
+import ananas.axk2.core.XmppEventDispatcher;
+import ananas.axk2.core.XmppEventListener;
 import ananas.axk2.core.XmppFilter;
 import ananas.axk2.core.XmppFilterManager;
 
@@ -44,6 +47,9 @@ public class Connection implements XmppConnection {
 				event.onReceiveBy(f);
 				event = f.filter(event);
 			}
+		}
+		if (event != null) {
+			this._event_disp.dispatch(event);
 		}
 	}
 
@@ -160,6 +166,18 @@ public class Connection implements XmppConnection {
 	public void init(XmppContext context, XmppAccount account) {
 		this._account = account;
 		this._context = context;
+	}
+
+	private final XmppEventDispatcher _event_disp = new DefaultXmppEventDispatcher();
+
+	@Override
+	public void addEventListener(XmppEventListener listener) {
+		this._event_disp.addEventListener(listener);
+	}
+
+	@Override
+	public void removeEventListener(XmppEventListener listener) {
+		this._event_disp.removeEventListener(listener);
 	}
 
 }

@@ -1,6 +1,7 @@
 package ananas.axk2.core.api;
 
 import ananas.axk2.core.XmppAPI;
+import ananas.axk2.core.XmppAddress;
 import ananas.axk2.core.XmppStatus;
 
 public interface IClient extends XmppAPI {
@@ -12,5 +13,7 @@ public interface IClient extends XmppAPI {
 	XmppStatus getStatus();
 
 	XmppStatus getPhase();
+
+	XmppAddress getBind();
 
 }

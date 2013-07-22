@@ -5,6 +5,8 @@ import ananas.axk2.engine.dom_wrapper.DOMWrapperImplementation;
 
 public interface XThreadRuntime extends XLifeCycle {
 
+	XSubConnection getCurrentSubConnection();
+
 	XSuperConnection getParent();
 
 	XmppStatus getPhase();

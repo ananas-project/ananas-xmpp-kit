@@ -6,6 +6,8 @@ import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppConnection;
 import ananas.axk2.core.XmppConnector;
 import ananas.axk2.core.XmppContext;
+import ananas.axk2.core.XmppEvent;
+import ananas.axk2.core.XmppEventListener;
 import ananas.axk2.core.api.IClient;
 import ananas.axk2.core.util.XmppClientBuilder;
 import ananas.lib.util.logging.Logger;
@@ -49,6 +51,7 @@ public class TestAxk2 {
 		XmppConnector connector = xcb.getConnector();
 		XmppConnection conn = connector.openConnection(context, account);
 		IClient client = (IClient) conn.getAPI(IClient.class);
+		conn.addEventListener(new MyEventListener());
 
 		log.info("current phase : " + client.getPhase());
 		client.connect();
@@ -59,6 +62,16 @@ public class TestAxk2 {
 		}
 		log.info("current phase : " + client.getPhase());
 
+	}
+
+	class MyEventListener implements XmppEventListener {
+
+		@Override
+		public void onEvent(XmppEvent event) {
+
+			log.info(this + ".onEvent : " + event);
+
+		}
 	}
 
 }

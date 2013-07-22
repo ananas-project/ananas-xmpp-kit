@@ -15,6 +15,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.XMLReader;
 
 import ananas.axk2.core.XmppAccount;
+import ananas.axk2.core.XmppAddress;
 import ananas.axk2.core.XmppStatus;
 import ananas.axk2.engine.XEngine;
 import ananas.axk2.engine.XEngineConnector;
@@ -122,6 +123,12 @@ public class DefaultEngineContext implements XEngineContext {
 					XmppStatus newPhase) {
 				// TODO Auto-generated method stub
 
+			}
+
+			@Override
+			public void onBind(XEngine engine, XmppAddress jid) {
+				// TODO Auto-generated method stub
+				
 			}
 
 		};
