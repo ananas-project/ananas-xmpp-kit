@@ -3,10 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ananas-base"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ananas-base-lib"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/axk2-core"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/axk2-core-lib"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint4-core"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/blueprint4-core-lib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

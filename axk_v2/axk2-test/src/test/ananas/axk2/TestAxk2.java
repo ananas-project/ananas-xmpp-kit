@@ -8,7 +8,6 @@ import ananas.axk2.core.XmppConnector;
 import ananas.axk2.core.XmppContext;
 import ananas.axk2.core.api.IClient;
 import ananas.axk2.core.util.XmppClientBuilder;
-import ananas.lib.util.PropertiesLoader;
 import ananas.lib.util.logging.Logger;
 
 public class TestAxk2 {
@@ -21,8 +20,6 @@ public class TestAxk2 {
 	}
 
 	private void run() {
-
-		PropertiesLoader.Util.loadPropertiesToSystem(this, "system.properties");
 
 		XmppClientBuilder xcb = XmppClientBuilder.Factory.getDefault();
 
