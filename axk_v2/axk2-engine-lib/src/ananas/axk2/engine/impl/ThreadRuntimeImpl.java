@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.Set;
 
 import ananas.axk2.core.XmppStatus;
+import ananas.axk2.engine.XEngine;
 import ananas.axk2.engine.api.XSubConnection;
 import ananas.axk2.engine.api.XSuperConnection;
 import ananas.axk2.engine.api.XThreadRuntime;
@@ -156,7 +157,13 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 			oldPhase = this._phase;
 			this._phase = newPhase;
 		}
-		log.info(this + ".onStatusChanged: " + oldPhase + " -> " + newPhase);
+		if (!oldPhase.equals(newPhase)) {
+			// log.info(this + ".onStatusChanged: " + oldPhase + " -> " +
+			// newPhase);
+			XEngine engine = this.getParent().getEngine();
+			engine.getContext().getListener()
+					.onPhaseChanged(engine, oldPhase, newPhase);
+		}
 	}
 
 	@Override

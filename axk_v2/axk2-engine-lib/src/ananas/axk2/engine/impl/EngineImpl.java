@@ -90,4 +90,9 @@ class EngineImpl implements XEngine, XSuperConnection {
 
 	}
 
+	@Override
+	public XEngine getEngine() {
+		return this;
+	}
+
 }
