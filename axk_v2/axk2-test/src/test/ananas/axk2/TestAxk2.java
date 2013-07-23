@@ -3,18 +3,23 @@ package test.ananas.axk2;
 import java.io.InputStream;
 
 import ananas.axk2.core.XmppAccount;
+import ananas.axk2.core.XmppAddress;
 import ananas.axk2.core.XmppConnection;
 import ananas.axk2.core.XmppConnector;
 import ananas.axk2.core.XmppContext;
 import ananas.axk2.core.XmppEvent;
 import ananas.axk2.core.XmppEventListener;
+import ananas.axk2.core.XmppStatus;
 import ananas.axk2.core.api.IClient;
+import ananas.axk2.core.event.BindEvent;
+import ananas.axk2.core.event.PhaseEvent;
+import ananas.axk2.core.event.StanzaEvent;
 import ananas.axk2.core.util.XmppClientBuilder;
 import ananas.lib.util.logging.Logger;
 
 public class TestAxk2 {
 
-	final static Logger log = Logger.Agent.getLogger();
+	final static Logger log = Logger.Agent.getLogger("test");
 
 	public static void main(String[] arg) {
 		TestAxk2 test = new TestAxk2();
@@ -68,9 +73,25 @@ public class TestAxk2 {
 
 		@Override
 		public void onEvent(XmppEvent event) {
+			if (event instanceof BindEvent) {
+				BindEvent be = (BindEvent) event;
+				XmppAddress jid = be.getBind();
+				log.debug("xmpp-bind-jid : " + jid);
 
-			// log.info(this + ".onEvent : " + event);
+			} else if (event instanceof PhaseEvent) {
+				PhaseEvent pe = (PhaseEvent) event;
+				XmppStatus pold = pe.getOldPhase();
+				XmppStatus pnew = pe.getNewPhase();
+				log.debug("xmpp-phase    : " + pold + " -> " + pnew);
 
+			} else if (event instanceof StanzaEvent) {
+				StanzaEvent se = (StanzaEvent) event;
+				String s = se.getString();
+				log.debug("xmpp-stanza   : " + s);
+
+			} else {
+				log.debug(this + ".onEvent : " + event);
+			}
 		}
 	}
 
