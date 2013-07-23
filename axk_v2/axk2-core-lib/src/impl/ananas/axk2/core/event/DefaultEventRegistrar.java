@@ -18,6 +18,7 @@ public class DefaultEventRegistrar implements IEventRegistrar {
 	private void init() {
 		this.registerFactory(new ThePhaseEventFactory());
 		this.registerFactory(new TheBindEventFactory());
+		this.registerFactory(new TheStanzaEventFactory());
 	}
 
 	@Override

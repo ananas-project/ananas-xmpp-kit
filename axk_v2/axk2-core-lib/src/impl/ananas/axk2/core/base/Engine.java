@@ -14,6 +14,8 @@ import ananas.axk2.core.event.BindEvent;
 import ananas.axk2.core.event.BindEventFactory;
 import ananas.axk2.core.event.PhaseEvent;
 import ananas.axk2.core.event.PhaseEventFactory;
+import ananas.axk2.core.event.StanzaEvent;
+import ananas.axk2.core.event.StanzaEventFactory;
 import ananas.axk2.engine.XEngine;
 import ananas.axk2.engine.XEngineFactory;
 import ananas.axk2.engine.XEngineListener;
@@ -51,11 +53,26 @@ public class Engine extends Filter implements IClient {
 		private IEventRegistrar _theIEventRegistrar;
 		private XmppConnection _theConnection;
 		private BindEventFactory _theBindEventFactory;
+		private StanzaEventFactory _theStanzaEventFactory;
 
 		@Override
 		public void onStanza(XEngine engine, Element stanza) {
-			// TODO Auto-generated method stub
+			XmppConnection conn = this.__getConnection();
+			StanzaEventFactory factory = this.__getStanzaEventFactory();
+			StanzaEvent event = factory.create(conn);
+			event.setElement(stanza);
+			conn.dispatch(event);
+		}
 
+		private StanzaEventFactory __getStanzaEventFactory() {
+			StanzaEventFactory factory = this._theStanzaEventFactory;
+			if (factory == null) {
+				IEventRegistrar reg = this.__getIEventRegistrar();
+				factory = (StanzaEventFactory) reg
+						.getFactory(StanzaEventFactory.class);
+				this._theStanzaEventFactory = factory;
+			}
+			return factory;
 		}
 
 		@Override

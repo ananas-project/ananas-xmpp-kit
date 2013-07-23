@@ -76,18 +76,24 @@ public class TestAxk2 {
 			if (event instanceof BindEvent) {
 				BindEvent be = (BindEvent) event;
 				XmppAddress jid = be.getBind();
-				log.debug("xmpp-bind-jid : " + jid);
+				log.debug(this + ":xmpp-bind-jid : " + jid);
 
 			} else if (event instanceof PhaseEvent) {
 				PhaseEvent pe = (PhaseEvent) event;
 				XmppStatus pold = pe.getOldPhase();
 				XmppStatus pnew = pe.getNewPhase();
-				log.debug("xmpp-phase    : " + pold + " -> " + pnew);
+				log.debug(this + ":xmpp-phase    : " + pold + " -> " + pnew);
 
 			} else if (event instanceof StanzaEvent) {
 				StanzaEvent se = (StanzaEvent) event;
 				String s = se.getString();
-				log.debug("xmpp-stanza   : " + s);
+				log.debug(this + ":xmpp-stanza   : " + s);
+				String tab = "    ";
+				log.debug(tab + "      id=" + se.get_id());
+				log.debug(tab + "    type=" + se.get_type());
+				log.debug(tab + "    from=" + se.get_from());
+				log.debug(tab + "      to=" + se.get_to());
+				log.debug(tab + "xml:lang=" + se.get_xml_lang());
 
 			} else {
 				log.debug(this + ".onEvent : " + event);
