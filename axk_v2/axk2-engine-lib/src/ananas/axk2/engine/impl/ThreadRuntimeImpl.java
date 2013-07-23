@@ -4,6 +4,7 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 
+import ananas.axk2.core.XmppAddress;
 import ananas.axk2.core.XmppStatus;
 import ananas.axk2.engine.XEngine;
 import ananas.axk2.engine.api.XSubConnection;
@@ -32,6 +33,8 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 	private final DOMWrapperImplementation _domWrapperImpl;
 
 	private int _current_drop_time;
+
+	private XmppAddress _bind_jid;
 
 	public ThreadRuntimeImpl(XSuperConnection parent) {
 		this._parent = parent;
@@ -111,7 +114,7 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 					DOMWrapperFactoryLoader ldr = (DOMWrapperFactoryLoader) cls
 							.newInstance();
 					ldr.load(impl);
-					log.info("load element-wrapper with " + ldr);
+					log.debug("load element-wrapper with " + ldr);
 				} catch (Exception e) {
 					log.error(e);
 				}
@@ -202,6 +205,18 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 	@Override
 	public XSubConnection getCurrentSubConnection() {
 		return this._curSubConn;
+	}
+
+	@Override
+	public void setBind(XmppAddress addr) {
+		this._bind_jid = addr;
+		XEngine engine = this.getParent().getEngine();
+		engine.getContext().getListener().onBind(engine, addr);
+	}
+
+	@Override
+	public XmppAddress getBind() {
+		return this._bind_jid;
 	}
 
 }

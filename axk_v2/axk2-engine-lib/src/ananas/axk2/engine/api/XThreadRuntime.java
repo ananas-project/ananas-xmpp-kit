@@ -1,5 +1,6 @@
 package ananas.axk2.engine.api;
 
+import ananas.axk2.core.XmppAddress;
 import ananas.axk2.core.XmppStatus;
 import ananas.axk2.engine.dom_wrapper.DOMWrapperImplementation;
 
@@ -25,5 +26,9 @@ public interface XThreadRuntime extends XLifeCycle {
 	 * */
 
 	int setDropTime(int time);
+
+	void setBind(XmppAddress addr);
+
+	XmppAddress getBind();
 
 }

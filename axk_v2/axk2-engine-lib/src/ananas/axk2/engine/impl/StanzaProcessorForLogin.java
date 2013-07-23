@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
+import ananas.axk2.core.DefaultAddress;
 import ananas.axk2.core.XmppAccount;
+import ananas.axk2.core.XmppAddress;
 import ananas.axk2.core.XmppStatus;
 import ananas.axk2.engine.api.XEngineCore;
 import ananas.axk2.engine.api.XEngineRuntimeContext;
@@ -83,6 +85,9 @@ public class StanzaProcessorForLogin implements XStanzaProcessor {
 		if (jid != null) {
 			String jidText = jid.getChildText();
 			log.info("bind to full jid : " + jidText);
+
+			XmppAddress addr = new DefaultAddress(jidText);
+			erc.getSubConnection().getParent().setBind(addr);
 		}
 
 		this.__doOnline_start(erc);

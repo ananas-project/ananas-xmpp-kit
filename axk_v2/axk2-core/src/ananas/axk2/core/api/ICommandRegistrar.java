@@ -5,6 +5,10 @@ import ananas.axk2.core.command.XmppCommandFactory;
 
 public interface ICommandRegistrar extends XmppAPI {
 
-	XmppCommandFactory getFactory(Class<?> factoryClass);
+	XmppCommandFactory getFactory(Class<?> api);
+
+	void registerFactory(Class<?> api, String factoryClass);
+
+	void registerFactory(Class<?> api, XmppCommandFactory factory);
 
 }

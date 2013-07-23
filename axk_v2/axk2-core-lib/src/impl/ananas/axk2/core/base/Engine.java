@@ -10,6 +10,8 @@ import ananas.axk2.core.XmppFilter;
 import ananas.axk2.core.XmppStatus;
 import ananas.axk2.core.api.IClient;
 import ananas.axk2.core.api.IEventRegistrar;
+import ananas.axk2.core.event.BindEvent;
+import ananas.axk2.core.event.BindEventFactory;
 import ananas.axk2.core.event.PhaseEvent;
 import ananas.axk2.core.event.PhaseEventFactory;
 import ananas.axk2.engine.XEngine;
@@ -48,6 +50,7 @@ public class Engine extends Filter implements IClient {
 		private PhaseEventFactory _thePhaseEventFactory;
 		private IEventRegistrar _theIEventRegistrar;
 		private XmppConnection _theConnection;
+		private BindEventFactory _theBindEventFactory;
 
 		@Override
 		public void onStanza(XEngine engine, Element stanza) {
@@ -98,6 +101,21 @@ public class Engine extends Filter implements IClient {
 		@Override
 		public void onBind(XEngine engine, XmppAddress jid) {
 			Engine.this._bind_jid = jid;
+			XmppConnection conn = this.__getConnection();
+			BindEventFactory factory = this.__getBindEventFactory();
+			BindEvent event = factory.create(conn, jid);
+			conn.dispatch(event);
+		}
+
+		private BindEventFactory __getBindEventFactory() {
+			BindEventFactory fact = this._theBindEventFactory;
+			if (fact == null) {
+				IEventRegistrar reg = this.__getIEventRegistrar();
+				fact = (BindEventFactory) reg
+						.getFactory(BindEventFactory.class);
+				this._theBindEventFactory = fact;
+			}
+			return fact;
 		}
 	}
 
@@ -121,7 +139,7 @@ public class Engine extends Filter implements IClient {
 
 		@Override
 		public void onSendBy(XmppFilter filter) {
-			log.trace(this + ".onSendBy() : " + filter);
+			// log.trace(this + ".onSendBy() : " + filter);
 		}
 	}
 
@@ -129,7 +147,7 @@ public class Engine extends Filter implements IClient {
 
 		@Override
 		public void onReceiveBy(XmppFilter filter) {
-			log.trace(this + ".onReceiveBy() : " + filter);
+			// log.trace(this + ".onReceiveBy() : " + filter);
 		}
 	}
 

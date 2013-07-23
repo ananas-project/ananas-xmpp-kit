@@ -53,14 +53,14 @@ public class TestAxk2 {
 		IClient client = (IClient) conn.getAPI(IClient.class);
 		conn.addEventListener(new MyEventListener());
 
-		log.info("current phase : " + client.getPhase());
+		log.debug("current phase : " + client.getPhase());
 		client.connect();
 		try {
 			Thread.sleep(10 * 1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		log.info("current phase : " + client.getPhase());
+		log.debug("current phase : " + client.getPhase());
 
 	}
 
@@ -69,7 +69,7 @@ public class TestAxk2 {
 		@Override
 		public void onEvent(XmppEvent event) {
 
-			log.info(this + ".onEvent : " + event);
+			// log.info(this + ".onEvent : " + event);
 
 		}
 	}
