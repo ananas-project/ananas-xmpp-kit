@@ -49,7 +49,11 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 	class MyRxRunnable implements Runnable {
 		@Override
 		public void run() {
-			ThreadRuntimeImpl.this.__runRx();
+			try {
+				ThreadRuntimeImpl.this.__runRx();
+			} catch (Exception e) {
+				log.error(e);
+			}
 		}
 	}
 

@@ -101,7 +101,8 @@ public class Engine extends Filter implements IClient {
 		}
 	}
 
-	private final MyEventHub _event_hub = new MyEventHub();
+	private final XEngineListener _event_hub = new EventExceptionWall(
+			new MyEventHub());
 	private XmppAddress _bind_jid;
 
 	@Override
