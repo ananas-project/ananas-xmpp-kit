@@ -1,0 +1,32 @@
+<?xml  version='1.0'  encoding="UTF-8"  ?>
+<namespace xmlns="ananas:blueprint4:namespace">
+	<head>
+		<property key="namespace.uri">jabber:client</property>
+		<property key="namespace.default.prefix">jclient</property>
+
+		<property key="target.package">impl.ananas.axk2.namespace.jabber_client
+		</property>
+		<property key="target.classname.prefix">Tar_</property>
+		<property key="target.classname.suffix"></property>
+
+		<property key="controller.package">impl.ananas.axk2.namespace.jabber_client
+		</property>
+		<property key="controller.classname.prefix">Ctr_</property>
+		<property key="controller.classname.suffix"></property>
+
+	</head>
+	<body>
+
+		<element name="message" />
+		<element name="body" />
+		<element name="subject" />
+		<element name="thread" />
+		<element name="presence" />
+		<element name="show" />
+		<element name="status" />
+		<element name="priority" />
+		<element name="iq" />
+		<element name="error" />
+
+	</body>
+</namespace>
