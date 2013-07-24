@@ -1,8 +1,10 @@
 package ananas.axk2.engine.impl;
 
+import ananas.axk2.core.XmppCommandStatus;
 import ananas.axk2.core.XmppStatus;
 import ananas.axk2.engine.XEngine;
 import ananas.axk2.engine.XEngineContext;
+import ananas.axk2.engine.XSendContext;
 import ananas.axk2.engine.api.XSuperConnection;
 import ananas.axk2.engine.api.XThreadRuntime;
 
@@ -85,14 +87,21 @@ class EngineImpl implements XEngine, XSuperConnection {
 	}
 
 	@Override
-	public void send() {
-		// TODO Auto-generated method stub
-
+	public XEngine getEngine() {
+		return this;
 	}
 
 	@Override
-	public XEngine getEngine() {
-		return this;
+	public void send(XSendContext context) {
+		try {
+			context.onStep(XmppCommandStatus.waiting, null);
+			XThreadRuntime tr = this.getCurrentTR();
+			XSendContextWrapper xscw = new XSendContextWrapper(context, tr);
+			int index = context.getPriority();
+			tr.addTask(xscw.getTask(), index);
+		} catch (Exception e) {
+			context.onStep(XmppCommandStatus.error, e);
+		}
 	}
 
 }

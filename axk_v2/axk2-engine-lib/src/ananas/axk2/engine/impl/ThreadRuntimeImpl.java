@@ -122,9 +122,13 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 		}
 	}
 
-	private void __runTx() {
-		// TODO Auto-generated method stub
+	private final RunLoop _tx_runloop = new DefaultRunLoop();
 
+	private void __runTx() {
+		for (; !this._closed;) {
+			this._tx_runloop.run(1);
+		}
+		this._tx_runloop.clear();
 	}
 
 	@Override
@@ -219,4 +223,22 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 		return this._bind_jid;
 	}
 
+	@Override
+	public boolean addTask(Task task, int index) {
+		if (this._closed) {
+			try {
+				task.cancel();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return false;
+		} else {
+			if (index < 0) {
+				this._tx_runloop.push_back(task);
+			} else {
+				this._tx_runloop.push_front(task);
+			}
+			return true;
+		}
+	}
 }

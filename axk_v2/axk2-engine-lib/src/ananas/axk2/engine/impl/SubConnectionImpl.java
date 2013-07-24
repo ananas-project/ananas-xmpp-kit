@@ -27,6 +27,8 @@ class SubConnectionImpl implements XSubConnection {
 
 	private SocketAgent _curSockAgent;
 
+	private OutputStream _online_out;
+
 	public SubConnectionImpl(int index, XThreadRuntime parent, int dropTime) {
 		this._parent = parent;
 		this._dropTime = dropTime;
@@ -136,5 +138,15 @@ class SubConnectionImpl implements XSubConnection {
 		if (this._isOpen) {
 		}
 		return super.toString();
+	}
+
+	@Override
+	public OutputStream getOnlineOutput() {
+		return this._online_out;
+	}
+
+	@Override
+	public void setOnlineOutput(OutputStream out) {
+		this._online_out = out;
 	}
 }

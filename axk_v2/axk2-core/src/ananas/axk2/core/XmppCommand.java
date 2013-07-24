@@ -6,8 +6,9 @@ public interface XmppCommand {
 
 	void setListener(XmppCommandListener listener);
 
-	void setStatus(XmppCommandStatus status);
+	void setStatus(XmppCommandStatus status, Throwable err);
 
 	XmppCommandStatus getStatus();
 
+	Throwable getError();
 }

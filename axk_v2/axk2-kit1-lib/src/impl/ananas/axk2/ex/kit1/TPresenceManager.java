@@ -1,5 +1,7 @@
 package impl.ananas.axk2.ex.kit1;
 
+import ananas.axk2.core.XmppCommandListener;
+import ananas.axk2.core.XmppCommandStatus;
 import ananas.axk2.core.XmppConnection;
 import ananas.axk2.core.XmppEvent;
 import ananas.axk2.core.XmppStatus;
@@ -7,8 +9,11 @@ import ananas.axk2.core.api.ICommandRegistrar;
 import ananas.axk2.core.command.StanzaCommand;
 import ananas.axk2.core.command.StanzaCommandFactory;
 import ananas.axk2.core.event.PhaseEvent;
+import ananas.lib.util.logging.Logger;
 
 public class TPresenceManager extends TFilter {
+
+	final static Logger log = Logger.Agent.getLogger();
 
 	@Override
 	public XmppEvent filter(XmppEvent event) {
@@ -28,6 +33,7 @@ public class TPresenceManager extends TFilter {
 					sb.append("</presence>");
 				}
 				cmd.setString(sb.toString());
+				cmd.setListener(new MyCmdListener());
 				conn.send(cmd);
 			}
 		}
@@ -35,4 +41,14 @@ public class TPresenceManager extends TFilter {
 		return event;
 	}
 
+	class MyCmdListener implements XmppCommandListener {
+
+		@Override
+		public void onStatusChanged(XmppCommandStatus oldStatus,
+				XmppCommandStatus newStatus) {
+
+			log.trace(this + ".status : " + newStatus);
+
+		}
+	}
 }

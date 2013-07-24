@@ -14,9 +14,6 @@ public interface XEngine {
 
 	XmppStatus getPhase();
 
-	/**
-	 * TODO add parameters to this method
-	 * */
-	void send();
+	void send(XSendContext context);
 
 }

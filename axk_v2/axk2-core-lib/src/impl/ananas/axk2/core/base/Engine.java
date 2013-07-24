@@ -169,12 +169,18 @@ public class Engine extends Filter implements IClient {
 		}
 
 		@Override
-		public void setStatus(XmppCommandStatus status) {
+		public XmppCommandStatus getStatus() {
+			return this._status;
 		}
 
 		@Override
-		public XmppCommandStatus getStatus() {
-			return this._status;
+		public void setStatus(XmppCommandStatus status, Throwable err) {
+			this._status = status;
+		}
+
+		@Override
+		public Throwable getError() {
+			return null;
 		}
 	}
 
@@ -188,13 +194,16 @@ public class Engine extends Filter implements IClient {
 
 	@Override
 	public XmppCommand filter(XmppCommand cmd) {
-
 		if (cmd instanceof StanzaCommand) {
 			StanzaCommand stanza = (StanzaCommand) cmd;
-			log.trace(this + ".send_stanza:" + stanza.getString());
+			Engine.this.__doSend(stanza);
 		}
-
 		return cmd;
+	}
+
+	private void __doSend(StanzaCommand stanza) {
+		log.trace(this + ".send_stanza:" + stanza.getString());
+		this._engine.send(new MyStanzaCommandWrapper(stanza));
 	}
 
 	@Override

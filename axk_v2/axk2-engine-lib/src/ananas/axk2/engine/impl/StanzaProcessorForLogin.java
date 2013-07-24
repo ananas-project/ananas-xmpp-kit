@@ -1,6 +1,7 @@
 package ananas.axk2.engine.impl;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import org.w3c.dom.Element;
@@ -120,6 +121,14 @@ public class StanzaProcessorForLogin implements XStanzaProcessor {
 		XStanzaProcessorManager spm = erc.getSubConnection()
 				.getStanzaProcessorManager();
 		spm.setCurrentProcessor(spm.getProcessorForStatus(XmppStatus.online));
+
+		try {
+			OutputStream out = erc.getSubConnection().getCurrentSocketAgent()
+					.getOutputStream();
+			erc.getSubConnection().setOnlineOutput(out);
+		} catch (Exception e) {
+			log.error(e);
+		}
 
 		this.__setPhase(erc, XmppStatus.online);
 	}

@@ -20,6 +20,7 @@ public class TheStanzaCommandFactory implements StanzaCommandFactory {
 
 		private XmppCommandListener _listener;
 		private XmppCommandStatus _status = XmppCommandStatus.initial;
+		private Throwable _error;
 
 		public MyCommand(XmppConnection conn) {
 			super(conn.getContext());
@@ -35,22 +36,31 @@ public class TheStanzaCommandFactory implements StanzaCommandFactory {
 		}
 
 		@Override
-		public void setStatus(XmppCommandStatus status) {
-			if (status == null)
-				return;
-			final XmppCommandStatus old = this._status;
-			this._status = status;
-			if (!status.equals(old)) {
-				XmppCommandListener li = this._listener;
-				if (li != null) {
-					li.onStatusChanged(old, status);
+		public XmppCommandStatus getStatus() {
+			return this._status;
+		}
+
+		@Override
+		public void setStatus(XmppCommandStatus status, Throwable err) {
+
+			if (err != null)
+				this._error = err;
+
+			if (status != null) {
+				final XmppCommandStatus old = this._status;
+				this._status = status;
+				if (!status.equals(old)) {
+					XmppCommandListener li = this._listener;
+					if (li != null) {
+						li.onStatusChanged(old, status);
+					}
 				}
 			}
 		}
 
 		@Override
-		public XmppCommandStatus getStatus() {
-			return this._status;
+		public Throwable getError() {
+			return this._error;
 		}
 	}
 
