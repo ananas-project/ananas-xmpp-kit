@@ -8,6 +8,7 @@ import org.w3c.dom.Element;
 import ananas.axk2.core.DefaultAddress;
 import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppAddress;
+import ananas.axk2.core.XmppException;
 import ananas.axk2.core.XmppStatus;
 import ananas.axk2.engine.api.XEngineCore;
 import ananas.axk2.engine.api.XEngineRuntimeContext;
@@ -86,7 +87,27 @@ public class StanzaProcessorForLogin implements XStanzaProcessor {
 			String jidText = jid.getChildText();
 			log.info("bind to full jid : " + jidText);
 
-			XmppAddress addr = new DefaultAddress(jidText);
+			final XmppAddress addr = new DefaultAddress(jidText);
+			{
+				XmppAccount account = erc.getSubConnection().getParent()
+						.getParent().getContext().getAccount();
+				XmppAddress addr2 = account.jid();
+				final String u1, u2, d1, d2;
+				u1 = addr.user();
+				d1 = addr.domain();
+				u2 = addr2.user();
+				d2 = addr2.domain();
+				if (u1.equals(u2) && d1.equalsIgnoreCase(d2)) {
+					// OK
+				} else {
+					StringBuilder sb = new StringBuilder();
+					sb.append("the jid is not match : ");
+					sb.append("  account=" + addr2);
+					sb.append("  bind=" + addr);
+					throw new XmppException(sb.toString());
+				}
+			}
+
 			erc.getSubConnection().getParent().setBind(addr);
 		}
 

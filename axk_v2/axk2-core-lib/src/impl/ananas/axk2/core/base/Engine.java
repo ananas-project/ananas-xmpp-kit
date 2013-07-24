@@ -156,7 +156,7 @@ public class Engine extends Filter implements IClient {
 
 		@Override
 		public void onSendBy(XmppFilter filter) {
-			// log.trace(this + ".onSendBy() : " + filter);
+			log.trace(this + ".onSendBy() : " + filter);
 		}
 	}
 
@@ -164,7 +164,7 @@ public class Engine extends Filter implements IClient {
 
 		@Override
 		public void onReceiveBy(XmppFilter filter) {
-			// log.trace(this + ".onReceiveBy() : " + filter);
+			log.trace(this + ".onReceiveBy() : " + filter);
 		}
 	}
 

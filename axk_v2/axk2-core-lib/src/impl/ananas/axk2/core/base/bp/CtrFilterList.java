@@ -1,7 +1,8 @@
 package impl.ananas.axk2.core.base.bp;
 
-import impl.ananas.axk2.core.base.Filter;
 import impl.ananas.axk2.core.base.FilterList;
+import ananas.axk2.core.XmppFilter;
+import ananas.blueprint4.core.lang.BPElement;
 import ananas.blueprint4.core.lang.BPNode;
 
 public class CtrFilterList extends CtrObject {
@@ -12,10 +13,14 @@ public class CtrFilterList extends CtrObject {
 
 	@Override
 	protected boolean onAppendChild(BPNode node) {
-		if (node instanceof CtrFilter) {
-			Filter filter = ((CtrFilter) node).target_Filter();
-			FilterList list = this.target_FilterList();
-			list.append(filter);
+		if (node instanceof BPElement) {
+			Object target = ((BPElement) node).getTarget(true);
+			if (target instanceof XmppFilter) {
+				FilterList list = this.target_FilterList();
+				list.append((XmppFilter) target);
+			} else {
+				return super.onAppendChild(node);
+			}
 		} else {
 			return super.onAppendChild(node);
 		}

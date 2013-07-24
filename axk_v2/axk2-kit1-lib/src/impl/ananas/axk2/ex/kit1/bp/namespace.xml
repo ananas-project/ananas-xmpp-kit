@@ -1,0 +1,24 @@
+<?xml  version='1.0'  encoding="UTF-8"  ?>
+<namespace xmlns="ananas:blueprint4:namespace">
+	<head>
+		<property key="namespace.uri">ananas:axk:ex:kit1</property>
+		<property key="namespace.default.prefix">kit1</property>
+
+		<property key="target.package">impl.ananas.axk2.ex.kit1</property>
+		<property key="target.classname.prefix">T</property>
+		<property key="target.classname.suffix"></property>
+
+		<property key="controller.package">impl.ananas.axk2.ex.kit1.bp</property>
+		<property key="controller.classname.prefix">C</property>
+		<property key="controller.classname.suffix"></property>
+
+	</head>
+	<body>
+
+		<element name="Monitor" controller=".CtrFilter" />
+		<element name="RosterManager" controller=".CtrFilter" />
+		<element name="PresenceManager" controller=".CtrFilter" />
+		<element name="MessageManager" controller=".CtrFilter" />
+
+	</body>
+</namespace>
