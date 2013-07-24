@@ -7,8 +7,10 @@ public interface ICommandRegistrar extends XmppAPI {
 
 	XmppCommandFactory getFactory(Class<?> api);
 
-	void registerFactory(Class<?> api, String factoryClass);
+	// void registerFactory(Class<?> api, String factoryClass);
 
-	void registerFactory(Class<?> api, XmppCommandFactory factory);
+	// void registerFactory(Class<?> api, XmppCommandFactory factory);
+
+	void registerFactory(XmppCommandFactory factory);
 
 }

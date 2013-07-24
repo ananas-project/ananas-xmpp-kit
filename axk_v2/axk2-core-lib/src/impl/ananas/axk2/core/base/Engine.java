@@ -4,12 +4,15 @@ import org.w3c.dom.Element;
 
 import ananas.axk2.core.XmppAddress;
 import ananas.axk2.core.XmppCommand;
+import ananas.axk2.core.XmppCommandListener;
+import ananas.axk2.core.XmppCommandStatus;
 import ananas.axk2.core.XmppConnection;
 import ananas.axk2.core.XmppEvent;
 import ananas.axk2.core.XmppFilter;
 import ananas.axk2.core.XmppStatus;
 import ananas.axk2.core.api.IClient;
 import ananas.axk2.core.api.IEventRegistrar;
+import ananas.axk2.core.command.StanzaCommand;
 import ananas.axk2.core.event.BindEvent;
 import ananas.axk2.core.event.BindEventFactory;
 import ananas.axk2.core.event.PhaseEvent;
@@ -154,9 +157,24 @@ public class Engine extends Filter implements IClient {
 
 	class MyTraceCmd implements XmppCommand {
 
+		private XmppCommandStatus _status = XmppCommandStatus.initial;
+
 		@Override
 		public void onSendBy(XmppFilter filter) {
 			log.trace(this + ".onSendBy() : " + filter);
+		}
+
+		@Override
+		public void setListener(XmppCommandListener listener) {
+		}
+
+		@Override
+		public void setStatus(XmppCommandStatus status) {
+		}
+
+		@Override
+		public XmppCommandStatus getStatus() {
+			return this._status;
 		}
 	}
 
@@ -166,6 +184,17 @@ public class Engine extends Filter implements IClient {
 		public void onReceiveBy(XmppFilter filter) {
 			log.trace(this + ".onReceiveBy() : " + filter);
 		}
+	}
+
+	@Override
+	public XmppCommand filter(XmppCommand cmd) {
+
+		if (cmd instanceof StanzaCommand) {
+			StanzaCommand stanza = (StanzaCommand) cmd;
+			log.trace(this + ".send_stanza:" + stanza.getString());
+		}
+
+		return cmd;
 	}
 
 	@Override

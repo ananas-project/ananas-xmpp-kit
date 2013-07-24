@@ -8,31 +8,33 @@ import ananas.axk2.core.command.XmppCommandFactory;
 
 public class DefaultCommandRegistrar implements ICommandRegistrar {
 
-	private final Map<String, Class<?>> _class_table;
+	private final Map<Class<?>, XmppCommandFactory> _fact_table;
 
 	public DefaultCommandRegistrar() {
-		this._class_table = new HashMap<String, Class<?>>();
+		this._fact_table = new HashMap<Class<?>, XmppCommandFactory>();
+		this.init();
+	}
+
+	private void init() {
+		this.registerFactory(new TheStanzaCommandFactory());
 	}
 
 	@Override
 	public XmppCommandFactory getFactory(Class<?> api) {
-		return null;
+		return this._fact_table.get(api);
 	}
 
 	@Override
-	public void registerFactory(Class<?> api, String factoryClass) {
-		try {
-			Class<?> impl = Class.forName(factoryClass);
-			this._class_table.put(api.getName(), impl);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+	public void registerFactory(XmppCommandFactory factory) {
+		Class<?> cls = factory.getClass();
+		for (; cls != null; cls = cls.getSuperclass()) {
+			Class<?>[] apis = cls.getInterfaces();
+			for (Class<?> api : apis) {
+				this._fact_table.put(api, factory);
+				// System.err.println(this + ".regEventFactory:" + factory
+				// + " <- " + api);
+			}
 		}
-	}
-
-	@Override
-	public void registerFactory(Class<?> api, XmppCommandFactory factory) {
-		Class<?> impl = factory.getClass();
-		this._class_table.put(api.getName(), impl);
 	}
 
 }

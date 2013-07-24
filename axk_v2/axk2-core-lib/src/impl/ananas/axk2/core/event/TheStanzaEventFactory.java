@@ -13,7 +13,7 @@ public class TheStanzaEventFactory implements StanzaEventFactory {
 		return new MyEvent(conn);
 	}
 
-	class MyEvent extends DefaultStanzaContext implements StanzaEvent {
+	static class MyEvent extends DefaultStanzaContext implements StanzaEvent {
 
 		private final XmppConnection _conn;
 
