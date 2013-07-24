@@ -16,6 +16,9 @@ import ananas.axk2.core.DefaultAddress;
 import ananas.axk2.core.XmppAddress;
 import ananas.axk2.core.XmppContext;
 import ananas.axk2.core.util.StanzaContext;
+import ananas.blueprint4.core.BPEnvironment;
+import ananas.blueprint4.core.lang.BPElement;
+import ananas.blueprint4.core.util.BPDocumentBuilder;
 
 public class DefaultStanzaContext implements StanzaContext {
 
@@ -57,8 +60,11 @@ public class DefaultStanzaContext implements StanzaContext {
 	}
 
 	private Object __elementToObject(Element element) {
-		// TODO Auto-generated method stub
-		return null;
+		BPEnvironment bp = this._context.getBlueprintEnvironment();
+		BPDocumentBuilder builder = bp.getBPDocumentBuilderFactory()
+				.createBuilder();
+		BPElement bpe = builder.build(bp, element);
+		return bpe.getTarget(true);
 	}
 
 	private String __elementToString(Element element) {

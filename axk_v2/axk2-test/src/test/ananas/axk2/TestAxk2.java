@@ -95,6 +95,9 @@ public class TestAxk2 {
 				log.debug(tab + "      to=" + se.get_to());
 				log.debug(tab + "xml:lang=" + se.get_xml_lang());
 
+				Object obj = se.getObject();
+				log.debug(tab + "root-obj=" + obj);
+
 			} else {
 				log.debug(this + ".onEvent : " + event);
 			}
