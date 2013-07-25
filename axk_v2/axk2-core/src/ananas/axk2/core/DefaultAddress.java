@@ -15,6 +15,12 @@ public class DefaultAddress implements XmppAddress {
 		this._user = addr.user();
 	}
 
+	public DefaultAddress(String user, String domain, String res) {
+		this._domain = domain;
+		this._resource = res;
+		this._user = user;
+	}
+
 	public DefaultAddress(String addr) {
 		URI uri = this.stringToURI(addr);
 		this._domain = uri.getHost();
@@ -102,7 +108,11 @@ public class DefaultAddress implements XmppAddress {
 		if (this.isFull()) {
 			return this;
 		}
-		return null;
+		String res = _resource;
+		if (res == null) {
+			res = "";
+		}
+		return new DefaultAddress(_user, _domain, res);
 	}
 
 	@Override
@@ -110,7 +120,6 @@ public class DefaultAddress implements XmppAddress {
 		if (this.isPure()) {
 			return this;
 		}
-
-		return null;
+		return new DefaultAddress(_user, _domain, null);
 	}
 }

@@ -1,5 +1,5 @@
 package ananas.axk2.namespace.jabber_client;
 
-public interface Presence extends JabberClientObject {
+public interface Presence extends JCStanzaRoot {
 
 }

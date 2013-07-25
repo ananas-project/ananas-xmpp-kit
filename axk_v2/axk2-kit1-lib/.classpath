@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint4-core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/axk2-kit1"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ananas-base"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/axk2-protocol-ns"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

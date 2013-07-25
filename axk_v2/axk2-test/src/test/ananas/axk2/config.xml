@@ -1,16 +1,20 @@
 <AXK xmlns="ananas:axk:base" xmlns:kit1="ananas:axk:ex:kit1">
 	<Connection>
 		<FilterList>
+			
 			<Local />
 
 			<kit1:Monitor />
+			
 			<kit1:MessageManager />
 			<kit1:PresenceManager />
 			<kit1:RosterManager />
+			<kit1:ContactManager />
 
 			<Engine />
 
 			<Remote />
+			
 		</FilterList>
 	</Connection>
 </AXK>
