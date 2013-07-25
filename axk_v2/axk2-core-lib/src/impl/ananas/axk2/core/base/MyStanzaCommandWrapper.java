@@ -30,10 +30,12 @@ public class MyStanzaCommandWrapper implements XIOTask {
 
 	@Override
 	public void run(XThreadRuntime runtime) throws IOException {
+		this.onStep(XmppCommandStatus.sending, null);
 		String s = this._stanza.getString();
 		OutputStream out = runtime.getCurrentSubConnection().getOnlineOutput();
 		out.write(s.getBytes(XEncoding.theDefault));
 		out.flush();
+		this.onStep(XmppCommandStatus.success, null);
 	}
 
 }
