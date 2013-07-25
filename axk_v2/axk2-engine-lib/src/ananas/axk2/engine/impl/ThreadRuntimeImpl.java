@@ -3,7 +3,6 @@ package ananas.axk2.engine.impl;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Properties;
-import java.util.Random;
 import java.util.Set;
 
 import ananas.axk2.core.XmppAddress;
@@ -129,6 +128,8 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 
 	private final RunLoop _tx_runloop = new DefaultRunLoop();
 
+	private Throwable _error;
+
 	private void __runTx() {
 		for (; !this._closed;) {
 			this._tx_runloop.run(1, this);
@@ -163,9 +164,15 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 
 				String s = "</stream:stream>";
 				OutputStream out = subcon.getOnlineOutput();
-				out.write(s.getBytes(XEncoding.theDefault));
-				out.flush();
-				out.close();
+				if (out != null) {
+					out.write(s.getBytes(XEncoding.theDefault));
+					out.flush();
+					out.close();
+				} else {
+					SocketAgent sock = subcon.getCurrentSocketAgent();
+					sock.getInputStream().close();
+					sock.getOutputStream().close();
+				}
 			}
 
 			@Override
@@ -213,18 +220,13 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 	public int genDropTime() {
 		int dt = this._current_drop_time;
 		dt = this.setDropTime(dt * 2);
-		// add a random value between 1 to 60 second
-		Random rand = new Random();
-		rand.setSeed(System.currentTimeMillis());
-		int n = (rand.nextInt(60) + 1) * 1000;
-		// log.trace("dropTime = base:" + dt + " + rand:" + n);
-		return (dt + n);
+		return dt;
 	}
 
 	@Override
 	public int setDropTime(int time) {
 		final int dt_max = 3600 * 1000;
-		final int dt_min = 5 * 1000;
+		final int dt_min = 500;
 		if (time > dt_max)
 			time = dt_max;
 		if (time < dt_min)
@@ -267,6 +269,18 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 			}
 			return true;
 		}
+	}
+
+	@Override
+	public void setError(Throwable err) {
+		this._error = err;
+		this.setPhase(XmppStatus.error);
+		this.close();
+	}
+
+	@Override
+	public Throwable getError() {
+		return this._error;
 	}
 
 }

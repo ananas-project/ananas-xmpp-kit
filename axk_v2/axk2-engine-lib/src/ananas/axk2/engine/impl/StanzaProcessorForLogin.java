@@ -9,8 +9,9 @@ import org.w3c.dom.Element;
 import ananas.axk2.core.DefaultAddress;
 import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppAddress;
-import ananas.axk2.core.XmppException;
 import ananas.axk2.core.XmppStatus;
+import ananas.axk2.core.error.SASLException;
+import ananas.axk2.core.error.XmppException;
 import ananas.axk2.engine.api.XEngineCore;
 import ananas.axk2.engine.api.XEngineRuntimeContext;
 import ananas.axk2.engine.api.XStanzaProcessor;
@@ -141,6 +142,9 @@ public class StanzaProcessorForLogin implements XStanzaProcessor {
 			Failure failure) {
 
 		log.error("error : " + failure.getErrorReason());
+		String s = failure.getErrorReason().getElement().getTagName();
+		SASLException err = new SASLException(s);
+		erc.getSubConnection().getParent().setError(err);
 
 	}
 

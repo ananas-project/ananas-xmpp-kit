@@ -15,6 +15,10 @@ public interface XThreadRuntime extends XLifeCycle {
 
 	void setPhase(XmppStatus newPhase);
 
+	void setError(Throwable err);
+
+	Throwable getError();
+
 	DOMWrapperImplementation getDOMWrapperImplementation();
 
 	/**

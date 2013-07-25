@@ -1,4 +1,4 @@
-package ananas.axk2.core;
+package ananas.axk2.core.error;
 
 public class XmppException extends RuntimeException {
 

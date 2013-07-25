@@ -2,6 +2,7 @@ package ananas.axk2.engine.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Random;
 
 import ananas.axk2.core.XmppStatus;
 import ananas.axk2.engine.api.XEncoding;
@@ -54,6 +55,11 @@ class SubConnectionImpl implements XSubConnection {
 	@Override
 	public void run() {
 		log.trace(this + ".run(begin)");
+		this.__run();
+		log.trace(this + ".run(end)");
+	}
+
+	private void __run() {
 
 		// log to online
 		final XThreadRuntime parent = this.getParent();
@@ -67,16 +73,27 @@ class SubConnectionImpl implements XSubConnection {
 			log.error(e);
 		}
 
+		int dtBase = this._dropTime;
+		XmppStatus phase = this.getParent().getPhase();
+		if (phase.equals(XmppStatus.error)) {
+			return;
+		} else if (phase.equals(XmppStatus.online)) {
+			dtBase = 1000;
+			this.getParent().setDropTime(dtBase);
+		}
+
 		// dropped phase
 		if (this._dropTime > 0) {
 			parent.setPhase(XmppStatus.dropped);
-			for (int timeout = _dropTime; timeout > 0;) {
+			final int rand = this.__random(1000, 60 * 1000);
+			log.info("retry after " + (dtBase / 1000) + "+" + (rand / 1000)
+					+ " sec");
+			int timeout = dtBase + rand;
+			for (; timeout > 0;) {
 				if (this._isClose) {
 					break;
 				} else {
-
 					log.info("retry after " + (timeout / 1000) + " sec");
-
 					int step = this.__getDropTimeStep(timeout);
 					timeout -= step;
 					try {
@@ -87,7 +104,16 @@ class SubConnectionImpl implements XSubConnection {
 				}
 			}
 		}
-		log.trace(this + ".run(end)");
+		// return
+	}
+
+	private int __random(int a, int b) {
+		int min = Math.min(a, b);
+		int max = Math.max(a, b);
+		Random rand = new Random();
+		rand.setSeed(System.currentTimeMillis());
+		int n = rand.nextInt(max - min);
+		return (n + min);
 	}
 
 	private int __getDropTimeStep(int time) {
