@@ -3,13 +3,20 @@ package ananas.axk2.engine.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import ananas.axk2.core.XmppCommandStatus;
+import ananas.axk2.engine.XIOTask;
+import ananas.axk2.engine.api.XThreadRuntime;
+import ananas.lib.util.logging.Logger;
+
 public class DefaultRunLoop implements RunLoop {
 
-	private final List<Task> _list = new ArrayList<Task>();
+	final static Logger log = Logger.Agent.getLogger();
+
+	private final List<XIOTask> _list = new ArrayList<XIOTask>();
 	private final Object _sync_obj = new Object();
 
 	@Override
-	public void push_back(Task runn) {
+	public void push_back(XIOTask runn) {
 		this.__non_block_io(runn, -1, false);
 		synchronized (this._sync_obj) {
 			this._sync_obj.notifyAll();
@@ -17,7 +24,7 @@ public class DefaultRunLoop implements RunLoop {
 	}
 
 	@Override
-	public void push_front(Task runn) {
+	public void push_front(XIOTask runn) {
 		this.__non_block_io(runn, 0, false);
 		synchronized (this._sync_obj) {
 			this._sync_obj.notifyAll();
@@ -27,7 +34,7 @@ public class DefaultRunLoop implements RunLoop {
 	@Override
 	public void clear() {
 		for (;;) {
-			Task runn = this.pop(false);
+			XIOTask runn = this.pop(false);
 			if (runn == null) {
 				break;
 			}
@@ -35,15 +42,17 @@ public class DefaultRunLoop implements RunLoop {
 		}
 	}
 
-	private void __cancel(Task runn) {
+	private void __cancel(XIOTask task) {
 		try {
-			runn.cancel();
+			task.onStep(XmppCommandStatus.cancel, null);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e);
+			task.onStep(XmppCommandStatus.error, e);
 		}
 	}
 
-	private synchronized Task __non_block_io(Task in, int index, boolean is_get) {
+	private synchronized XIOTask __non_block_io(XIOTask in, int index,
+			boolean is_get) {
 		if (is_get) {
 			if (_list.size() > 0)
 				return _list.remove(0);
@@ -59,9 +68,9 @@ public class DefaultRunLoop implements RunLoop {
 	}
 
 	@Override
-	public Task pop(boolean wait) {
+	public XIOTask pop(boolean wait) {
 		for (;;) {
-			Task runn = this.__non_block_io(null, 0, true);
+			XIOTask runn = this.__non_block_io(null, 0, true);
 			if ((runn == null) && (wait)) {
 				synchronized (this._sync_obj) {
 					try {
@@ -77,18 +86,19 @@ public class DefaultRunLoop implements RunLoop {
 	}
 
 	@Override
-	public void run(int times) {
+	public void run(int times, XThreadRuntime rt) {
 		for (; times > 0; times--) {
-			Runnable runn = this.pop(true);
-			this.__exe(runn);
+			XIOTask runn = this.pop(true);
+			this.__exe(runn, rt);
 		}
 	}
 
-	private void __exe(Runnable runn) {
+	private void __exe(XIOTask runn, XThreadRuntime rt) {
 		try {
-			runn.run();
+			runn.run(rt);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e);
+			runn.onStep(XmppCommandStatus.error, e);
 		}
 	}
 

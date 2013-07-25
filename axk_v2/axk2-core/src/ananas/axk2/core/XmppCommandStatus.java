@@ -7,6 +7,7 @@ public interface XmppCommandStatus {
 	XmppCommandStatus sending = F._new("sending");
 	XmppCommandStatus error = F._new("error");
 	XmppCommandStatus success = F._new("success");
+	XmppCommandStatus cancel = F._new("cancel");
 
 	class F {
 

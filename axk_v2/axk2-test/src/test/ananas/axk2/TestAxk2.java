@@ -61,11 +61,12 @@ public class TestAxk2 {
 		log.debug("current phase : " + client.getPhase());
 		client.connect();
 		try {
-			Thread.sleep(10 * 1000);
+			Thread.sleep(12 * 1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		log.debug("current phase : " + client.getPhase());
+		// client.disconnect();
 
 	}
 

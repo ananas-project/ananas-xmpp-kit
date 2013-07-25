@@ -11,11 +11,13 @@ public class ErcSASL implements XEngineRuntimeContext {
 	private XSubConnection _sub_conn;
 	private SocketAgent _sock;
 	private XEngineRuntimeContext _parent;
+	private String _name;
 
 	public ErcSASL(XEngineRuntimeContext erc) {
 		this._parent = erc;
 		this._sub_conn = erc.getSubConnection();
 		// this._sock=erc.openSocket() ;
+		this._name = this.getClass().getSimpleName();
 	}
 
 	@Override
@@ -31,6 +33,21 @@ public class ErcSASL implements XEngineRuntimeContext {
 	@Override
 	public XSubConnection getSubConnection() {
 		return this._sub_conn;
+	}
+
+	@Override
+	public XEngineRuntimeContext getParent() {
+		return this._parent;
+	}
+
+	@Override
+	public String getName() {
+		return this._name;
+	}
+
+	@Override
+	public String getFullName() {
+		return (this.getParent().getFullName() + "." + this.getName());
 	}
 
 }

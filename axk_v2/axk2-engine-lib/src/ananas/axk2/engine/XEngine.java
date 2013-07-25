@@ -14,6 +14,6 @@ public interface XEngine {
 
 	XmppStatus getPhase();
 
-	void send(XSendContext context);
+	void send(XIOTask context);
 
 }

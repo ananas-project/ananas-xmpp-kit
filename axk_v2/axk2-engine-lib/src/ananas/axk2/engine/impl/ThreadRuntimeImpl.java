@@ -1,12 +1,17 @@
 package ananas.axk2.engine.impl;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 
 import ananas.axk2.core.XmppAddress;
+import ananas.axk2.core.XmppCommandStatus;
 import ananas.axk2.core.XmppStatus;
 import ananas.axk2.engine.XEngine;
+import ananas.axk2.engine.XIOTask;
+import ananas.axk2.engine.api.XEncoding;
 import ananas.axk2.engine.api.XSubConnection;
 import ananas.axk2.engine.api.XSuperConnection;
 import ananas.axk2.engine.api.XThreadRuntime;
@@ -90,13 +95,13 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 			}
 			this._curSubConn = null;
 		}
-		log.trace(this + ".run(end)");
-		log.trace(bar);
 		try {
 			threadTx.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		log.trace(this + ".run(end)");
+		log.trace(bar);
 	}
 
 	private void __regDOMWrappers() {
@@ -126,7 +131,7 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 
 	private void __runTx() {
 		for (; !this._closed;) {
-			this._tx_runloop.run(1);
+			this._tx_runloop.run(1, this);
 		}
 		this._tx_runloop.clear();
 	}
@@ -138,14 +143,36 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 
 	@Override
 	public void close() {
-		// close myself
-		this._closed = true;
-		// close my child
-		XSubConnection subConn = this._curSubConn;
-		if (subConn != null) {
-			subConn.close();
-		}
-		// this._threadRx.join();
+		this.addTask(new XIOTask() {
+
+			@Override
+			public void onStep(XmppCommandStatus step, Throwable err) {
+				String s = this + ".onStep():" + step;
+				if (err == null)
+					log.trace(s);
+				else
+					log.error(s, err);
+			}
+
+			@Override
+			public void run(XThreadRuntime rt) throws IOException {
+
+				ThreadRuntimeImpl.this._closed = true;
+				XSubConnection subcon = rt.getCurrentSubConnection();
+				subcon.close();
+
+				String s = "</stream:stream>";
+				OutputStream out = subcon.getOnlineOutput();
+				out.write(s.getBytes(XEncoding.theDefault));
+				out.flush();
+				out.close();
+			}
+
+			@Override
+			public int getPriority() {
+				return 0;
+			}
+		});
 	}
 
 	@Override
@@ -224,16 +251,16 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 	}
 
 	@Override
-	public boolean addTask(Task task, int index) {
+	public boolean addTask(XIOTask task) {
 		if (this._closed) {
 			try {
-				task.cancel();
+				task.onStep(XmppCommandStatus.cancel, null);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e);
 			}
 			return false;
 		} else {
-			if (index < 0) {
+			if (task.getPriority() != 0) {
 				this._tx_runloop.push_back(task);
 			} else {
 				this._tx_runloop.push_front(task);
@@ -241,4 +268,5 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 			return true;
 		}
 	}
+
 }

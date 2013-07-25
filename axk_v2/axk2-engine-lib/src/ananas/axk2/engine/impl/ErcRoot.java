@@ -23,7 +23,8 @@ public class ErcRoot implements XEngineRuntimeContext {
 	}
 
 	@Override
-	public SocketAgent openSocket() throws IOException, GeneralSecurityException {
+	public SocketAgent openSocket() throws IOException,
+			GeneralSecurityException {
 		SocketAgent sa = this._sock_agent;
 		if (sa == null) {
 			final XEngineContext context = this._sub_conn.getParent()
@@ -52,6 +53,21 @@ public class ErcRoot implements XEngineRuntimeContext {
 	@Override
 	public XSubConnection getSubConnection() {
 		return this._sub_conn;
+	}
+
+	@Override
+	public XEngineRuntimeContext getParent() {
+		return null;
+	}
+
+	@Override
+	public String getName() {
+		return this.getClass().getSimpleName();
+	}
+
+	@Override
+	public String getFullName() {
+		return this.getName();
 	}
 
 }

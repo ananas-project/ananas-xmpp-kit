@@ -18,10 +18,12 @@ public class ErcTLS implements XEngineRuntimeContext {
 	private final XSubConnection _sub_conn;
 	private SocketAgent _sock_agent;
 	private final XEngineRuntimeContext _parent;
+	private String _name;
 
 	public ErcTLS(XEngineRuntimeContext erc) {
 		this._sub_conn = erc.getSubConnection();
 		this._parent = erc;
+		this._name = this.getClass().getSimpleName();
 	}
 
 	@Override
@@ -55,6 +57,21 @@ public class ErcTLS implements XEngineRuntimeContext {
 	@Override
 	public XSubConnection getSubConnection() {
 		return this._sub_conn;
+	}
+
+	@Override
+	public XEngineRuntimeContext getParent() {
+		return this._parent;
+	}
+
+	@Override
+	public String getName() {
+		return this._name;
+	}
+
+	@Override
+	public String getFullName() {
+		return (this.getParent().getFullName() + "." + this.getName());
 	}
 
 }

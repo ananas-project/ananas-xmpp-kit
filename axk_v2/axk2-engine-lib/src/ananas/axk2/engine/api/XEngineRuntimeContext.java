@@ -11,4 +11,9 @@ public interface XEngineRuntimeContext {
 
 	XSubConnection getSubConnection();
 
+	XEngineRuntimeContext getParent();
+
+	String getName();
+
+	String getFullName();
 }
