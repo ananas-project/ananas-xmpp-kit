@@ -38,12 +38,16 @@ public class EngineCoreImpl implements XEngineCore {
 		OutputStream out = sa.getOutputStream();
 		erc.getSubConnection().setCurrentSocketAgent(sa);
 
+		String domain = erc.getSubConnection().getParent().getParent()
+				.getContext().getAccount().jid().domain();
+
 		// send starting of stream
 		StringBuilder sb = new StringBuilder();
 		sb.append("<?xml version='1.0' encoding='UTF-8'?>");
 		sb.append("<stream:stream");
 		sb.append(" xmlns='jabber:client'");
 		sb.append(" xmlns:stream='http://etherx.jabber.org/streams'");
+		sb.append(" to='" + domain + "'");
 		sb.append(" version='1.0'");
 		sb.append(">");
 		out.write(sb.toString().getBytes(XEncoding.theDefault));
