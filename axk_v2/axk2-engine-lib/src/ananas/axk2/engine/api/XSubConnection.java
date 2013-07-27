@@ -3,6 +3,7 @@ package ananas.axk2.engine.api;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import ananas.axk2.core.XmppAccount;
 import ananas.axk2.engine.impl.SASLProcessorManager;
 import ananas.axk2.engine.impl.SocketAgent;
 
@@ -27,5 +28,7 @@ public interface XSubConnection extends XLifeCycle {
 	OutputStream getOnlineOutput();
 
 	void setOnlineOutput(OutputStream out);
+
+	XmppAccount getFinalAccount();
 
 }

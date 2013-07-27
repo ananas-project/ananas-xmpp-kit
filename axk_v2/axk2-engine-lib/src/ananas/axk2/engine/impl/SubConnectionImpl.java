@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Random;
 
+import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppStatus;
 import ananas.axk2.engine.api.XEncoding;
 import ananas.axk2.engine.api.XEngineCore;
@@ -30,11 +31,14 @@ class SubConnectionImpl implements XSubConnection {
 
 	private OutputStream _online_out;
 
+	private final XmppAccount _final_account;
+
 	public SubConnectionImpl(int index, XThreadRuntime parent, int dropTime) {
 		this._parent = parent;
 		this._dropTime = dropTime;
 		this._stanzaProcMan = new StanzaProcessorManagerImpl();
 		this._saslProcMan = new SASLProcessorManagerImpl();
+		this._final_account = parent.getNextAccount();
 	}
 
 	public void open() {
@@ -174,5 +178,10 @@ class SubConnectionImpl implements XSubConnection {
 	@Override
 	public void setOnlineOutput(OutputStream out) {
 		this._online_out = out;
+	}
+
+	@Override
+	public XmppAccount getFinalAccount() {
+		return this._final_account;
 	}
 }

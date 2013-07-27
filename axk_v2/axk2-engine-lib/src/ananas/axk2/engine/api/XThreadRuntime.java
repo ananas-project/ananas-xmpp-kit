@@ -1,5 +1,6 @@
 package ananas.axk2.engine.api;
 
+import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppAddress;
 import ananas.axk2.core.XmppStatus;
 import ananas.axk2.engine.XIOTask;
@@ -37,5 +38,7 @@ public interface XThreadRuntime extends XLifeCycle {
 	XmppAddress getBind();
 
 	boolean addTask(XIOTask task);
+
+	XmppAccount getNextAccount();
 
 }

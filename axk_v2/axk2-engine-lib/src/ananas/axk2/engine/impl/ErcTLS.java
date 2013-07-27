@@ -1,7 +1,6 @@
 package ananas.axk2.engine.impl;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.security.GeneralSecurityException;
 
@@ -39,18 +38,19 @@ public class ErcTLS implements XEngineRuntimeContext {
 	}
 
 	private Socket __openTLS() throws IOException, GeneralSecurityException {
+
 		final SocketAgent sockOld = this._parent.openSocket();
-		final XEngineContext context = this._parent.getSubConnection()
-				.getParent().getParent().getContext();
+		final XSubConnection subcon = this._parent.getSubConnection();
+		final XEngineContext context = subcon.getParent().getParent()
+				.getContext();
 		final XEngineConnector connector = context.getConnector();
-		SSLSocketFactory sockFactory = connector.getSSLContext()
+		final SSLSocketFactory sockFactory = connector.getSSLContext()
 				.getSocketFactory();
-		XmppAccount account = context.getAccount();
-		InetSocketAddress addr = connector.getAddressByAccount(account);
-		String host = addr.getHostName();
-		int port = addr.getPort();
-		Socket sockNew = sockFactory.createSocket(sockOld.getSocket(), host,
-				port, true);
+		final XmppAccount account = subcon.getFinalAccount();
+		final String host = account.host();
+		final int port = account.port();
+		final Socket sockNew = sockFactory.createSocket(sockOld.getSocket(),
+				host, port, true);
 		return sockNew;
 	}
 

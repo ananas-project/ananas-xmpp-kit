@@ -29,7 +29,7 @@ public class ErcRoot implements XEngineRuntimeContext {
 		if (sa == null) {
 			final XEngineContext context = this._sub_conn.getParent()
 					.getParent().getContext();
-			XmppAccount account = context.getAccount();
+			final XmppAccount account = this._sub_conn.getFinalAccount();
 			final Socket sock;
 			if (account.useSSL()) {
 				SSLSocketFactory factory = context.getConnector()
@@ -38,12 +38,9 @@ public class ErcRoot implements XEngineRuntimeContext {
 			} else {
 				sock = SocketFactory.getDefault().createSocket();
 			}
-			InetSocketAddress addr = context.getConnector()
-					.getAddressByAccount(account);
-			// String host = account.host();
-			// int port = account.port();
-			// SocketAddress addr = new InetSocketAddress(host, port);
-			sock.connect(addr);
+			String host = account.host();
+			int port = account.port();
+			sock.connect(new InetSocketAddress(host, port));
 			sa = new DefaultSocketAgent(sock);
 			this._sock_agent = sa;
 		}

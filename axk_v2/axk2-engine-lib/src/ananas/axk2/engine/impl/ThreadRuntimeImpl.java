@@ -2,9 +2,19 @@ package ananas.axk2.engine.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import org.xbill.DNS.Lookup;
+import org.xbill.DNS.Record;
+import org.xbill.DNS.SRVRecord;
+import org.xbill.DNS.TextParseException;
+import org.xbill.DNS.Type;
+
+import ananas.axk2.core.DefaultAccount;
+import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppAddress;
 import ananas.axk2.core.XmppCommandStatus;
 import ananas.axk2.core.XmppStatus;
@@ -44,6 +54,9 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 		this._parent = parent;
 		this._threadRx = __newThread(new MyRxRunnable());
 		this._domWrapperImpl = new DOMWrapperImplementation2();
+
+		XmppAccount account = parent.getContext().getAccount();
+		this._account_gen = new MyAccountGen(account);
 	}
 
 	class MyTxRunnable implements Runnable {
@@ -129,6 +142,8 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 	private final RunLoop _tx_runloop = new DefaultRunLoop();
 
 	private Throwable _error;
+
+	private final MyAccountGen _account_gen;
 
 	private void __runTx() {
 		for (; !this._closed;) {
@@ -283,4 +298,106 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 		return this._error;
 	}
 
+	@Override
+	public XmppAccount getNextAccount() {
+		MyAccountGen ag = this._account_gen;
+		return ag.next();
+	}
+
+	private static class MyAccountGen {
+
+		private final XmppAccount _base;
+		private int _ptr;
+		private XmppAccount[] _array;
+
+		public MyAccountGen(XmppAccount base) {
+			this._base = base;
+		}
+
+		public XmppAccount next() {
+			XmppAccount[] array = this._getArray();
+			return array[((_ptr++) & 0xffff) % array.length];
+		}
+
+		private XmppAccount[] _getArray() {
+			XmppAccount[] array = this._array;
+			if (array == null) {
+				array = this._genArray();
+				if (array == null)
+					array = new XmppAccount[0];
+			}
+			return array;
+		}
+
+		private XmppAccount[] _genArray() {
+
+			final XmppAccount base = this._base;
+
+			// method 1:provide by user
+			if (base.host() != null)
+				if (base.host().trim().length() > 0) {
+					XmppAccount[] array = new XmppAccount[1];
+					array[0] = base;
+					log.debug("User define host:port !");
+					return array;
+				}
+
+			// method 2:DNS SRV lookup
+			try {
+				String dn = base.jid().domain();
+				String query = "_xmpp-client._tcp." + dn + ".";
+				Record[] records = new Lookup(query, Type.SRV).run();
+				if (records != null)
+					if (records.length > 0) {
+						List<XmppAccount> list = new ArrayList<XmppAccount>();
+						for (Record record : records) {
+							SRVRecord srv = (SRVRecord) record;
+							String host = srv.getTarget().toString()
+									.replaceFirst("\\.$", "");
+							int port = srv.getPort();
+							final XmppAccount tmpAccount = new MyTempAccount(
+									base, host, port);
+							list.add(new DefaultAccount(tmpAccount));
+							log.info("DNS-SRV result " + host + ":" + port);
+						}
+						XmppAccount[] array = list.toArray(new XmppAccount[list
+								.size()]);
+						return array;
+					}
+			} catch (TextParseException e) {
+				log.error(e);
+			}
+
+			// method 3:default
+			log.warn("DNS srv lookup failed, use HOST:PORT by jid & use_ssl.");
+			final String host = base.jid().domain();
+			final int port = base.useSSL() ? 5223 : 5222;
+			final XmppAccount tmpAccount = new MyTempAccount(base, host, port);
+			final XmppAccount[] array = new XmppAccount[1];
+			array[0] = new DefaultAccount(tmpAccount);
+			return array;
+		}
+	}
+
+	private static class MyTempAccount extends DefaultAccount {
+
+		private int _port;
+		private String _host;
+
+		public MyTempAccount(XmppAccount init, String host, int port) {
+			super(init);
+			this._host = host;
+			this._port = port;
+		}
+
+		@Override
+		public String host() {
+			return _host;
+		}
+
+		@Override
+		public int port() {
+			return _port;
+		}
+	}
 }

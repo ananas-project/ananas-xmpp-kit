@@ -1,6 +1,5 @@
 package ananas.axk2.engine.util;
 
-import java.net.InetSocketAddress;
 import java.security.GeneralSecurityException;
 
 import javax.net.ssl.SSLContext;
@@ -100,12 +99,6 @@ public class DefaultEngineContext implements XEngineContext {
 				return DefaultXEngineSSLContext.getInstance();
 			}
 
-			@Override
-			public InetSocketAddress getAddressByAccount(XmppAccount account) {
-				String host = account.host();
-				int port = account.port();
-				return new InetSocketAddress(host, port);
-			}
 		};
 	}
 
@@ -128,7 +121,7 @@ public class DefaultEngineContext implements XEngineContext {
 			@Override
 			public void onBind(XEngine engine, XmppAddress jid) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 		};
