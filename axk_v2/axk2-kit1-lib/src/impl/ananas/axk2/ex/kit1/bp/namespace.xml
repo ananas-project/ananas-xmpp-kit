@@ -15,11 +15,16 @@
 	</head>
 	<body>
 
+		<element name="Terminal" controller=".CtrFilter" />
 		<element name="Monitor" controller=".CtrFilter" />
+
 		<element name="RosterManager" controller=".CtrFilter" />
 		<element name="PresenceManager" controller=".CtrFilter" />
 		<element name="MessageManager" controller=".CtrFilter" />
 		<element name="ContactManager" controller=".CtrFilter" />
+
+		<element name="Switch" controller=".CtrFilter" />
+		<element name="Case" />
 
 	</body>
 </namespace>
