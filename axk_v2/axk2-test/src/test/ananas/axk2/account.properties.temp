@@ -1,5 +1,7 @@
-host=puyatech.com
-port=5222
-jid=abc@abc.com
+host=
+port=0
+password=xk12345678
+resource=test.axk2
+jid=xk19850217@gmail.com
 ignore_ssl_error=false
 use_ssl=false

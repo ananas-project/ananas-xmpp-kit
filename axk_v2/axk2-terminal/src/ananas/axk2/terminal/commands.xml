@@ -5,5 +5,6 @@
 
 	<Command name="connect" class=".Connect" />
 	<Command name="disconnect" class=".Disconnect" />
-
+	<Command name="log" class=".Log" />
+	
 </CommandSet>

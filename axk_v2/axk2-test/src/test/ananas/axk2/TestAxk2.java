@@ -59,14 +59,20 @@ public class TestAxk2 {
 		XmppConnection conn = connector.openConnection(context, account);
 		IClient client = (IClient) conn.getAPI(IClient.class);
 		conn.addEventListener(new MyEventListener());
+		// client.connect();
+		client.disconnect();
 
 		ITerminalAgent terAgent = (ITerminalAgent) conn
 				.getAPI(ITerminalAgent.class);
 		Terminal termi = terAgent.getTerminal();
+		String cmd_init = System
+				.getProperty("axk2.connection.terminal.command.init");
+		if (cmd_init != null) {
+			termi.execute(cmd_init);
+		}
 		termi.getRunnable().run();
 
 		client.disconnect();
-
 	}
 
 	class MyEventListener implements XmppEventListener {
