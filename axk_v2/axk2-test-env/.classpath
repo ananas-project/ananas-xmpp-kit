@@ -14,5 +14,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/axk2-kit1-lib"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/axk2-protocol-ns"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/axk2-protocol-ns-lib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/axk2-terminal"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/blueprint4-terminal"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -3,7 +3,9 @@
 		<FilterList>
 
 			<Local />
-			<kit1:Terminal />
+			<kit1:Terminal>
+				<Import url="resource:///ananas/axk2/terminal/commands.xml" />
+			</kit1:Terminal>
 			<kit1:Monitor />
 			<Switch xmlns="ananas:axk:ex:kit1">
 				<Case namespace="jabber:client">

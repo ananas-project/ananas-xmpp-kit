@@ -1,0 +1,9 @@
+<CommandSet xmlns="ananas:blueprint4:terminal" package="ananas.axk2.terminal.commands">
+
+	<Command name="help" class="ananas.blueprint4.terminal.commands.Help" />
+	<Command name="exit" class="ananas.blueprint4.terminal.commands.Exit" />
+
+	<Command name="connect" class=".Connect" />
+	<Command name="disconnect" class=".Disconnect" />
+
+</CommandSet>

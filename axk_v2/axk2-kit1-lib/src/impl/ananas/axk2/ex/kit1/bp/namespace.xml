@@ -15,7 +15,7 @@
 	</head>
 	<body>
 
-		<element name="Terminal" controller=".CtrFilter" />
+		<element name="Terminal" />
 		<element name="Monitor" controller=".CtrFilter" />
 
 		<element name="RosterManager" controller=".CtrFilter" />

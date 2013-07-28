@@ -12,8 +12,11 @@ import ananas.axk2.core.XmppAccount;
 import ananas.axk2.engine.XEngineContext;
 import ananas.axk2.engine.api.XEngineRuntimeContext;
 import ananas.axk2.engine.api.XSubConnection;
+import ananas.lib.util.logging.Logger;
 
 public class ErcRoot implements XEngineRuntimeContext {
+
+	private final static Logger log = Logger.Agent.getLogger();
 
 	private final XSubConnection _sub_conn;
 	private SocketAgent _sock_agent;
@@ -30,6 +33,7 @@ public class ErcRoot implements XEngineRuntimeContext {
 			final XEngineContext context = this._sub_conn.getParent()
 					.getParent().getContext();
 			final XmppAccount account = this._sub_conn.getFinalAccount();
+			log.info("connect to " + account);
 			final Socket sock;
 			if (account.useSSL()) {
 				SSLSocketFactory factory = context.getConnector()

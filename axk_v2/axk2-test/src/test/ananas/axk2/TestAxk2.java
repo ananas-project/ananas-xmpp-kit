@@ -15,6 +15,8 @@ import ananas.axk2.core.event.BindEvent;
 import ananas.axk2.core.event.PhaseEvent;
 import ananas.axk2.core.event.StanzaEvent;
 import ananas.axk2.core.util.XmppClientBuilder;
+import ananas.axk2.ex.kit1.ITerminalAgent;
+import ananas.blueprint4.terminal.Terminal;
 import ananas.lib.util.logging.Logger;
 
 public class TestAxk2 {
@@ -58,15 +60,12 @@ public class TestAxk2 {
 		IClient client = (IClient) conn.getAPI(IClient.class);
 		conn.addEventListener(new MyEventListener());
 
-		log.debug("current phase : " + client.getPhase());
-		client.connect();
-		try {
-			Thread.sleep(12 * 1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		log.debug("current phase : " + client.getPhase());
-		// client.disconnect();
+		ITerminalAgent terAgent = (ITerminalAgent) conn
+				.getAPI(ITerminalAgent.class);
+		Terminal termi = terAgent.getTerminal();
+		termi.getRunnable().run();
+
+		client.disconnect();
 
 	}
 

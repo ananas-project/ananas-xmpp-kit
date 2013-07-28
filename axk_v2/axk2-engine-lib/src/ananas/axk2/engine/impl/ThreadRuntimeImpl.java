@@ -356,7 +356,7 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 									.replaceFirst("\\.$", "");
 							int port = srv.getPort();
 							final XmppAccount tmpAccount = new MyTempAccount(
-									base, host, port);
+									base, host, port, (port == 5223));
 							list.add(new DefaultAccount(tmpAccount));
 							log.info("DNS-SRV result " + host + ":" + port);
 						}
@@ -372,7 +372,8 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 			log.warn("DNS srv lookup failed, use HOST:PORT by jid & use_ssl.");
 			final String host = base.jid().domain();
 			final int port = base.useSSL() ? 5223 : 5222;
-			final XmppAccount tmpAccount = new MyTempAccount(base, host, port);
+			final XmppAccount tmpAccount = new MyTempAccount(base, host, port,
+					base.useSSL());
 			final XmppAccount[] array = new XmppAccount[1];
 			array[0] = new DefaultAccount(tmpAccount);
 			return array;
@@ -383,11 +384,14 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 
 		private int _port;
 		private String _host;
+		private boolean _use_ssl;
 
-		public MyTempAccount(XmppAccount init, String host, int port) {
+		public MyTempAccount(XmppAccount init, String host, int port,
+				boolean use_ssl) {
 			super(init);
 			this._host = host;
 			this._port = port;
+			this._use_ssl = use_ssl;
 		}
 
 		@Override
@@ -398,6 +402,13 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 		@Override
 		public int port() {
 			return _port;
+
 		}
+
+		@Override
+		public boolean useSSL() {
+			return _use_ssl;
+		}
+
 	}
 }
