@@ -5,6 +5,8 @@
 
 	<Command name="connect" class=".Connect" />
 	<Command name="disconnect" class=".Disconnect" />
+	<Command name="status" class=".ClientStatus" />
+	<Command name="phase" class=".ClientPhase" />
 	<Command name="log" class=".Log" />
-	
+
 </CommandSet>
