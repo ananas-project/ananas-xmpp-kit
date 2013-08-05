@@ -1,10 +1,10 @@
-package ananas.axk2.ex.kit1;
+package ananas.axk2.ex.kit1.contact;
 
 import java.util.List;
 
 import ananas.axk2.core.XmppAddress;
 
-public interface XmppContact {
+public interface XmppContact extends AttributeSet {
 
 	List<XmppResource> listResources();
 
