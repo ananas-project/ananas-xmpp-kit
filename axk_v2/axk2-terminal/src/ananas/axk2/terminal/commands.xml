@@ -13,4 +13,12 @@
 		<Command name="add" class=".contact.Add" />
 	</CommandSet>
 
+	<CommandSet name="account" class=".Account">
+		<Command name="binding" class=".account.Binding" />
+	</CommandSet>
+
+	<CommandSet name="presence" class=".Presence">
+	</CommandSet>
+
+
 </CommandSet>

@@ -28,7 +28,9 @@ import ananas.lib.util.logging.Logger;
 public class Engine extends Filter implements IClient {
 
 	final static Logger log = Logger.Agent.getLogger();
+
 	private XEngine _engine;
+	private XmppAddress _bind_jid;
 
 	private XEngine __getEngine() {
 
@@ -141,7 +143,6 @@ public class Engine extends Filter implements IClient {
 
 	private final XEngineListener _event_hub = new EventExceptionWall(
 			new MyEventHub());
-	private XmppAddress _bind_jid;
 
 	@Override
 	public void connect() {
@@ -219,7 +220,17 @@ public class Engine extends Filter implements IClient {
 	}
 
 	@Override
-	public XmppAddress getBind() {
+	public XmppAddress getBinding() {
+		XmppStatus phase = this.__getEngine().getPhase();
+		if (phase.equals(XmppStatus.online)) {
+			return this._bind_jid;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public XmppAddress getLastBinding() {
 		return this._bind_jid;
 	}
 

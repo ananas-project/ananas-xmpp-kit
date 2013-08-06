@@ -14,6 +14,8 @@ public interface IClient extends XmppAPI {
 
 	XmppStatus getPhase();
 
-	XmppAddress getBind();
+	XmppAddress getBinding();
+
+	XmppAddress getLastBinding();
 
 }
