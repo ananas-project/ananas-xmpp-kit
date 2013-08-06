@@ -23,7 +23,7 @@
 		<element name="MessageManager" controller=".CtrFilter" />
 		<element name="ContactManager" controller=".CtrFilter" />
 
-		<element name="Switch" controller=".CtrFilter" />
+		<element name="Switch" />
 		<element name="Case" />
 
 	</body>
