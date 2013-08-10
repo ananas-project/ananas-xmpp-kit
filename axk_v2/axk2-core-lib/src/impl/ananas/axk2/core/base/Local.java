@@ -18,7 +18,7 @@ public class Local extends Filter {
 		} else if (apiClass.equals(ICommandRegistrar.class)) {
 			return this._cmd_reg;
 		} else {
-			return this.getAPI(apiClass, null);
+			return super.getAPI(apiClass);
 		}
 	}
 

@@ -1,14 +1,14 @@
 package impl.ananas.axk2.core.base.bp;
 
-import impl.ananas.axk2.core.base.FilterList;
 import ananas.axk2.core.XmppFilter;
+import ananas.axk2.core.XmppFilterList;
 import ananas.blueprint4.core.lang.BPElement;
 import ananas.blueprint4.core.lang.BPNode;
 
 public class CtrFilterList extends CtrObject {
 
-	public FilterList target_FilterList() {
-		return (FilterList) this.getTarget(true);
+	public XmppFilterList target_FilterList() {
+		return (XmppFilterList) this.getTarget(true);
 	}
 
 	@Override
@@ -16,7 +16,7 @@ public class CtrFilterList extends CtrObject {
 		if (node instanceof BPElement) {
 			Object target = ((BPElement) node).getTarget(true);
 			if (target instanceof XmppFilter) {
-				FilterList list = this.target_FilterList();
+				XmppFilterList list = this.target_FilterList();
 				list.append((XmppFilter) target);
 			} else {
 				return super.onAppendChild(node);

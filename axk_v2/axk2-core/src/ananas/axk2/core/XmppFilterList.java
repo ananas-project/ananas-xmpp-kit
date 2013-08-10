@@ -2,7 +2,7 @@ package ananas.axk2.core;
 
 import java.util.List;
 
-public interface XmppFilterManager {
+public interface XmppFilterList extends XmppFilter {
 
 	int insert(XmppFilter filter, int index);
 

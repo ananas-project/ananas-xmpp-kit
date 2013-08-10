@@ -7,14 +7,24 @@
 				<Import url="resource:///ananas/axk2/terminal/commands.xml" />
 			</kit1:Terminal>
 			<kit1:Monitor />
-			<Switch xmlns="ananas:axk:ex:kit1">
+
+			<Switch>
 				<Case namespace="jabber:client">
-					<kit1:MessageManager />
-					<kit1:PresenceManager />
-					<kit1:RosterManager />
+					<FilterList>
+						<kit1:MessageManager />
+						<kit1:PresenceManager />
+						<kit1:RosterManager />
+					</FilterList>
 				</Case>
+
+				<Case namespace="x:y:z">
+					<FilterLoader class="x.y.z" />
+				</Case>
+
 			</Switch>
+
 			<kit1:ContactManager />
+
 			<Engine />
 			<Remote />
 

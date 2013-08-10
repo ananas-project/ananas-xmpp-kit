@@ -1,9 +1,8 @@
 package impl.ananas.axk2.core.base;
 
-import java.util.List;
-
 import ananas.axk2.core.DefaultXmppEventDispatcher;
 import ananas.axk2.core.XmppAPI;
+import ananas.axk2.core.XmppAPIHandler;
 import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppCommand;
 import ananas.axk2.core.XmppConnection;
@@ -12,95 +11,33 @@ import ananas.axk2.core.XmppEvent;
 import ananas.axk2.core.XmppEventDispatcher;
 import ananas.axk2.core.XmppEventListener;
 import ananas.axk2.core.XmppFilter;
-import ananas.axk2.core.XmppFilterManager;
 
 public class Connection implements XmppConnection {
 
 	private XmppAccount _account;
 	private XmppContext _context;
-	private final XmppFilterManager _fm = new MyFM();
-	private XmppFilter[] _filter_list;
+	private XmppFilter _filter;
 	private XmppConnection _facade;
+
+	public Connection() {
+	}
 
 	@Override
 	public boolean send(XmppCommand cmd) {
-		XmppFilter[] list = this.__getFilterList();
-		for (XmppFilter f : list) {
-			if (cmd == null) {
-				break;
-			} else {
-				cmd.onSendBy(f);
-				cmd = f.filter(cmd);
-			}
+		XmppFilter filter = this._filter;
+		if (filter == null) {
+			return false;
+		} else {
+			filter.filter(cmd);
+			return true;
 		}
-		return (cmd != null);
 	}
 
 	@Override
 	public void dispatch(XmppEvent event) {
-		XmppFilter[] list = this.__getFilterList();
-		for (int i = list.length - 1; i >= 0; i--) {
-			XmppFilter f = list[i];
-			if (event == null) {
-				break;
-			} else {
-				event.onReceiveBy(f);
-				event = f.filter(event);
-			}
-		}
-		if (event != null) {
-			this._event_disp.dispatch(event);
-		}
-	}
-
-	/**
-	 * [0,n]::[local,remote]
-	 * */
-	private XmppFilter[] __getFilterList() {
-		XmppFilter[] array = this._filter_list;
-		if (array == null) {
-			List<XmppFilter> list = this.getFilterManager().listAll();
-			array = list.toArray(new XmppFilter[list.size()]);
-			boolean needReverse = false;
-			for (XmppFilter ft : array) {
-				if (ft instanceof Remote) {
-					needReverse = true;
-					break;
-				} else if (ft instanceof Local) {
-					break;
-				} else {
-				}
-			}
-			if (needReverse) {
-				int a = 0;
-				int b = array.length - 1;
-				for (; a < b; a++, b--) {
-					XmppFilter pa = array[a];
-					XmppFilter pb = array[b];
-					array[a] = pb;
-					array[b] = pa;
-				}
-			}
-			this.__setFilterList(array);
-		}
-		return array;
-	}
-
-	private void __setFilterList(XmppFilter[] list) {
-		XmppFilter[] pold;
-		synchronized (this) {
-			pold = this._filter_list;
-			this._filter_list = list;
-		}
-		if (pold != null) {
-			for (XmppFilter ft : pold) {
-				ft.unbind(this.getFacade());
-			}
-		}
-		if (list != null) {
-			for (XmppFilter ft : list) {
-				ft.bind(this.getFacade());
-			}
+		XmppFilter filter = this._filter;
+		if (filter != null) {
+			filter.filter(event);
 		}
 	}
 
@@ -115,44 +52,7 @@ public class Connection implements XmppConnection {
 	}
 
 	@Override
-	public XmppFilterManager getFilterManager() {
-		return this._fm;
-	}
-
-	@Override
 	public void close() {
-	}
-
-	class MyFM extends FilterList {
-
-		@Override
-		protected void onChanged() {
-			Connection.this.__setFilterList(null);
-		}
-
-	}
-
-	@Override
-	public XmppAPI getAPI(Class<?> apiClass, Object after) {
-		XmppFilter[] list = this.__getFilterList();
-		for (XmppFilter f : list) {
-			if (after == null) {
-				XmppAPI api = f.getAPI(apiClass);
-				if (api != null) {
-					return api;
-				}
-			} else {
-				if (after.equals(f)) {
-					after = null;
-				}
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public XmppAPI getAPI(Class<?> apiClass) {
-		return this.getAPI(apiClass, null);
 	}
 
 	public XmppConnection getFacade() {
@@ -166,6 +66,10 @@ public class Connection implements XmppConnection {
 	public void init(XmppContext context, XmppAccount account) {
 		this._account = account;
 		this._context = context;
+		final XmppFilter filter = this._filter;
+		if (filter != null) {
+			filter.bind(this.getFacade());
+		}
 	}
 
 	private final XmppEventDispatcher _event_disp = new DefaultXmppEventDispatcher();
@@ -180,4 +84,42 @@ public class Connection implements XmppConnection {
 		this._event_disp.removeEventListener(listener);
 	}
 
+	public void setFilter(XmppFilter filter) {
+		XmppFilter pold;
+		synchronized (this) {
+			pold = this._filter;
+			this._filter = filter;
+		}
+		if (pold != null) {
+			pold.unbind(this.getFacade());
+			if (filter != null) {
+				filter.bind(this.getFacade());
+			}
+		}
+	}
+
+	@Override
+	public XmppFilter getFilter() {
+		return this._filter;
+	}
+
+	@Override
+	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
+		XmppFilter filter = this._filter;
+		if (filter == null) {
+			return XmppAPIHandler.find_continue;
+		} else {
+			return filter.findAPI(apiClass, h);
+		}
+	}
+
+	@Override
+	public XmppAPI getAPI(Class<?> apiClass) {
+		XmppFilter filter = this._filter;
+		if (filter == null) {
+			return null;
+		} else {
+			return filter.getAPI(apiClass);
+		}
+	}
 }

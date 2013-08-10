@@ -16,12 +16,16 @@
 	<body>
 
 		<element name="AXK" />
+		<element name="FilterList" />
+		<element name="FilterLoader" />
+		<element name="Connection" />
+		<element name="Import" />
+		<element name="Switch" />
+		<element name="Case" />
+
 		<element name="Local" controller=".CtrFilter" />
 		<element name="Remote" controller=".CtrFilter" />
 		<element name="Engine" controller=".CtrFilter" />
-		<element name="FilterList" />
-		<element name="Connection" />
-		<element name="Import" />
-		
+
 	</body>
 </namespace>

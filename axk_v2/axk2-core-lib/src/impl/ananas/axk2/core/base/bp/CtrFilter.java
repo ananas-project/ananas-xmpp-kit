@@ -1,11 +1,11 @@
 package impl.ananas.axk2.core.base.bp;
 
-import impl.ananas.axk2.core.base.Filter;
+import ananas.axk2.core.XmppFilter;
 
-public class CtrFilter extends CtrFilterBase {
+public class CtrFilter extends CtrObject {
 
-	public Filter target_Filter() {
-		return (Filter) this.getTarget(true);
+	public XmppFilter target_Filter() {
+		return (XmppFilter) this.getTarget(true);
 	}
 
 }

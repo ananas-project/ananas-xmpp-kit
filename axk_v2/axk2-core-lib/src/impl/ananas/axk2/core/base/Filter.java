@@ -1,6 +1,7 @@
 package impl.ananas.axk2.core.base;
 
 import ananas.axk2.core.XmppAPI;
+import ananas.axk2.core.XmppAPIHandler;
 import ananas.axk2.core.XmppCommand;
 import ananas.axk2.core.XmppConnection;
 import ananas.axk2.core.XmppEvent;
@@ -9,20 +10,6 @@ import ananas.axk2.core.XmppFilter;
 public class Filter implements XmppFilter, XmppAPI {
 
 	private XmppConnection _conn;
-
-	@Override
-	public XmppAPI getAPI(Class<?> apiClass) {
-		return this.getAPI(apiClass, null);
-	}
-
-	@Override
-	public XmppAPI getAPI(Class<?> apiClass, Object after) {
-		if (apiClass.isInstance(this)) {
-			return this;
-		} else {
-			return null;
-		}
-	}
 
 	@Override
 	public void bind(XmppConnection connection) {
@@ -49,6 +36,22 @@ public class Filter implements XmppFilter, XmppAPI {
 	@Override
 	public XmppEvent filter(XmppEvent event) {
 		return event;
+	}
+
+	@Override
+	public XmppAPI getAPI(Class<?> apiClass) {
+		if (apiClass.isInstance(this))
+			return this;
+		else
+			return null;
+	}
+
+	@Override
+	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
+		XmppAPI api = this.getAPI(apiClass);
+		if (api == null)
+			return XmppAPI.find_continue;
+		return h.onAPI(apiClass, api);
 	}
 
 }
