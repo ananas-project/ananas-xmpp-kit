@@ -21,6 +21,11 @@
 					<FilterLoader class="x.y.z" />
 				</Case>
 
+				<Case>
+					<!-- default -->
+					<FilterLoader class="a.b.c.DefaultNSFilter" />
+				</Case>
+
 			</Switch>
 
 			<kit1:ContactManager />

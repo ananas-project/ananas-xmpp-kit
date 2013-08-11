@@ -150,22 +150,6 @@ public class FilterList implements XmppFilterList {
 	}
 
 	@Override
-	public XmppAPI getAPI(Class<?> apiClass) {
-		class ResultHandler implements XmppAPIHandler {
-			public XmppAPI result;
-
-			@Override
-			public int onAPI(Class<?> apiClass, XmppAPI api) {
-				this.result = api;
-				return XmppAPIHandler.find_break;
-			}
-		}
-		ResultHandler h = new ResultHandler();
-		this.findAPI(apiClass, h);
-		return h.result;
-	}
-
-	@Override
 	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
 		XmppFilter[] array = this.__getCache();
 		for (XmppFilter f : array) {

@@ -39,19 +39,12 @@ public class Filter implements XmppFilter, XmppAPI {
 	}
 
 	@Override
-	public XmppAPI getAPI(Class<?> apiClass) {
-		if (apiClass.isInstance(this))
-			return this;
-		else
-			return null;
-	}
-
-	@Override
 	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
-		XmppAPI api = this.getAPI(apiClass);
-		if (api == null)
+		if (apiClass.isInstance(this)) {
+			return h.onAPI(apiClass, this);
+		} else {
 			return XmppAPI.find_continue;
-		return h.onAPI(apiClass, api);
+		}
 	}
 
 }

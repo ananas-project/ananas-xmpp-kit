@@ -85,17 +85,7 @@ public class Connection implements XmppConnection {
 	}
 
 	public void setFilter(XmppFilter filter) {
-		XmppFilter pold;
-		synchronized (this) {
-			pold = this._filter;
-			this._filter = filter;
-		}
-		if (pold != null) {
-			pold.unbind(this.getFacade());
-			if (filter != null) {
-				filter.bind(this.getFacade());
-			}
-		}
+		this._filter = filter;
 	}
 
 	@Override
@@ -119,7 +109,22 @@ public class Connection implements XmppConnection {
 		if (filter == null) {
 			return null;
 		} else {
-			return filter.getAPI(apiClass);
+			class MyHandler implements XmppAPIHandler {
+				XmppAPI _api;
+
+				@Override
+				public int onAPI(Class<?> apiClass, XmppAPI api) {
+					if (api == null) {
+						return XmppAPI.find_continue;
+					} else {
+						_api = api;
+						return XmppAPI.find_break;
+					}
+				}
+			}
+			MyHandler h = new MyHandler();
+			filter.findAPI(apiClass, h);
+			return h._api;
 		}
 	}
 }

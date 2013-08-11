@@ -40,20 +40,10 @@ public class TFilter implements XmppFilter, XmppAPI {
 
 	@Override
 	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
-		XmppAPI api = this.getAPI(apiClass);
-		if (api == null) {
-			return XmppAPI.find_continue;
-		} else {
-			return h.onAPI(apiClass, api);
-		}
-	}
-
-	@Override
-	public XmppAPI getAPI(Class<?> apiClass) {
 		if (apiClass.isInstance(this)) {
-			return this;
+			return h.onAPI(apiClass, this);
 		} else {
-			return null;
+			return XmppAPI.find_continue;
 		}
 	}
 

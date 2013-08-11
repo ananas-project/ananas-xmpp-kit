@@ -59,11 +59,6 @@ public class XmppConnectionFacade implements XmppConnection {
 	}
 
 	@Override
-	public void setFilter(XmppFilter filter) {
-		_inner.setFilter(filter);
-	}
-
-	@Override
 	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
 		return _inner.findAPI(apiClass, h);
 	}

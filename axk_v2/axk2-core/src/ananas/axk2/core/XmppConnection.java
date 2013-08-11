@@ -9,8 +9,8 @@ public interface XmppConnection extends XmppCommandDispatcher,
 
 	XmppFilter getFilter();
 
-	void setFilter(XmppFilter filter);
-
 	void close();
+
+	XmppAPI getAPI(Class<?> apiClass);
 
 }
