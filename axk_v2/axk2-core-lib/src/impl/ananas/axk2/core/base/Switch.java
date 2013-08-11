@@ -103,6 +103,11 @@ public class Switch extends Filter {
 					filter.filter(command);
 				}
 			}
+		} else {
+			XmppFilter[] fs = this.__list_filter();
+			for (XmppFilter f : fs) {
+				f.filter(command);
+			}
 		}
 		return super.filter(command);
 	}
@@ -123,6 +128,11 @@ public class Switch extends Filter {
 				} else {
 					filter.filter(event);
 				}
+			}
+		} else {
+			XmppFilter[] fs = this.__list_filter();
+			for (XmppFilter f : fs) {
+				f.filter(event);
 			}
 		}
 		return super.filter(event);
