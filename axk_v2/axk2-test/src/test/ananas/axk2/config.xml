@@ -17,13 +17,9 @@
 					</FilterList>
 				</Case>
 
-				<Case namespace="x:y:z">
-					<FilterLoader class="x.y.z" />
-				</Case>
-
 				<Case>
 					<!-- default -->
-					<FilterLoader class="a.b.c.DefaultNSFilter" />
+					<FilterLoader class="ananas.axk2.core.bp.target.DefaultNSFilter" />
 				</Case>
 
 			</Switch>
