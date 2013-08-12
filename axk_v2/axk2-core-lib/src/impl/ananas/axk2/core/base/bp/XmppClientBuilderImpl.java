@@ -169,4 +169,36 @@ public class XmppClientBuilderImpl implements XmppClientBuilder {
 	public XmppContext getContext() {
 		return new XmppContextImpl();
 	}
+
+	@Override
+	public XmppClientBuilder loadAccount(Object ref, String fileName) {
+		try {
+			InputStream in = this.__openResource(ref, fileName);
+			this.loadAccount(in);
+			in.close();
+		} catch (Exception e) {
+			log.error(e);
+		}
+		return this;
+	}
+
+	private InputStream __openResource(Object ref, String fileName) {
+		InputStream in = ref.getClass().getResourceAsStream(fileName);
+		if (in == null) {
+			throw new RuntimeException("no file " + ref + "##" + fileName);
+		}
+		return in;
+	}
+
+	@Override
+	public XmppClientBuilder loadConfigXML(Object ref, String fileName) {
+		try {
+			InputStream in = this.__openResource(ref, fileName);
+			this.loadConfigXML(in);
+			in.close();
+		} catch (Exception e) {
+			log.error(e);
+		}
+		return this;
+	}
 }
