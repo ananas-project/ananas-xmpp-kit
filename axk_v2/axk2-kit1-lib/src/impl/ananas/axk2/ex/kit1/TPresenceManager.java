@@ -36,7 +36,8 @@ public class TPresenceManager extends TFilter {
 				StanzaCommand cmd = fact.create(conn);
 				StringBuilder sb = new StringBuilder();
 				{
-					sb.append("<presence>");
+					// sb.append("<?xml version='1.0' encoding='UTF-8'?>");
+					sb.append("<presence xmlns='jabber:client'>");
 					sb.append("</presence>");
 				}
 				cmd.setString(sb.toString());

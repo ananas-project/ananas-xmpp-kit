@@ -135,8 +135,13 @@ public class DefaultStanzaContext implements StanzaContext {
 				cbuf[off + i] = src[off_src + i];
 			}
 			this._ptr = off_src + len_ret;
+			if (len_ret <= 0)
+				if (this._ptr >= this._len) {
+					return -1;
+				}
 			return len_ret;
 		}
+
 	}
 
 	@Override
