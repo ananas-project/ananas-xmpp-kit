@@ -42,6 +42,10 @@ public interface XmppClientBuilder {
 
 	XmppClientBuilder loadAccount(InputStream in);
 
+	XmppClientBuilder loadAccount(Object ref, String fileName);
+
+	XmppClientBuilder loadConfigXML(Object ref, String fileName);
+
 	// set config
 
 	XmppClientBuilder loadConfigXML(InputStream in) throws SAXException,
@@ -69,4 +73,5 @@ public interface XmppClientBuilder {
 		}
 
 	}
+
 }
