@@ -4,16 +4,26 @@ import impl.ananas.axk2.ex.kit1.contact.DefaultContactManager;
 
 import java.util.List;
 
-import ananas.axk2.ex.kit1.contact.IContactManager;
+import ananas.axk2.core.XmppAccount;
+import ananas.axk2.core.XmppConnection;
+import ananas.axk2.ex.kit1.contact.IContactModel;
 import ananas.axk2.ex.kit1.contact.XmppContact;
 import ananas.axk2.ex.kit1.contact.XmppGroup;
 import ananas.axk2.ex.kit1.contact.XmppResource;
 
-public class TContactManager extends TFilter implements IContactManager {
+public class TContactModel extends TFilter implements IContactModel {
 
-	private final IContactManager _cm = new DefaultContactManager();
+	private IContactModel _cm = null;
 
-	public TContactManager() {
+	public TContactModel() {
+	}
+
+	@Override
+	public void bind(XmppConnection connection) {
+		super.bind(connection);
+		XmppAccount account = connection.getAccount();
+		String addr = account.jid().toString();
+		_cm = new DefaultContactManager(addr);
 	}
 
 	public XmppContact getContact(String jid, boolean create) {
@@ -48,6 +58,11 @@ public class TContactManager extends TFilter implements IContactManager {
 	@Override
 	public void setAttribute(String key, Object value) {
 		_cm.setAttribute(key, value);
+	}
+
+	@Override
+	public XmppContact getSelf() {
+		return _cm.getSelf();
 	}
 
 }

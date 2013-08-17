@@ -10,7 +10,10 @@
 	<Command name="log" class=".Log" />
 
 	<CommandSet name="contact" class=".Contact">
-		<Command name="add" class=".contact.Add" />
+		<Command name="group" class=".contact.Group" />
+		<Command name="res" class=".contact.Resource" />
+		<Command name="resource" class=".contact.Resource" />
+		<Command name="all" class=".contact.All" />
 	</CommandSet>
 
 	<CommandSet name="account" class=".Account">

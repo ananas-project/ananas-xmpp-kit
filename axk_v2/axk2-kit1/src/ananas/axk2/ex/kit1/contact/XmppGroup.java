@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface XmppGroup extends AttributeSet {
 
+	IContactModel getModel();
+
 	List<XmppContact> listMembers();
 
 	String getName();

@@ -3,15 +3,9 @@ package impl.ananas.axk2.ex.kit1;
 import ananas.axk2.core.XmppAddress;
 import ananas.axk2.core.XmppCommandListener;
 import ananas.axk2.core.XmppCommandStatus;
-import ananas.axk2.core.XmppConnection;
 import ananas.axk2.core.XmppEvent;
-import ananas.axk2.core.XmppStatus;
-import ananas.axk2.core.api.ICommandRegistrar;
-import ananas.axk2.core.command.StanzaCommand;
-import ananas.axk2.core.command.StanzaCommandFactory;
-import ananas.axk2.core.event.PhaseEvent;
 import ananas.axk2.core.event.StanzaEvent;
-import ananas.axk2.ex.kit1.contact.IContactManager;
+import ananas.axk2.ex.kit1.contact.IContactModel;
 import ananas.axk2.ex.kit1.contact.XmppResource;
 import ananas.axk2.namespace.jabber_client.Iq;
 import ananas.axk2.namespace.jabber_client.Message;
@@ -24,36 +18,16 @@ public class TPresenceManager extends TFilter {
 
 	@Override
 	public XmppEvent filter(XmppEvent event) {
-
-		if (event instanceof PhaseEvent) {
-			PhaseEvent pe = (PhaseEvent) event;
-			if (XmppStatus.online.equals(pe.getNewPhase())) {
-				XmppConnection conn = pe.getConnection();
-				ICommandRegistrar reg = (ICommandRegistrar) conn
-						.getAPI(ICommandRegistrar.class);
-				StanzaCommandFactory fact = (StanzaCommandFactory) reg
-						.getFactory(StanzaCommandFactory.class);
-				StanzaCommand cmd = fact.create(conn);
-				StringBuilder sb = new StringBuilder();
-				{
-					// sb.append("<?xml version='1.0' encoding='UTF-8'?>");
-					sb.append("<presence xmlns='jabber:client'>");
-					sb.append("</presence>");
-				}
-				cmd.setString(sb.toString());
-				cmd.setListener(new MyCmdListener());
-				conn.send(cmd);
-			}
+		if (event == null) {
 		} else if (event instanceof StanzaEvent) {
 			this.__onStanzaEvent((StanzaEvent) event);
 		}
-
 		return event;
 	}
 
-	private IContactManager __getContactManager() {
-		IContactManager cm = (IContactManager) this.getConnection().getAPI(
-				IContactManager.class);
+	private IContactModel __getContactManager() {
+		IContactModel cm = (IContactModel) this.getConnection().getAPI(
+				IContactModel.class);
 		return cm;
 	}
 
@@ -88,7 +62,7 @@ public class TPresenceManager extends TFilter {
 
 		String from = presence.getFrom();
 
-		IContactManager cm = this.__getContactManager();
+		IContactModel cm = this.__getContactManager();
 		XmppResource res = cm.getResource(from, true);
 		XmppAddress addr = res.getAddress();
 		log.info("presence-addr=" + addr);

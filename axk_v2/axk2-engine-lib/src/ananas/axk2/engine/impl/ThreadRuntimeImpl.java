@@ -93,6 +93,7 @@ class ThreadRuntimeImpl implements XThreadRuntime {
 					dropTime);
 			this._curSubConn = subConn;
 			log.trace(bar);// bar===================
+			log.info("re-connect : " + index);
 			subConn.open();
 			subConn.run();
 			subConn.close();

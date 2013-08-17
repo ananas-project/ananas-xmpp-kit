@@ -7,6 +7,7 @@
 				<Import url="resource:///ananas/axk2/terminal/commands.xml" />
 			</kit1:Terminal>
 			<kit1:Monitor />
+			<kit1:ContactModel />
 
 			<Switch>
 				<Case namespace="jabber:client">
@@ -14,6 +15,7 @@
 						<kit1:MessageManager />
 						<kit1:PresenceManager />
 						<kit1:RosterManager />
+						<kit1:SelfManager />
 					</FilterList>
 				</Case>
 
@@ -24,7 +26,6 @@
 
 			</Switch>
 
-			<kit1:ContactManager />
 
 			<Engine />
 			<Remote />

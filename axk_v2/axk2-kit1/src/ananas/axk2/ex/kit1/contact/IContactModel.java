@@ -2,7 +2,9 @@ package ananas.axk2.ex.kit1.contact;
 
 import java.util.List;
 
-public interface IContactManager extends AttributeSet {
+public interface IContactModel extends AttributeSet {
+
+	XmppContact getSelf();
 
 	XmppContact getContact(String jid, boolean create);
 

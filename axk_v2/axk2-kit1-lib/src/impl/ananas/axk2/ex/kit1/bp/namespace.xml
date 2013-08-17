@@ -21,10 +21,10 @@
 		<element name="RosterManager" controller=".CtrFilter" />
 		<element name="PresenceManager" controller=".CtrFilter" />
 		<element name="MessageManager" controller=".CtrFilter" />
-		<element name="ContactManager" controller=".CtrFilter" />
+		<element name="SelfManager" controller=".CtrFilter" />
 
-		<element name="Switch" />
-		<element name="Case" />
+		<element name="ContactModel" controller=".CtrFilter" />
+
 
 	</body>
 </namespace>

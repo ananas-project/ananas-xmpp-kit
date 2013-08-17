@@ -17,8 +17,11 @@ public class DefaultContactManager implements IContactManagerInner {
 	private final Map<String, XmppGroup> _map_group;
 	private final Map<String, XmppContact> _map_contact;
 	private final Map<String, XmppResource> _map_res;
+	private XmppContact _self;
+	private final String _self_jid;
 
-	public DefaultContactManager() {
+	public DefaultContactManager(String self_jid) {
+		this._self_jid = self_jid;
 		this._map_attr = new Hashtable<String, Object>();
 		this._map_group = new Hashtable<String, XmppGroup>();
 		this._map_contact = new Hashtable<String, XmppContact>();
@@ -28,26 +31,44 @@ public class DefaultContactManager implements IContactManagerInner {
 	@Override
 	public XmppContact getContact(String jid, boolean create) {
 		XmppContact contact = this._map_contact.get(jid);
-		if ((contact == null) && (create)) {
-			XmppAddress xaddr = new DefaultAddress(jid);
-			xaddr = xaddr.toPure();
-			contact = new MyContact(xaddr, this);
-			String key = xaddr.toString();
-			this._map_contact.put(key, contact);
-		}
+		if (contact == null)
+			if (create) {
+				XmppAddress xaddr = new DefaultAddress(jid);
+				xaddr = xaddr.toPure();
+				String key = xaddr.toString();
+				contact = new MyContact(xaddr, this);
+				this._map_contact.put(key, contact);
+			}
 		return contact;
 	}
 
 	@Override
 	public XmppResource getResource(String jid, boolean create) {
-		// TODO Auto-generated method stub
-		return null;
+		XmppResource res = this._map_res.get(jid);
+		if (res == null)
+			if (create) {
+				XmppAddress xaddr = new DefaultAddress(jid);
+				// get contact
+				XmppContact contact = this.getContact(
+						xaddr.toPure().toString(), true);
+				// create res
+				xaddr = xaddr.toFull();
+				String key = xaddr.toString();
+				res = new MyResource(xaddr, this, contact);
+				this._map_res.put(key, res);
+			}
+		return res;
 	}
 
 	@Override
 	public XmppGroup getGroup(String qName, boolean create) {
-		// TODO Auto-generated method stub
-		return null;
+		XmppGroup group = this._map_group.get(qName);
+		if (group == null)
+			if (create) {
+				group = new MyGroup(qName, this);
+				this._map_group.put(qName, group);
+			}
+		return group;
 	}
 
 	@Override
@@ -88,6 +109,17 @@ public class DefaultContactManager implements IContactManagerInner {
 	@Override
 	public IContactNode getParent() {
 		return null;
+	}
+
+	@Override
+	public XmppContact getSelf() {
+		XmppContact self = this._self;
+		if (self == null) {
+			String jid = this._self_jid;
+			self = this.getContact(jid, true);
+			_self = self;
+		}
+		return self;
 	}
 
 }

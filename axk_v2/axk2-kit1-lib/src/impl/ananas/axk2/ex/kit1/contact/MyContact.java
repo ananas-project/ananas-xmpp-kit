@@ -3,6 +3,7 @@ package impl.ananas.axk2.ex.kit1.contact;
 import java.util.List;
 
 import ananas.axk2.core.XmppAddress;
+import ananas.axk2.ex.kit1.contact.IContactModel;
 import ananas.axk2.ex.kit1.contact.XmppContact;
 import ananas.axk2.ex.kit1.contact.XmppGroup;
 import ananas.axk2.ex.kit1.contact.XmppResource;
@@ -13,6 +14,7 @@ public class MyContact implements XmppContact, IContactNode {
 	private String _local_name;
 	private String _q_name;
 	private final XmppAddress _address;
+	private String _string;
 
 	public MyContact(XmppAddress addr, IContactManagerInner inner) {
 		_inner = inner;
@@ -75,6 +77,20 @@ public class MyContact implements XmppContact, IContactNode {
 			this._q_name = qn;
 		}
 		return qn;
+	}
+
+	@Override
+	public String toString() {
+		String str = _string;
+		if (str == null) {
+			_string = str = "XmppContact('" + _address + "')";
+		}
+		return str;
+	}
+
+	@Override
+	public IContactModel getModel() {
+		return this._inner;
 	}
 
 }

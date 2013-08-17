@@ -6,6 +6,8 @@ import ananas.axk2.core.XmppAddress;
 
 public interface XmppContact extends AttributeSet {
 
+	IContactModel getModel();
+
 	List<XmppResource> listResources();
 
 	List<XmppGroup> listOwnerGroups();

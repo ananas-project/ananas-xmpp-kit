@@ -2,6 +2,7 @@ package test.ananas.axk2;
 
 import java.io.InputStream;
 
+import test.ananas.axk2.util.testing.ITest;
 import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppAddress;
 import ananas.axk2.core.XmppConnection;
@@ -19,7 +20,7 @@ import ananas.axk2.ex.kit1.ITerminalAgent;
 import ananas.blueprint4.terminal.Terminal;
 import ananas.lib.util.logging.Logger;
 
-public class TestAxk2 {
+public class TestAxk2 implements ITest {
 
 	final static Logger log = Logger.Agent.getLogger("test");
 
@@ -108,6 +109,11 @@ public class TestAxk2 {
 				log.debug(this + ".onEvent : " + event);
 			}
 		}
+	}
+
+	@Override
+	public void test() {
+		this.run();
 	}
 
 }
