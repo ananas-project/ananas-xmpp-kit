@@ -9,6 +9,10 @@
 	<Command name="phase" class=".ClientPhase" />
 	<Command name="log" class=".Log" />
 
+	<CommandSet name="send" class=".Send">
+		<Command name="help" class=".send.Help" />
+	</CommandSet>
+
 	<CommandSet name="contact" class=".Contact">
 		<Command name="group" class=".contact.Group" />
 		<Command name="res" class=".contact.Resource" />
