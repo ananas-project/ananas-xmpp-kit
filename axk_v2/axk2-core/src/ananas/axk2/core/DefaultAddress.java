@@ -78,12 +78,11 @@ public class DefaultAddress implements XmppAddress {
 	public String toString() {
 		String s = this._string;
 		if (s == null) {
-			if (_resource != null) {
-				s = _user + "@" + _domain + "/" + _resource;
-			} else {
-				s = _user + "@" + _domain;
-			}
-			this._string = s;
+			StringBuilder sb = new StringBuilder();
+			sb.append((_user == null) ? "" : (_user + "@"));
+			sb.append(_domain);
+			sb.append((_resource == null) ? "" : ("/" + _resource));
+			this._string = s = sb.toString();
 		}
 		return s;
 	}

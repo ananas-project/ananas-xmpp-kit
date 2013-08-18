@@ -8,7 +8,8 @@
 	<Command name="status" class=".ClientStatus" />
 	<Command name="phase" class=".ClientPhase" />
 	<Command name="log" class=".Log" />
-
+	<Command name="service-discovery" class=".ServiceDiscovery" />
+	
 	<CommandSet name="send" class=".Send">
 		<Command name="help" class=".send.Help" />
 	</CommandSet>

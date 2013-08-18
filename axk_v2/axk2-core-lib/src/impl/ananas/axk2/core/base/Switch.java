@@ -92,6 +92,9 @@ public class Switch extends Filter {
 			Element element = ((StanzaCommand) command).getElement();
 			Map<String, XmppFilter> map = this.__map_filter();
 			List<String> nss = this.__list_ns(element);
+			if (nss.size() < 1) {
+				nss.add("");
+			}
 			for (String ns : nss) {
 				XmppFilter filter = map.get(ns);
 				if (filter == null) {
@@ -118,6 +121,9 @@ public class Switch extends Filter {
 			Element element = ((StanzaEvent) event).getElement();
 			Map<String, XmppFilter> map = this.__map_filter();
 			List<String> nss = this.__list_ns(element);
+			if (nss.size() < 1) {
+				nss.add("");
+			}
 			for (String ns : nss) {
 				XmppFilter filter = map.get(ns);
 				if (filter == null) {

@@ -1,22 +1,35 @@
-<AXK xmlns="ananas:axk:base" xmlns:kit1="ananas:axk:ex:kit1">
+<AXK xmlns="ananas:axk:base" xmlns:kit1="ananas:axk:ex:kit1"
+	xmlns:kit1xep="ananas:axk:ex:kit1:xep">
 	<Connection>
 		<FilterList>
 
 			<Local />
+			<FilterLoader class="test.ananas.axk2.TheTesterFilter" />
 			<kit1:Terminal>
 				<Import url="resource:///ananas/axk2/terminal/commands.xml" />
 			</kit1:Terminal>
 			<kit1:Monitor />
 			<kit1:ContactModel />
 
+			<FilterList>
+				<kit1:MessageManager />
+				<kit1:PresenceManager />
+				<kit1:RosterManager />
+				<kit1:SelfManager />
+			</FilterList>
+
 			<Switch>
-				<Case namespace="jabber:client">
-					<FilterList>
-						<kit1:MessageManager />
-						<kit1:PresenceManager />
-						<kit1:RosterManager />
-						<kit1:SelfManager />
-					</FilterList>
+
+
+				<Case namespace="urn:xmpp:ping">
+					<FilterLoader class="ananas.axk2.xep.xep_0199.ping.PingManager" />
+				</Case>
+
+				<Case namespace="http://jabber.org/protocol/disco#info">
+					<FilterLoader class="ananas.axk2.xep.xep_0030.ServiceDiscoveryManager" />
+				</Case>
+				<Case namespace="http://jabber.org/protocol/disco#items">
+					<FilterLoader class="ananas.axk2.xep.xep_0030.ServiceDiscoveryManager" />
 				</Case>
 
 				<Case>
