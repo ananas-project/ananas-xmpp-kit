@@ -50,8 +50,8 @@ public class TheTesterFilter implements XmppFilter {
 				this.__on_online(pe);
 			}
 		} else if (event instanceof StanzaEvent) {
-			// String s = ((StanzaEvent) event).getString();
-			// System.out.println(this + ".onEvent:" + s);
+			String s = ((StanzaEvent) event).getString();
+			System.out.println(this + ".onEvent:" + s);
 		}
 
 		return event;

@@ -26,10 +26,10 @@
 				</Case>
 
 				<Case namespace="http://jabber.org/protocol/disco#info">
-					<FilterLoader class="ananas.axk2.xep.xep_0030.ServiceDiscoveryManager" />
+					<FilterLoader class="ananas.axk2.xep.xep_0030.disco.ServiceDiscoveryManager" />
 				</Case>
 				<Case namespace="http://jabber.org/protocol/disco#items">
-					<FilterLoader class="ananas.axk2.xep.xep_0030.ServiceDiscoveryManager" />
+					<FilterLoader class="ananas.axk2.xep.xep_0030.disco.ServiceDiscoveryManager" />
 				</Case>
 
 				<Case>

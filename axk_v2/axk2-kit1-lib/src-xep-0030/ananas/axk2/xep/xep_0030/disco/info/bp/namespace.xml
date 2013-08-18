@@ -1,0 +1,27 @@
+<?xml  version='1.0'  encoding="UTF-8"  ?>
+<namespace xmlns="ananas:blueprint4:namespace">
+	<head>
+		<property key="namespace.uri">http://jabber.org/protocol/disco#info</property>
+		<property key="namespace.default.prefix">disco-info</property>
+
+		<property key="target.package">ananas.axk2.xep.xep_0030.disco.info</property>
+		<property key="target.classname.prefix">Tar_</property>
+		<property key="target.classname.suffix"></property>
+
+		<property key="controller.package">ananas.axk2.xep.xep_0030.disco.info.bp
+		</property>
+		<property key="controller.classname.prefix">Ctr_</property>
+		<property key="controller.classname.suffix"></property>
+
+	</head>
+	<body>
+
+		<element name="null" />
+
+		<element name="query" />
+		<element name="identity" />
+		<element name="feature" />
+
+
+	</body>
+</namespace>

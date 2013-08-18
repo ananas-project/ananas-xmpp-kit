@@ -1,4 +1,4 @@
-package ananas.axk2.xep.xep_0030;
+package ananas.axk2.xep.xep_0030.disco;
 
 import ananas.axk2.core.XmppAPI;
 import ananas.axk2.core.XmppAPIHandler;
