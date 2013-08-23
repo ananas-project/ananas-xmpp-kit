@@ -2,7 +2,7 @@
 	<Connection>
 		<FilterList>
 			<Local />
-
+			<FilterLoader class="ananas.axk2.stringio.axk_filter.StringIOServiceFilter" />
 			<Remote />
 		</FilterList>
 	</Connection>
