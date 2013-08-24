@@ -2,7 +2,17 @@
 	<Connection>
 		<FilterList>
 			<Local />
+
 			<FilterLoader class="ananas.axk2.stringio.axk_filter.StringIOAgentFilter" />
+			<FilterLoader class="ananas.axk2.xmpphost.agent.XHreqWanHostAgent" />
+
+			<Switch>
+				<Case namespace="ananas:xmpp:xml_http_request">
+					<FilterLoader class="ananas.axk2.xml_http_request.XMLHttpRequestAgent" />
+				</Case>
+			</Switch>
+
+
 			<Remote />
 		</FilterList>
 	</Connection>

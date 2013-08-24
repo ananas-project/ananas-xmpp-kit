@@ -1,19 +1,12 @@
-package ananas.axk2.core.bp.target;
+package ananas.axk2.core;
 
-import ananas.axk2.core.XmppAPI;
-import ananas.axk2.core.XmppAPIHandler;
-import ananas.axk2.core.XmppCommand;
-import ananas.axk2.core.XmppConnection;
-import ananas.axk2.core.XmppEvent;
-import ananas.axk2.core.XmppFilter;
-
-public class DefaultNSFilter implements XmppFilter {
+public class AbstractFilter implements XmppFilter {
 
 	private XmppConnection _conn;
 
 	@Override
 	public int listAPI(XmppAPIHandler h) {
-		return XmppAPI.find_continue;
+		return XmppAPIHandler.Util.apiOfObject(this, h);
 	}
 
 	@Override

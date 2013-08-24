@@ -1,0 +1,22 @@
+<?xml  version='1.0'  encoding="UTF-8"  ?>
+<namespace xmlns="ananas:blueprint4:namespace">
+	<head>
+		<property key="namespace.uri">ananas:axk:ex:xmpphost</property>
+		<property key="namespace.default.prefix">xhost</property>
+
+		<property key="target.package">ananas.axk2.xmpphost</property>
+		<property key="target.classname.prefix">T</property>
+		<property key="target.classname.suffix"></property>
+
+		<property key="controller.package">ananas.axk2.xmpphost.bp</property>
+		<property key="controller.classname.prefix">C</property>
+		<property key="controller.classname.suffix"></property>
+
+	</head>
+	<body>
+
+		<element name="WAN-XMPP-Host" controller=".CtrFilter" />
+		<element name="LAN-XMPP-Host" controller=".CtrFilter" />
+		
+	</body>
+</namespace>

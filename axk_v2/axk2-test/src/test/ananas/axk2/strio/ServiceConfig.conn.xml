@@ -1,8 +1,19 @@
-<AXK xmlns="ananas:axk:base" xmlns:kit1="ananas:axk:ex:kit1">
+<AXK xmlns="ananas:axk:base" xmlns:kit1="ananas:axk:ex:kit1"
+	xmlns:xhost="ananas:axk:ex:xmpphost">
 	<Connection>
 		<FilterList>
 			<Local />
 			<FilterLoader class="ananas.axk2.stringio.axk_filter.StringIOServiceFilter" />
+
+			<Switch>
+				<Case namespace="ananas:xmpp:xml_http_request">
+					<FilterLoader class="ananas.axk2.xml_http_request.XMLHttpRequestService" />
+				</Case>
+			</Switch>
+
+			<xhost:WAN-XMPP-Host />
+			<xhost:LAN-XMPP-Host />
+
 			<Remote />
 		</FilterList>
 	</Connection>

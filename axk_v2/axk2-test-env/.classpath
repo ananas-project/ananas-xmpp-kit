@@ -17,5 +17,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/axk2-terminal"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/blueprint4-terminal"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/axk2-string-io"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/axk2-xmpp-host"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/axk2-xmpp-host-lib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/axk2-xml-http-request"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

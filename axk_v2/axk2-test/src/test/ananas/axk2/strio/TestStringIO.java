@@ -1,11 +1,13 @@
 package test.ananas.axk2.strio;
 
 import test.ananas.axk2.util.testing.ITest;
+import ananas.axk2.core.DefaultMutableAccount;
 import ananas.axk2.core.XmppConnection;
 import ananas.axk2.core.api.ICommandAgent;
 import ananas.axk2.core.command.StanzaCommand;
 import ananas.axk2.stringio.IStringIOAgent;
 import ananas.axk2.stringio.IStringIOService;
+import ananas.axk2.xmpphost.IXmppWanHost;
 
 public class TestStringIO implements ITest {
 
@@ -39,5 +41,15 @@ public class TestStringIO implements ITest {
 			stcmd.setString("<iq xmlns='jabber:client' from='a' to='b' id='x123' type='get' ></iq>");
 			activity.send(stcmd);
 		}
+
+		{
+			DefaultMutableAccount account = new DefaultMutableAccount();
+
+			IXmppWanHost wanHost = (IXmppWanHost) activity
+					.getAPI(IXmppWanHost.class);
+			wanHost.setAccount(account, null);
+			wanHost.connect(null);
+		}
+
 	}
 }
