@@ -59,8 +59,8 @@ public class XmppConnectionFacade implements XmppConnection {
 	}
 
 	@Override
-	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
-		return _inner.findAPI(apiClass, h);
+	public int listAPI(XmppAPIHandler h) {
+		return _inner.listAPI(h);
 	}
 
 }

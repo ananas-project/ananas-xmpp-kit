@@ -20,15 +20,6 @@ public class StringIOServiceFilter implements XmppFilter, IStringIOService {
 	private final IStringIO _str_io = new MyStrIO();
 
 	@Override
-	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
-		if (apiClass.isInstance(this)) {
-			return h.onAPI(apiClass, this);
-		} else {
-			return XmppFilter.find_continue;
-		}
-	}
-
-	@Override
 	public void bind(XmppConnection connection) {
 		this._conn = connection;
 	}
@@ -98,6 +89,11 @@ public class StringIOServiceFilter implements XmppFilter, IStringIOService {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public int listAPI(XmppAPIHandler h) {
+		return XmppAPIHandler.Util.apiOfObject(this, h);
 	}
 
 }

@@ -150,10 +150,10 @@ public class FilterList implements XmppFilterList {
 	}
 
 	@Override
-	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
+	public int listAPI(XmppAPIHandler h) {
 		XmppFilter[] array = this.__getCache();
 		for (XmppFilter f : array) {
-			if (f.findAPI(apiClass, h) == XmppAPI.find_break)
+			if (f.listAPI(h) == XmppAPI.find_break)
 				return XmppAPI.find_break;
 		}
 		return XmppAPI.find_continue;

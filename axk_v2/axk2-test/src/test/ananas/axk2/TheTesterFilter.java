@@ -17,11 +17,6 @@ public class TheTesterFilter implements XmppFilter {
 	private XmppConnection _conn;
 
 	@Override
-	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
-		return XmppFilter.find_continue;
-	}
-
-	@Override
 	public void bind(XmppConnection connection) {
 		this._conn = connection;
 	}
@@ -66,5 +61,10 @@ public class TheTesterFilter implements XmppFilter {
 		XmppAddress addr = new DefaultAddress(domain);
 		sdm.query(addr);
 
+	}
+
+	@Override
+	public int listAPI(XmppAPIHandler h) {
+		return XmppFilter.find_continue;
 	}
 }

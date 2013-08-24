@@ -13,7 +13,7 @@ public class DefaultNSFilter implements XmppFilter {
 	private XmppConnection _conn;
 
 	@Override
-	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
+	public int listAPI(XmppAPIHandler h) {
 		return XmppAPI.find_continue;
 	}
 

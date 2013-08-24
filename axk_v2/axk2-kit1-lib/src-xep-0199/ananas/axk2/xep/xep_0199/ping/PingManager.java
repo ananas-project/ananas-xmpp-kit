@@ -17,11 +17,6 @@ public class PingManager implements XmppFilter {
 	private XmppConnection _conn;
 
 	@Override
-	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
-		return XmppFilter.find_continue;
-	}
-
-	@Override
 	public void bind(XmppConnection connection) {
 		this._conn = connection;
 	}
@@ -84,6 +79,11 @@ public class PingManager implements XmppFilter {
 		StanzaCommand cmd = ca.newStanzaCommand(conn);
 		cmd.setString(sb.toString());
 		conn.send(cmd);
+	}
+
+	@Override
+	public int listAPI(XmppAPIHandler h) {
+		return XmppFilter.find_continue;
 	}
 
 }

@@ -94,37 +94,46 @@ public class Connection implements XmppConnection {
 	}
 
 	@Override
-	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
-		XmppFilter filter = this._filter;
-		if (filter == null) {
-			return XmppAPIHandler.find_continue;
-		} else {
-			return filter.findAPI(apiClass, h);
-		}
-	}
-
-	@Override
 	public XmppAPI getAPI(Class<?> apiClass) {
 		XmppFilter filter = this._filter;
 		if (filter == null) {
 			return null;
 		} else {
 			class MyHandler implements XmppAPIHandler {
-				XmppAPI _api;
+				private XmppAPI _api;
+				private final Class<?> _api_class;
+
+				public MyHandler(Class<?> apiClass) {
+					this._api_class = apiClass;
+				}
 
 				@Override
 				public int onAPI(Class<?> apiClass, XmppAPI api) {
-					if (api == null) {
-						return XmppAPI.find_continue;
+					if (this._api_class.equals(apiClass)) {
+						if (api == null) {
+							return XmppAPI.find_continue;
+						} else {
+							_api = api;
+							return XmppAPI.find_break;
+						}
 					} else {
-						_api = api;
-						return XmppAPI.find_break;
+						return XmppAPI.find_continue;
 					}
 				}
 			}
-			MyHandler h = new MyHandler();
-			filter.findAPI(apiClass, h);
+			MyHandler h = new MyHandler(apiClass);
+			filter.listAPI(h);
 			return h._api;
+		}
+	}
+
+	@Override
+	public int listAPI(XmppAPIHandler h) {
+		XmppFilter filter = this._filter;
+		if (filter == null) {
+			return XmppAPIHandler.find_continue;
+		} else {
+			return filter.listAPI(h);
 		}
 	}
 }

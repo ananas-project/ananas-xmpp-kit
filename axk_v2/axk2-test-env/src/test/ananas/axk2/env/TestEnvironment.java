@@ -7,6 +7,7 @@ public class TestEnvironment {
 	public void init() {
 
 		PropertiesLoader.Util.loadPropertiesToSystem(this, "system.properties");
+		PropertiesLoader.Util.loadPropertiesToSystem(this, "tester.select.properties");
 
 	}
 

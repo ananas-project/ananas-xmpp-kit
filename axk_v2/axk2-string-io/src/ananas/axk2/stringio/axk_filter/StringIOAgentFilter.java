@@ -18,15 +18,6 @@ public class StringIOAgentFilter implements XmppFilter, IStringIOAgent {
 	private XmppConnection _conn;
 
 	@Override
-	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
-		if (apiClass.isInstance(this)) {
-			return h.onAPI(apiClass, this);
-		} else {
-			return XmppFilter.find_continue;
-		}
-	}
-
-	@Override
 	public void bindIO(IStringIO io) {
 		this._str_io = io;
 	}
@@ -89,6 +80,11 @@ public class StringIOAgentFilter implements XmppFilter, IStringIOAgent {
 	@Override
 	public IStringIO getIO() {
 		return this._str_io_facade;
+	}
+
+	@Override
+	public int listAPI(XmppAPIHandler h) {
+		return XmppAPIHandler.Util.apiOfObject(this, h);
 	}
 
 }

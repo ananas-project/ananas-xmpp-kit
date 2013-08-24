@@ -6,6 +6,6 @@ public interface XmppAPIProvider extends XmppAPI {
 	 * @return XmppAPI.find_break|XmppAPI.find_continue
 	 * */
 
-	int findAPI(Class<?> apiClass, XmppAPIHandler h);
+	int listAPI(XmppAPIHandler h);
 
 }

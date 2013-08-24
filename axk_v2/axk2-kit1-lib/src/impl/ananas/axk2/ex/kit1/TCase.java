@@ -1,21 +1,32 @@
 package impl.ananas.axk2.ex.kit1;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import ananas.axk2.core.XmppAPIHandler;
 import ananas.axk2.core.XmppFilter;
 
 public class TCase extends TFilter {
 
 	private String _ns;
-	private final List<XmppFilter> _filter_list;
+	private XmppFilter _filter;
 
 	public TCase() {
-		this._filter_list = new ArrayList<XmppFilter>();
 	}
 
 	public void addFilter(XmppFilter filter) {
-		this._filter_list.add(filter);
+		if (this._filter == null) {
+			this._filter = filter;
+		} else {
+			throw new RuntimeException("a TCase contain only one filter!");
+		}
+	}
+
+	@Override
+	public int listAPI(XmppAPIHandler h) {
+		XmppFilter filter = this._filter;
+		if (filter == null) {
+			return super.listAPI(h);
+		} else {
+			return filter.listAPI(h);
+		}
 	}
 
 	public String getCaseNamespace() {

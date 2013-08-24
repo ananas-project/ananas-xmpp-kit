@@ -3,7 +3,6 @@ package impl.ananas.axk2.core.base;
 import impl.ananas.axk2.core.command.DefaultCommandAgent;
 import impl.ananas.axk2.core.command.DefaultCommandRegistrar;
 import impl.ananas.axk2.core.event.DefaultEventRegistrar;
-import ananas.axk2.core.XmppAPI;
 import ananas.axk2.core.XmppAPIHandler;
 import ananas.axk2.core.api.ICommandAgent;
 import ananas.axk2.core.api.ICommandRegistrar;
@@ -16,23 +15,11 @@ public class Local extends Filter {
 	private final ICommandAgent _cmd_agent = new DefaultCommandAgent();
 
 	@Override
-	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
-
-		if (apiClass.isInstance(this)) {
-			return h.onAPI(apiClass, this);
-
-		} else if (apiClass.isInstance(this._event_reg)) {
-			return h.onAPI(apiClass, this._event_reg);
-
-		} else if (apiClass.isInstance(this._cmd_reg)) {
-			return h.onAPI(apiClass, this._cmd_reg);
-
-		} else if (apiClass.isInstance(this._cmd_agent)) {
-			return h.onAPI(apiClass, this._cmd_agent);
-
-		} else {
-			return XmppAPI.find_continue;
-		}
+	public int listAPI(XmppAPIHandler h) {
+		XmppAPIHandler.Util.apiOfObject(this._cmd_agent, h);
+		XmppAPIHandler.Util.apiOfObject(this._event_reg, h);
+		XmppAPIHandler.Util.apiOfObject(this._cmd_reg, h);
+		return super.listAPI(h);
 	}
 
 }

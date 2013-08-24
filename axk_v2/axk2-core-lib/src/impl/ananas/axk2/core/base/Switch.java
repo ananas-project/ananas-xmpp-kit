@@ -160,15 +160,15 @@ public class Switch extends Filter {
 	}
 
 	@Override
-	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
+	public int listAPI(XmppAPIHandler h) {
 		XmppFilter[] list = this.__list_filter();
 		for (XmppFilter item : list) {
-			int res = item.findAPI(apiClass, h);
+			int res = item.listAPI(h);
 			if (res == XmppAPI.find_break) {
 				return res;
 			}
 		}
-		return super.findAPI(apiClass, h);
+		return super.listAPI(h);
 	}
 
 }

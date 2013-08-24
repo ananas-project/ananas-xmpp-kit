@@ -1,6 +1,5 @@
 package ananas.axk2.xep.xep_0030.disco;
 
-import ananas.axk2.core.XmppAPI;
 import ananas.axk2.core.XmppAPIHandler;
 import ananas.axk2.core.XmppAddress;
 import ananas.axk2.core.XmppCommand;
@@ -16,14 +15,6 @@ public class ServiceDiscoveryManager implements XmppFilter {
 
 	private XmppConnection _conn;
 	private final MySDM _sdm = new MySDM();
-
-	@Override
-	public int findAPI(Class<?> apiClass, XmppAPIHandler h) {
-		if (apiClass.isInstance(_sdm)) {
-			return h.onAPI(apiClass, _sdm);
-		}
-		return XmppFilter.find_continue;
-	}
 
 	@Override
 	public void bind(XmppConnection connection) {
@@ -50,7 +41,7 @@ public class ServiceDiscoveryManager implements XmppFilter {
 		return event;
 	}
 
-	class MySDM implements IServiceDiscoveryManager, XmppAPI {
+	class MySDM implements IServiceDiscoveryManager {
 
 		int _id_gen = 1;
 
@@ -76,6 +67,11 @@ public class ServiceDiscoveryManager implements XmppFilter {
 			cmd.setString(sb.toString());
 			conn.send(cmd);
 		}
+	}
+
+	@Override
+	public int listAPI(XmppAPIHandler h) {
+		return XmppAPIHandler.Util.apiOfObject(_sdm, h);
 	}
 
 }
