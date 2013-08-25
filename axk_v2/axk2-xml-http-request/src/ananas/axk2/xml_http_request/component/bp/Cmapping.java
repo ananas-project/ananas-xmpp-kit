@@ -1,4 +1,4 @@
-package ananas.axk2.xml_http_request.bp;
+package ananas.axk2.xml_http_request.component.bp;
 
 import ananas.axk2.core.XmppFilter;
 import ananas.blueprint4.core.lang.BPElement;

@@ -1,0 +1,35 @@
+<stream>
+
+	<iq xmlns='jabber:client' id='xmlhttprequest-1' type='get'>
+
+		<request xmlns='ananas:xmpp:xml_http_request' version='HTTP/1.0'
+			method='GET' url='/abc/def.g'>
+			<header>
+				<field name='Content-Type' value='text/plain' />
+			</header>
+			<content>
+			</content>
+		</request>
+
+		<response xmlns='ananas:xmpp:xml_http_request' message='xxx'
+			code='404' version='HTTP/1.0'>
+			<header>
+			</header>
+			<content>
+			</content>
+		</response>
+
+	</iq>
+
+
+	<iq id="xhreq-728670808-1" to="a@b/c" type="get" xmlns="jabber:client">
+		<request xmlns="ananas:xmpp:xml_http_request" method="POST"
+			url="a@b/cnull" version="HTTP/1.0">
+			<header>
+				<field name="host.do" value="SetAccount" />
+				<field name="Host" value="null" />
+			</header>
+		</request>
+	</iq>
+
+</stream>
