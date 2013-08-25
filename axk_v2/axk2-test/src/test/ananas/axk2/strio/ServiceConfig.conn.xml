@@ -1,5 +1,5 @@
 <AXK xmlns="ananas:axk:base" xmlns:kit1="ananas:axk:ex:kit1"
-	xmlns:xhost="ananas:axk:ex:xmpphost">
+	xmlns:xhost="ananas:axk:ex:xmpphost" xmlns:xhreq='ananas:axk:ex:xml_http_request'>
 	<Connection>
 		<FilterList>
 			<Local />
@@ -7,7 +7,11 @@
 
 			<Switch>
 				<Case namespace="ananas:xmpp:xml_http_request">
-					<FilterLoader class="ananas.axk2.xml_http_request.XMLHttpRequestService" />
+					<xhreq:XMLHttpRequestService>
+						<xhreq:mapping url-pattern='/WAN-host'>
+							<FilterLoader class="ananas.axk2.xmpphost.service.XHreqWanHostService" />
+						</xhreq:mapping>
+					</xhreq:XMLHttpRequestService>
 				</Case>
 			</Switch>
 

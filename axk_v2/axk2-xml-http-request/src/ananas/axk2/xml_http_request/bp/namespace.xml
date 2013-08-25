@@ -1,0 +1,22 @@
+<?xml  version='1.0'  encoding="UTF-8"  ?>
+<namespace xmlns="ananas:blueprint4:namespace">
+	<head>
+		<property key="namespace.uri">ananas:axk:ex:xml_http_request</property>
+		<property key="namespace.default.prefix">xhreq</property>
+
+		<property key="target.package">ananas.axk2.xml_http_request.bp</property>
+		<property key="target.classname.prefix">T</property>
+		<property key="target.classname.suffix"></property>
+
+		<property key="controller.package">ananas.axk2.xml_http_request.bp</property>
+		<property key="controller.classname.prefix">C</property>
+		<property key="controller.classname.suffix"></property>
+
+	</head>
+	<body>
+
+		<element name="mapping" />
+		<element name="XMLHttpRequestService" controller=".CtrFilter" />
+
+	</body>
+</namespace>
