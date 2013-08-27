@@ -3,9 +3,10 @@ package ananas.axk2.xmpphost.agent;
 import ananas.axk2.core.AbstractFilter;
 import ananas.axk2.core.XmppAccount;
 import ananas.axk2.core.XmppStatus;
-import ananas.axk2.xml_http_request.IXMLHttpRequest;
+import ananas.axk2.xml_http_request.IXMLHttpRequestA;
 import ananas.axk2.xml_http_request.IXMLHttpRequestAgent;
 import ananas.axk2.xml_http_request.IXMLHttpRequestListener;
+import ananas.axk2.xml_http_request.IXMLHttpResponseA;
 import ananas.axk2.xmpphost.IXmppHostListener;
 import ananas.axk2.xmpphost.IXmppWanHost;
 
@@ -29,7 +30,7 @@ public class XHreqWanHostAgent extends AbstractFilter implements IXmppWanHost {
 	@Override
 	public void connect(IXmppHostListener listener) {
 		IXMLHttpRequestAgent agent = this.__getXHreqAgent();
-		IXMLHttpRequest req = agent.newRequest();
+		IXMLHttpRequestA req = agent.newRequest();
 		String url = this.__getURL();
 		req.open("POST", url);
 		req.setHeader("host.do", "Connect");
@@ -44,7 +45,7 @@ public class XHreqWanHostAgent extends AbstractFilter implements IXmppWanHost {
 	@Override
 	public void disconnect(IXmppHostListener listener) {
 		IXMLHttpRequestAgent agent = this.__getXHreqAgent();
-		IXMLHttpRequest req = agent.newRequest();
+		IXMLHttpRequestA req = agent.newRequest();
 		String url = this.__getURL();
 		req.open("POST", url);
 		req.setHeader("host.do", "Disconnect");
@@ -55,7 +56,7 @@ public class XHreqWanHostAgent extends AbstractFilter implements IXmppWanHost {
 	@Override
 	public void setAccount(XmppAccount account, IXmppHostListener listener) {
 		IXMLHttpRequestAgent agent = this.__getXHreqAgent();
-		IXMLHttpRequest req = agent.newRequest();
+		IXMLHttpRequestA req = agent.newRequest();
 		String url = this.__getURL();
 		req.open("POST", url);
 		req.setHeader("host.do", "SetAccount");
@@ -81,7 +82,7 @@ public class XHreqWanHostAgent extends AbstractFilter implements IXmppWanHost {
 	@Override
 	public void pull(IXmppHostListener listener) {
 		IXMLHttpRequestAgent agent = this.__getXHreqAgent();
-		IXMLHttpRequest req = agent.newRequest();
+		IXMLHttpRequestA req = agent.newRequest();
 		String url = this.__getURL();
 		req.open("POST", url);
 		req.setHeader("host.do", "Pull");
@@ -91,8 +92,21 @@ public class XHreqWanHostAgent extends AbstractFilter implements IXmppWanHost {
 
 	class MyListenerAdapter implements IXMLHttpRequestListener {
 
+		private final IXmppHostListener _li;
+
 		public MyListenerAdapter(IXmppHostListener listener) {
-			// TODO Auto-generated constructor stub
+			this._li = listener;
+		}
+
+		@Override
+		public void onResult(IXMLHttpRequestA request,
+				IXMLHttpResponseA response) {
+
+			Throwable err = new RuntimeException(response.getResponseCode()
+					+ " " + response.getResponseMessage());
+
+			this._li.onResult(XHreqWanHostAgent.this, err);
+
 		}
 	}
 

@@ -4,5 +4,5 @@ import ananas.axk2.core.XmppAPI;
 
 public interface IXMLHttpRequestAgent extends XmppAPI {
 
-	IXMLHttpRequest newRequest();
+	IXMLHttpRequestA newRequest();
 }
