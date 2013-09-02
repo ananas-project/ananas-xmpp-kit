@@ -18,6 +18,8 @@ import ananas.axk2.core.event.StanzaEvent;
 import ananas.axk2.core.util.XmppClientBuilder;
 import ananas.axk2.ex.kit1.ITerminalAgent;
 import ananas.blueprint4.terminal.Terminal;
+import ananas.lib.task.Task;
+import ananas.lib.task.TaskManager;
 import ananas.lib.util.logging.Logger;
 
 public class TestAxk2 implements ITest {
@@ -71,9 +73,30 @@ public class TestAxk2 implements ITest {
 		if (cmd_init != null) {
 			termi.execute(cmd_init);
 		}
-		termi.getRunnable().run();
+		// termi.getRunnable().run();
+		Task task = new MyTask(termi);
+		TaskManager.Agent.getInstance().run(task);
 
 		client.disconnect();
+	}
+
+	class MyTask implements Task {
+
+		private final Terminal _termi;
+
+		public MyTask(Terminal termi) {
+			this._termi = termi;
+		}
+
+		@Override
+		public void run() {
+			this._termi.getRunnable().run();
+		}
+
+		@Override
+		public void cancel() {
+			this._termi.execute("exit");
+		}
 	}
 
 	class MyEventListener implements XmppEventListener {
