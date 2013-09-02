@@ -1,6 +1,6 @@
 package ananas.axk2.xml_http_request;
 
-public interface IXMLHttpRequest {
+public interface IXMLHttpRequestA extends IXMLHttpRequestS {
 
 	void open(String method, String url);
 

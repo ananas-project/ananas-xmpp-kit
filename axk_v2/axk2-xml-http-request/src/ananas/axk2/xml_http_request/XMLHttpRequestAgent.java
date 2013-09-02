@@ -27,7 +27,7 @@ public class XMLHttpRequestAgent extends AbstractFilter implements
 	}
 
 	@Override
-	public IXMLHttpRequest newRequest() {
+	public IXMLHttpRequestA newRequest() {
 		String id = "xhreq-" + this.hashCode() + "-" + (this._id_count++);
 		return new MyRequest(id);
 	}
@@ -37,7 +37,7 @@ public class XMLHttpRequestAgent extends AbstractFilter implements
 		return super.filter(event);
 	}
 
-	class MyRequest implements IXMLHttpRequest {
+	class MyRequest implements IXMLHttpRequestA {
 
 		private final long _create_time;
 		private final String _id;
@@ -46,6 +46,7 @@ public class XMLHttpRequestAgent extends AbstractFilter implements
 		private String _method;
 		private String _url;
 		private final String _version = "HTTP/1.0";
+		private String _content;
 
 		public MyRequest(String id) {
 			this._id = id;
@@ -65,6 +66,9 @@ public class XMLHttpRequestAgent extends AbstractFilter implements
 
 		@Override
 		public void send(String content) {
+
+			this._content = content;
+
 			XmppConnection conn = XMLHttpRequestAgent.this.getConnection();
 			ICommandAgent cmd_agent = (ICommandAgent) conn
 					.getAPI(ICommandAgent.class);
@@ -121,6 +125,26 @@ public class XMLHttpRequestAgent extends AbstractFilter implements
 		@Override
 		public void setHeader(String name, String value) {
 			this._headers.put(name, value);
+		}
+
+		@Override
+		public String getMethod() {
+			return this._method;
+		}
+
+		@Override
+		public String getURL() {
+			return this._url;
+		}
+
+		@Override
+		public String getContent() {
+			return this._content;
+		}
+
+		@Override
+		public String getHeader(String name) {
+			return this._headers.get(name);
 		}
 	}
 
