@@ -40,4 +40,20 @@ public class Trequest {
 		this._content = content;
 	}
 
+	public Tcontent getContent() {
+		return this._content;
+	}
+
+	public Theader getHeader() {
+		return this._header;
+	}
+
+	public String getURL() {
+		return this._url;
+	}
+
+	public String getMethod() {
+		return this._method;
+	}
+
 }

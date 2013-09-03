@@ -11,4 +11,8 @@ public class Theader {
 		_fields.put(field.getName(), field.getValue());
 	}
 
+	public String getField(String name) {
+		return _fields.get(name);
+	}
+
 }

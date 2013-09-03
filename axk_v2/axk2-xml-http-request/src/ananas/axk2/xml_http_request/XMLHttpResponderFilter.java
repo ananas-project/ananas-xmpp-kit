@@ -4,6 +4,7 @@ import ananas.axk2.core.AbstractFilter;
 import ananas.axk2.core.XmppCommand;
 import ananas.axk2.core.XmppConnection;
 import ananas.axk2.core.command.StanzaCommand;
+import ananas.axk2.xml_http_request.util.ResponderHelper;
 import ananas.axk2.xml_http_request.xmpp.bp.Trequest;
 
 public abstract class XMLHttpResponderFilter extends AbstractFilter implements
